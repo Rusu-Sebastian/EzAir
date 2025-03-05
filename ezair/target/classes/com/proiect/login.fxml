@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="CENTER" snapToPixel="false" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.LogInController">
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+   <children>
+      <BorderPane prefHeight="23.0" prefWidth="1104.0" />
+      <Pane prefHeight="252.0" prefWidth="1104.0">
+         <children>
+            <ImageView fitHeight="180.0" fitWidth="180.0" layoutX="483.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@logo.png" />
+               </image>
+            </ImageView>
+            <Text layoutX="352.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to EzAir" wrappingWidth="400.13000106811523">
+               <font>
+                  <Font name="Noto Sans Math Regular" size="48.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <Pane prefHeight="265.0" prefWidth="1104.0">
+         <children>
+            <Button fx:id="butonLogIn" defaultButton="true" layoutX="576.0" layoutY="195.0" mnemonicParsing="false" onAction="#logIn" text="Log In" textAlignment="JUSTIFY" />
+            <Button fx:id="butonCreatCont" layoutX="390.0" layoutY="195.0" mnemonicParsing="false" onAction="#paginaCreazaCont" text="Create Acount" />
+            <TextField fx:id="username" layoutX="471.0" layoutY="96.0" />
+            <Text layoutX="390.0" layoutY="114.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" />
+            <Text layoutX="391.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" />
+            <PasswordField fx:id="parola" layoutX="471.0" layoutY="139.0" />
+         </children>
+      </Pane>
+   </children>
+</VBox>
