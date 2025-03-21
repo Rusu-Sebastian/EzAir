@@ -1,3 +1,13 @@
 {
-    "users": []
+    "users": [
+        {
+            "id": "cbfc3a40-e5af-4bbb-a81f-d110752148ca",
+            "username": "RusuSebastian",
+            "password": "123456789",
+            "email": "sebastianrusu01@gmail.com",
+            "nume": "Sebatian",
+            "prenume": "Rusu",
+            "varsta": "20"
+        }
+    ]
 }

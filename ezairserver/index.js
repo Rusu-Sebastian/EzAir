@@ -7,16 +7,44 @@ const port = 3000;
 
 const db = new JsonDB(new Config("baza", true, true, "/"));
 
+// Middleware to parse JSON request bodies
+app.use(express.json());
+
+class user {
+    constructor(username, password, email, nume, prenume, varsta) {
+        this.id = uuidv4();
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.nume = nume;
+        this.prenume = prenume;
+        this.varsta = varsta;
+    }
+}
 
 //metoda pentru logare
+//metoda pentru logare
 app.get('/login', async (req, res) => {
-    const { username, password } = req.query;
     try {
+        const { username, password } = req.query; // Read from query parameters
         const user = await verificareDateLogin(username, password);
         res.status(200).send('Login successful');
     } catch (error) {
         console.error("Eroare la verificarea datelor de login:", error);
         res.status(401).send('Invalid credentials');
+    }
+});
+
+//metoda pentru autentificare
+app.post('/users', async (req, res) => {
+    try {
+        const { username, password, email, nume, prenume, varsta } = req.query;
+        const userNou = new user(username, password, email, nume, prenume, varsta);
+        await autentificareUser(userNou);
+        res.status(200).send('User created successfully');
+    } catch (error){
+        console.error("Eroare la autentificare.", error);
+        res.status(500).send('Eroare la creearea userului');
     }
 });
 
@@ -70,6 +98,27 @@ async function verificareDateLogin(username, password) {
         }
     } catch (error) {
         console.error("Eroare la verificarea datelor de login:", error);
+        throw error;
+    }
+}
+
+//verificarea matritei(nu merge fara uneori ns)
+async function verificareArray(ar) {
+    if (!Array.isArray(ar)) {
+        ar = [];
+    }
+    return ar;
+}
+
+//adaugarea userului in baza de date
+async function autentificareUser(user) {
+    try {
+        let users = await db.getData("/users");
+        await verificareArray(users);
+        users.push(user);
+        db.push("/users", users, true);
+    } catch (error) {
+        console.error("Eroaore la salvarea datelor userului. ", error);
         throw error;
     }
 }
