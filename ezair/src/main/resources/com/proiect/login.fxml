@@ -6,7 +6,6 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -17,15 +16,14 @@
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
    <children>
-      <BorderPane prefHeight="23.0" prefWidth="1104.0" />
       <Pane prefHeight="252.0" prefWidth="1104.0">
          <children>
-            <ImageView fitHeight="180.0" fitWidth="180.0" layoutX="483.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="180.0" fitWidth="180.0" layoutX="462.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@logo.png" />
                </image>
             </ImageView>
-            <Text layoutX="352.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to EzAir" wrappingWidth="400.13000106811523">
+            <Text layoutX="352.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to EzAir" wrappingWidth="400.13000106811523">
                <font>
                   <Font name="Noto Sans Math Regular" size="48.0" />
                </font>
@@ -34,12 +32,12 @@
       </Pane>
       <Pane prefHeight="265.0" prefWidth="1104.0">
          <children>
-            <Button fx:id="butonLogIn" defaultButton="true" layoutX="576.0" layoutY="195.0" mnemonicParsing="false" onAction="#logIn" text="Log In" textAlignment="JUSTIFY" />
-            <Button fx:id="butonCreatCont" layoutX="390.0" layoutY="195.0" mnemonicParsing="false" onAction="#paginaCreazaCont" text="Create Acount" />
-            <TextField fx:id="username" layoutX="471.0" layoutY="96.0" />
-            <Text layoutX="390.0" layoutY="114.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" />
-            <Text layoutX="391.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" />
-            <PasswordField fx:id="parola" layoutX="471.0" layoutY="139.0" />
+            <Button fx:id="butonLogIn" defaultButton="true" layoutX="623.0" layoutY="195.0" mnemonicParsing="false" onAction="#logIn" text="Log In" textAlignment="JUSTIFY" />
+            <Button fx:id="butonCreatCont" layoutX="431.0" layoutY="195.0" mnemonicParsing="false" onAction="#paginaCreazaCont" text="Create Acount" />
+            <TextField fx:id="username" layoutX="519.0" layoutY="96.0" />
+            <Text layoutX="431.0" layoutY="114.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" />
+            <Text layoutX="433.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" />
+            <PasswordField fx:id="parola" layoutX="519.0" layoutY="139.0" />
          </children>
       </Pane>
    </children>

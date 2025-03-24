@@ -40,6 +40,6 @@ public class LogInController {
 
     @FXML
     private void paginaCreazaCont() throws IOException {
-        App.setRoot("creareCont");
+        App.setRoot("creareContNume");
     }
 }

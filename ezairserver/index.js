@@ -11,14 +11,15 @@ const db = new JsonDB(new Config("baza", true, true, "/"));
 app.use(express.json());
 
 class user {
-    constructor(username, password, email, nume, prenume, varsta) {
+    constructor(username, password, email, nume, prenume, dataNasterii, admin) {
         this.id = uuidv4();
         this.username = username;
         this.password = password;
         this.email = email;
         this.nume = nume;
         this.prenume = prenume;
-        this.varsta = varsta;
+        this.dataNasterii = dataNasterii;
+        this.admin = admin;
     }
 }
 
@@ -38,8 +39,8 @@ app.get('/login', async (req, res) => {
 //metoda pentru autentificare
 app.post('/users', async (req, res) => {
     try {
-        const { username, password, email, nume, prenume, varsta } = req.query;
-        const userNou = new user(username, password, email, nume, prenume, varsta);
+        const { username, password, email, nume, prenume, dataNasterii, admin} = req.query;
+        const userNou = new user(username, password, email, nume, prenume, dataNasterii, admin);
         await autentificareUser(userNou);
         res.status(200).send('User created successfully');
     } catch (error){
