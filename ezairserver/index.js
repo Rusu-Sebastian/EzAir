@@ -11,10 +11,10 @@ const db = new JsonDB(new Config("baza", true, true, "/"));
 app.use(express.json());
 
 class user {
-    constructor(username, password, email, nume, prenume, dataNasterii, admin) {
+    constructor(username, parola, email, nume, prenume, dataNasterii, admin) {
         this.id = uuidv4();
         this.username = username;
-        this.password = password;
+        this.parola = parola;
         this.email = email;
         this.nume = nume;
         this.prenume = prenume;
@@ -23,12 +23,18 @@ class user {
     }
 }
 
+app.get('/', (req, res) => {
+    res.send('Hello World!');
+}
+);
+
+
+
 //metoda pentru logare
-//metoda pentru logare
-app.get('/login', async (req, res) => {
+app.post('/users/login', async (req, res) => {
     try {
-        const { username, password } = req.query; // Read from query parameters
-        const user = await verificareDateLogin(username, password);
+        const { username, parola } = req.body; // Read from query parameters
+        const user = await verificareDateLogin(username, parola);
         res.status(200).send('Login successful');
     } catch (error) {
         console.error("Eroare la verificarea datelor de login:", error);
@@ -36,11 +42,11 @@ app.get('/login', async (req, res) => {
     }
 });
 
-//metoda pentru autentificare
-app.post('/users', async (req, res) => {
+//metoda pentru creare cont
+app.post('/users/creareCont', async (req, res) => {
     try {
-        const { username, password, email, nume, prenume, dataNasterii, admin} = req.query;
-        const userNou = new user(username, password, email, nume, prenume, dataNasterii, admin);
+        const { username, parola, email, nume, prenume, dataNasterii} = req.body;
+        const userNou = new user(username, parola, email, nume, prenume, dataNasterii, false);
         await autentificareUser(userNou);
         res.status(200).send('User created successfully');
     } catch (error){
@@ -87,11 +93,10 @@ async function editareUser(id, dateUpdatate) {
 }
 
 //verificarea datelor pentru login
-async function verificareDateLogin(username, password) {
+async function verificareDateLogin(username, parola) {
     try {
         let users = await db.getData("/users");
-        await verificareArray(users);
-        const user = users.find(client => client.username === username && client.password === password);
+        const user = users.find(client => client.username === username && client.parola === parola);
         if (user) {
             return user;
         } else {

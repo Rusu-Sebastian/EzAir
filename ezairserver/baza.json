@@ -1,14 +1,44 @@
 {
     "users": [
         {
-            "id": "cbfc3a40-e5af-4bbb-a81f-d110752148ca",
-            "username": "RusuSebastian",
-            "password": "123456789",
+            "id": "76479d48-b35e-4653-b430-b9d1ea66e84e",
+            "username": "rusu.admin",
+            "parola": "134679852",
             "email": "sebastianrusu01@gmail.com",
-            "nume": "Sebatian",
-            "prenume": "Rusu",
-            "varsta": "20",
-            "admin": "true"
+            "nume": "Rusu",
+            "prenume": "Sebastian",
+            "dataNasterii": "09/05/2004",
+            "admin": true
+        },
+        {
+            "id": "1aeea654-275a-47fb-8df9-7d56f53733f7",
+            "username": "Rususebastian",
+            "parola": "labalacai",
+            "email": "sebastianrusu01@gmail.com",
+            "nume": "Rusu",
+            "prenume": "Sebastian",
+            "dataNasterii": "09/05/2004",
+            "admin": false
+        },
+        {
+            "id": "d9c617a2-e3e5-4798-9487-6c235025d670",
+            "username": "admin",
+            "parola": "adminadmin",
+            "email": "admin@admin.com",
+            "nume": "admin",
+            "prenume": "admin",
+            "dataNasterii": "01/01/2001",
+            "admin": false
+        },
+        {
+            "id": "b22c383c-acdd-4fb5-8642-78c6ae90c763",
+            "username": "Test",
+            "parola": "TestTest",
+            "email": "test@test.com",
+            "nume": "Testare",
+            "prenume": "Testare",
+            "dataNasterii": "11/09/2021",
+            "admin": false
         }
     ]
 }

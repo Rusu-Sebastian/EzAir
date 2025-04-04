@@ -10,16 +10,22 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.CreareContNumeController">
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.CreareContController">
    <children>
       <Pane prefHeight="358.0" prefWidth="937.0">
          <children>
             <TextField fx:id="nume" layoutX="629.0" layoutY="80.0" promptText="Rusu" />
             <TextField fx:id="prenume" layoutX="629.0" layoutY="120.0" promptText="Sebastian" />
             <Text layoutX="439.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nume" />
-            <Text layoutX="438.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Prenumume" />
-            <Button fx:id="butonCancel" layoutX="439.0" layoutY="229.0" mnemonicParsing="false" onAction="#cancelCreareCont" text="Cancel" textAlignment="JUSTIFY" />
-            <Button fx:id="butonNumeNext" defaultButton="true" layoutX="751.0" layoutY="229.0" mnemonicParsing="false" onAction="#creareContNumeNext" text="Next" />
+            <Text layoutX="438.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Prenume" />
+            <Text layoutX="438.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data Nasterii" />
+            <TextField fx:id="ziuaNasterii" layoutX="629.0" layoutY="157.0" prefHeight="26.0" prefWidth="37.0" promptText="ZZ" />
+            <TextField fx:id="lunaNasterii" layoutX="679.0" layoutY="157.0" prefHeight="26.0" prefWidth="37.0" promptText="LL" />
+            <TextField fx:id="anNasterii" layoutX="732.0" layoutY="157.0" prefHeight="26.0" prefWidth="58.0" promptText="AAAA" />
+            <Text layoutX="669.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="." wrappingWidth="19.483999967575073" />
+            <Text layoutX="722.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="." wrappingWidth="19.483999967575073" />
+            <Button fx:id="butonCancel" layoutX="439.0" layoutY="229.0" mnemonicParsing="false" onAction="#backCreareContInceput" text="Cancel" textAlignment="JUSTIFY" />
+            <Button fx:id="butonNumeNext" defaultButton="true" layoutX="751.0" layoutY="229.0" mnemonicParsing="false" onAction="#creareContInceput" text="Next" />
             <ImageView fitHeight="180.0" fitWidth="180.0" layoutX="6.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@logo.png" />
@@ -35,8 +41,7 @@
                   <Font name="Noto Sans Math Regular" size="15.0" />
                </font>
             </Text>
-            <Text layoutX="438.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" />
-            <TextField fx:id="email" layoutX="629.0" layoutY="157.0" promptText="email@email.com" />
+            <Text fx:id="ButonText" layoutX="545.0" layoutY="340.0" onMouseClicked="#cancelCreareCont" strokeType="OUTSIDE" strokeWidth="0.0" text="Am deja cont!" underline="true" />
          </children>
       </Pane>
    </children>
