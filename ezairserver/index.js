@@ -28,17 +28,15 @@ app.get('/', (req, res) => {
 }
 );
 
-
-
 //metoda pentru logare
 app.post('/users/login', async (req, res) => {
     try {
-        const { username, parola } = req.body; // Read from query parameters
+        const { username, parola } = req.body;
         const user = await verificareDateLogin(username, parola);
-        res.status(200).send('Login successful');
+        res.status(200).json(user); // Trimite răspuns JSON
     } catch (error) {
         console.error("Eroare la verificarea datelor de login:", error);
-        res.status(401).send('Invalid credentials');
+        res.status(401).json({ error: "Invalid credentials" }); // Trimite eroare JSON
     }
 });
 
@@ -79,7 +77,7 @@ async function editareUser(id, dateUpdatate) {
     try {
         let users = await db.getData("/users");
         await verificareArray(users);
-        const index = users.findIndex(client => client.id === id);
+        const index = users.findIndex(users => users.id === id);
         if (index !== -1) {
             users[index] = { ...users[index], ...dateUpdatate };
             db.push("/users", users, true);
@@ -96,7 +94,7 @@ async function editareUser(id, dateUpdatate) {
 async function verificareDateLogin(username, parola) {
     try {
         let users = await db.getData("/users");
-        const user = users.find(client => client.username === username && client.parola === parola);
+        const user = users.find(users => users.username === username && users.parola === parola);
         if (user) {
             return user;
         } else {

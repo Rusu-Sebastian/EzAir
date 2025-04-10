@@ -39,6 +39,26 @@
             "prenume": "Testare",
             "dataNasterii": "11/09/2021",
             "admin": false
+        },
+        {
+            "id": "23505099-8dc7-48af-8e81-aa65c41cd637",
+            "username": "laborator",
+            "parola": "laborator",
+            "email": "laborator@laborator.com",
+            "nume": "laborator",
+            "prenume": "laborator",
+            "dataNasterii": "1/8/2002",
+            "admin": true
+        },
+        {
+            "id": "58520369-b2b7-4616-b584-fad662984ec0",
+            "username": "mare",
+            "parola": "labamaremare",
+            "email": "laba@sex.com",
+            "nume": "pula",
+            "prenume": "mare",
+            "dataNasterii": "2/8/2005",
+            "admin": false
         }
     ]
 }

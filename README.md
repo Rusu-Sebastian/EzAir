@@ -4,6 +4,7 @@
 - [x] Pagina de login
 - [x] Pagina de creare cont
 - [x] Server Node.js
+- [x] Pagina de eroare la conexiune
 
 ## Tasks in Progress
 - [ ] CSS pentru JavaFX

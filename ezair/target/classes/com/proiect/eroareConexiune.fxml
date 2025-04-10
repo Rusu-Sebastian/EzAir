@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.EroareConexiuneController">
+   <children>
+      <Pane prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="215.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@logo.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Pane prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <Text layoutX="91.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="EROARE LA COECTARE">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </Text>
+            <Text layoutX="126.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Verificati Conexiunea la Internet">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Text>
+            <Button fx:id="butonReincercare" layoutX="239.0" layoutY="131.0" mnemonicParsing="false" onAction="#reincarcare" text="Incercati din nou" />
+         </children>
+      </Pane>
+   </children>
+</VBox>
