@@ -12,7 +12,7 @@
 
 <VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.PaginaPrincipalaAdminController">
    <children>
-      <AnchorPane prefHeight="46.0" prefWidth="937.0">
+      <AnchorPane prefHeight="55.0" prefWidth="803.0">
          <children>
             <ImageView fitHeight="83.0" fitWidth="151.0" layoutX="8.0" layoutY="-10.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -26,10 +26,10 @@
             </Text>
          </children>
       </AnchorPane>
-      <Pane prefHeight="335.0" prefWidth="937.0">
+      <Pane prefHeight="219.0" prefWidth="735.0">
          <children>
-            <Button fx:id="butonZboruri" layoutX="282.0" layoutY="85.0" mnemonicParsing="false" onAction="#zboruriAdmin" prefHeight="83.0" prefWidth="83.0" text="Zboruri" />
-            <Button fx:id="butonUseri" layoutX="561.0" layoutY="85.0" mnemonicParsing="false" onAction="#useriAdmin" prefHeight="83.0" prefWidth="83.0" text="Useri" />
+            <Button fx:id="butonZboruri" layoutX="128.0" layoutY="68.0" mnemonicParsing="false" onAction="#zboruriAdmin" prefHeight="83.0" prefWidth="83.0" text="Zboruri" />
+            <Button fx:id="butonUseri" layoutX="507.0" layoutY="68.0" mnemonicParsing="false" onAction="#useriAdmin" prefHeight="83.0" prefWidth="83.0" text="Useri" />
          </children>
       </Pane>
    </children>
