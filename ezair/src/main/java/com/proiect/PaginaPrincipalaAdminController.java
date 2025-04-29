@@ -19,7 +19,7 @@ public class PaginaPrincipalaAdminController {
     }
     @FXML
     private void adaugareUser() throws Exception {
-        
+        App.setRoot("creareContInceputAdmin");
     }
     @FXML
     private void editareZbor() throws Exception {

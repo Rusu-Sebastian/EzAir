@@ -59,6 +59,46 @@
             "prenume": "mare",
             "dataNasterii": "2/8/2005",
             "admin": false
+        },
+        {
+            "id": "2721566b-aaea-4a9f-b69f-e3a7a8098e4e",
+            "username": "lalaalalalalalalalallalalalal",
+            "parola": "lalaalalalalalalalallalalalal",
+            "email": "aklfjsaklfjkla@gmail.com",
+            "nume": "mvn clean install",
+            "prenume": "mvn clean install",
+            "dataNasterii": "13/1/2000",
+            "admin": false
+        },
+        {
+            "id": "0ce8b1d9-a2b9-4300-9185-4731b9055af3",
+            "username": "labagiultestul;ioui",
+            "parola": "labagiultestul;ioui",
+            "email": "labgiudetest@admin.test",
+            "nume": "labagiumare",
+            "prenume": "labamareiaratestasmin",
+            "dataNasterii": "1/2/2000",
+            "admin": false
+        },
+        {
+            "id": "0cfb3e79-e214-404c-98c2-b15d62728101",
+            "username": "labagiu@laba.com",
+            "parola": "labagiu@laba.com",
+            "email": "labagiu@laba.com",
+            "nume": "labatestadmindoi",
+            "prenume": "labatestadminidoi",
+            "dataNasterii": "1/2/2000",
+            "admin": true
+        },
+        {
+            "id": "18ed8d9e-fd71-4dc2-89a0-cbe6e1e803b0",
+            "username": "BalerinaCapucina69",
+            "parola": "BalerinaSmecherina12",
+            "email": "Balerina.Capucina69@gmail.com",
+            "nume": "Balerina",
+            "prenume": "Capucina",
+            "dataNasterii": "2/3/2005",
+            "admin": false
         }
     ]
 }

@@ -19,9 +19,9 @@
                   <Image url="@logo.png" />
                </image>
             </ImageView>
-            <Text layoutX="105.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pagina Principala a Adminului">
+            <Text layoutX="102.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="EZAir" wrappingWidth="283.5119972229004">
                <font>
-                  <Font size="24.0" />
+                  <Font size="50.0" />
                </font>
             </Text>
          </children>

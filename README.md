@@ -7,7 +7,6 @@
 - [x] Pagina de eroare la conexiune
 
 ## Tasks in Progress
-- [ ] CSS pentru JavaFX
 - [ ] Pagina principală
 - [ ] Funcționalitate bilete (cumpărare/anulare/editare dată zbor)
 - [ ] Simulare plată
@@ -17,3 +16,4 @@
 
 ## Optional (dacă rămâne timp)
 - [ ] Mutarea bazei de date din JSON în SQL
+- [ ] CSS pentru JavaFX

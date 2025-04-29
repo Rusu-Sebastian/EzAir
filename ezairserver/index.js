@@ -28,6 +28,16 @@ app.get('/', (req, res) => {
 }
 );
 
+app.get('/users/populareLista', async (req, res) => {
+    try {
+        const users = await db.getData("/users");
+        res.status(200).json(users);
+    } catch (error) {
+        console.error("Eroare la obținerea utilizatorilor:", error);
+        res.status(500).send("Eroare la obținerea utilizatorilor");
+    }
+});
+
 //metoda pentru logare
 app.post('/users/login', async (req, res) => {
     try {
@@ -43,9 +53,9 @@ app.post('/users/login', async (req, res) => {
 //metoda pentru creare cont
 app.post('/users/creareCont', async (req, res) => {
     try {
-        const { username, parola, email, nume, prenume, dataNasterii} = req.body;
-        const userNou = new user(username, parola, email, nume, prenume, dataNasterii, false);
-        await autentificareUser(userNou);
+        const { username, parola, email, nume, prenume, dataNasterii, admin} = req.body;
+        const userNou = new user(username, parola, email, nume, prenume, dataNasterii, admin);
+        await creareContUserNou(userNou);
         res.status(200).send('User created successfully');
     } catch (error){
         console.error("Eroare la autentificare.", error);
@@ -115,7 +125,7 @@ async function verificareArray(ar) {
 }
 
 //adaugarea userului in baza de date
-async function autentificareUser(user) {
+async function creareContUserNou(user) {
     try {
         let users = await db.getData("/users");
         await verificareArray(users);

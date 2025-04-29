@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.CreareContControllerAdmin">
+   <children>
+      <Pane prefHeight="358.0" prefWidth="937.0">
+         <children>
+            <TextField fx:id="email" layoutX="625.0" layoutY="80.0" prefHeight="26.0" prefWidth="173.0" promptText="email.email1@email.com" />
+            <TextField fx:id="username" layoutX="625.0" layoutY="120.0" prefHeight="26.0" prefWidth="173.0" promptText="RusuSebastian123" />
+            <PasswordField fx:id="parola" layoutX="625.0" layoutY="157.0" prefHeight="26.0" prefWidth="173.0" promptText="***************" />
+            <PasswordField fx:id="confirmareParola" layoutX="625.0" layoutY="199.0" prefHeight="26.0" prefWidth="173.0" promptText="***************" />
+            <Text layoutX="425.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" />
+            <Text layoutX="422.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Parola" />
+            <Text layoutX="425.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" />
+            <Button fx:id="butonback" layoutX="418.0" layoutY="290.0" mnemonicParsing="false" onAction="#backCreareContFinal" text="Back" textAlignment="JUSTIFY" />
+            <Button fx:id="butonFinalNext" defaultButton="true" layoutX="751.0" layoutY="290.0" mnemonicParsing="false" onAction="#creareContFinal" text="Next" />
+            <ImageView fitHeight="180.0" fitWidth="180.0" layoutX="6.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@logo.png" />
+               </image>
+            </ImageView>
+            <Text layoutX="19.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create an EzAir account">
+               <font>
+                  <Font name="Noto Sans Math Regular" size="25.0" />
+               </font>
+            </Text>
+            <Text layoutX="19.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create an EzAir account">
+               <font>
+                  <Font name="Noto Sans Math Regular" size="15.0" />
+               </font>
+            </Text>
+            <Text fx:id="ButonText" layoutX="545.0" layoutY="340.0" onMouseClicked="#cancelCreareCont" strokeType="OUTSIDE" strokeWidth="0.0" text="Am deja cont!" underline="true" />
+            <Text layoutX="422.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Confirmare Parola" />
+            <CheckBox fx:id="checkAdmin" layoutX="625.0" layoutY="242.0" mnemonicParsing="false" text="Admin" />
+         </children>
+      </Pane>
+   </children>
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+</VBox>

@@ -6,31 +6,31 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javafx.fxml.FXML;
 
 import com.proiect.User;
 
-public class CreareContController {
 
-    private static final Logger logger = Logger.getLogger(CreareContController.class.getName());
+public class CreareContControllerAdmin {
+
+    private static final Logger logger = Logger.getLogger(CreareContControllerAdmin.class.getName());
 
     @FXML
     private void backCreareContInceput() throws IOException {
         logger.info("Navigating back to login page.");
-        App.setRoot("login");
+        App.setRoot("paginaUseriAdmin");
     }
 
     @FXML
     private void backCreareContFinal() throws IOException {
         logger.info("Navigating back to creareContInceput page.");
-        App.setRoot("creareContInceput");
+        App.setRoot("creareContInceputAdmin");
     }
 
     @FXML
     private void cancelCreareCont() throws IOException {
         logger.info("Canceling account creation and navigating back to login page.");
-        App.setRoot("login");
+        App.setRoot("paginaUseriAdmin");
     }
 
     @FXML
@@ -65,8 +65,16 @@ public class CreareContController {
             }
 
             String dataNasterii = ziNastere + "/" + lunaNastere + "/" + anNastere;
-            creareUserPartial(nume, prenume, dataNasterii);
-            App.setRoot("creareContFinal");
+
+            try { 
+                creareUserPartial(nume, prenume, dataNasterii);
+            } catch (Exception e) {
+                logger.log(Level.SEVERE, "Error creating partial user data.", e);
+                return;
+            }
+            logger.info("Partial user data created successfully.");
+
+            App.setRoot("creareContFinalAdmin");
             App.getUserData().put("nume", nume);
             App.getUserData().put("prenume", prenume);
             App.getUserData().put("dataNasterii", dataNasterii);
@@ -77,7 +85,7 @@ public class CreareContController {
     }
 
     private User creareUserPartial(String nume, String prenume, String dataNasterii) {
-        return new User(nume, prenume, dataNasterii, null, null, null);
+        return new User(nume, prenume, dataNasterii, null, null, null, false); // Add the 'admin' argument
     }
 
     @FXML
@@ -87,6 +95,7 @@ public class CreareContController {
             String parola = ((javafx.scene.control.TextField) App.scene.lookup("#parola")).getText();
             String confirmareParola = ((javafx.scene.control.TextField) App.scene.lookup("#confirmareParola")).getText();
             String email = ((javafx.scene.control.TextField) App.scene.lookup("#email")).getText();
+            boolean admin = ((javafx.scene.control.CheckBox) App.scene.lookup("#checkAdmin")).isSelected();
 
             if (username.isEmpty() || parola.isEmpty() || confirmareParola.isEmpty() || email.isEmpty()) {
                 logger.warning("All fields are mandatory.");
@@ -115,7 +124,7 @@ public class CreareContController {
                 email,
                 username,
                 parola,
-                false // Implicit, utilizatorul nu este admin
+                admin
             );
 
             String url = "http://localhost:3000/users/creareCont";
@@ -138,7 +147,7 @@ public class CreareContController {
             int responseCode = httpClient.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 logger.info("Account created successfully.");
-                App.setRoot("login");
+                App.setRoot("paginaUseriAdmin");
             } else {
                 logger.warning(String.format("Error creating account. Response code: %d", responseCode));
             }
