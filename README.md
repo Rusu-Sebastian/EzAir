@@ -5,12 +5,16 @@
 - [x] Pagina de creare cont
 - [x] Server Node.js
 - [x] Pagina de eroare la conexiune
-
+- [x] Pagina principală admin
+- [x] Adaugare useri direct de admin
 ## Tasks in Progress
 - [ ] Pagina principală
 - [ ] Funcționalitate bilete (cumpărare/anulare/editare dată zbor)
+- [ ] Asociere zboruri cu useri in cont
+- [ ] Pagina de cont a clientului
+- [ ] Setari pentru aplicatie
 - [ ] Simulare plată
-- [ ] Adăugare pop-up-uri pentru erorile de conectare la server/verificarea datelor de login și creare cont (momentan sunt doar în consolă)
+- [ ] Adăugare pop-up-uri pentru erorile de conectare la server/verificarea datelor de login și creare contS
 - [ ] Metodă pentru a face debug simultan la server și aplicație
 - [ ] Un meniu frumos după conectare
 
