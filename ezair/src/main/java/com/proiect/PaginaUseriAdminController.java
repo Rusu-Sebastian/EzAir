@@ -1,20 +1,21 @@
 package com.proiect;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.io.InputStream;
-import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 public class PaginaUseriAdminController {
     @FXML
@@ -33,6 +34,8 @@ public class PaginaUseriAdminController {
     private TableColumn<User, String> coloanaDataNasterii;
     @FXML
     private TableColumn<User, Boolean> coloanaAdmin;
+    @FXML
+    private TableColumn<User, String> coloanaId;
 
     @FXML
     private void adaugareUser() throws Exception {
@@ -46,7 +49,41 @@ public class PaginaUseriAdminController {
 
     @FXML
     private void deleteUser() throws Exception {
-        
+        User userSelectat = tabelUseri.getSelectionModel().getSelectedItem();
+        if (userSelectat == null) {
+            // Afișează un pop-up pentru utilizatorul neales
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Atenție");
+            alert.setHeaderText("Niciun utilizator selectat");
+            alert.setContentText("Te rog să selectezi un utilizator din tabel pentru a-l șterge.");
+            alert.showAndWait();
+            return;
+        }
+
+        String idUser = userSelectat.getId();
+        String url = "http://localhost:3000/users/" + idUser;
+        HttpURLConnection httpClient = (HttpURLConnection) new URL(url).openConnection();
+        httpClient.setRequestMethod("DELETE");
+        int responseCode = httpClient.getResponseCode();
+
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            // Afișează un pop-up pentru ștergere reușită
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Succes");
+            alert.setHeaderText("Utilizator șters");
+            alert.setContentText("Utilizatorul a fost șters cu succes.");
+            alert.showAndWait();
+
+            tabelUseri.getItems().remove(userSelectat); // Elimină utilizatorul din tabel
+            incarcaDate(); // Reîncarcă datele
+        } else {
+            // Afișează un pop-up pentru eroare
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Eroare");
+            alert.setHeaderText("Eroare la ștergerea utilizatorului");
+            alert.setContentText("Cod răspuns: " + responseCode);
+            alert.showAndWait();
+        }
     }
 
     @FXML
@@ -62,8 +99,9 @@ public class PaginaUseriAdminController {
         coloanaEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         coloanaNume.setCellValueFactory(new PropertyValueFactory<>("nume"));
         coloanaPrenume.setCellValueFactory(new PropertyValueFactory<>("prenume"));
-        coloanaDataNasterii.setCellValueFactory(new PropertyValueFactory<>("dataNasterii"));
+        coloanaDataNasterii.setCellValueFactory(new PropertyValueFactory<>("dataNasterii")); // Corect
         coloanaAdmin.setCellValueFactory(new PropertyValueFactory<>("admin"));
+        coloanaId.setCellValueFactory(new PropertyValueFactory<>("id")); // Corect
 
         // Încarcă datele în tabel
         incarcaDate();
@@ -71,20 +109,16 @@ public class PaginaUseriAdminController {
 
     private void incarcaDate() {
         try {
-            // URL-ul serverului
             String url = "http://localhost:3000/users/populareLista";
             HttpURLConnection httpClient = (HttpURLConnection) new URL(url).openConnection();
             httpClient.setRequestMethod("GET");
 
-            // Verifică răspunsul serverului
             int responseCode = httpClient.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                // Citește răspunsul JSON
                 try (InputStream is = httpClient.getInputStream();
                      Scanner scanner = new Scanner(is, StandardCharsets.UTF_8.name())) {
                     String jsonResponse = scanner.useDelimiter("\\A").next();
 
-                    // Parsează răspunsul JSON
                     JSONArray usersArray = new JSONArray(jsonResponse);
                     ObservableList<User> users = FXCollections.observableArrayList();
 
@@ -97,18 +131,18 @@ public class PaginaUseriAdminController {
                             userJson.getString("email"),
                             userJson.getString("username"),
                             userJson.getString("parola"),
-                            userJson.getBoolean("admin")
+                            userJson.getBoolean("admin"),
+                            userJson.getString("id")
                         );
                         users.add(user);
                     }
 
-                    // Adaugă utilizatorii în tabel
                     tabelUseri.setItems(users);
                 }
             } else {
                 System.err.println("Eroare la încărcarea datelor. Cod răspuns: " + responseCode);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

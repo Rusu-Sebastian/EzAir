@@ -8,17 +8,19 @@ public class User {
     private String username;
     private String parola;
     private boolean admin;
+    private String id;
 
-    public User(String nume, String prenume, String dataNasterii, String email, String username, String parola) {
+    public User(String nume, String prenume, String dataNasterii, String email, String username, String parola, String id) {
         this.nume = nume;
         this.prenume = prenume;
         this.dataNasterii = dataNasterii;
         this.email = email;
         this.username = username;
         this.parola = parola;
+        this.id = id;
     }
 
-    public User(String nume, String prenume, String dataNasterii, String email, String username, String parola, boolean admin) {
+    public User(String nume, String prenume, String dataNasterii, String email, String username, String parola, boolean admin, String id) {
         this.nume = nume;
         this.prenume = prenume;
         this.dataNasterii = dataNasterii;
@@ -26,6 +28,7 @@ public class User {
         this.username = username;
         this.parola = parola;
         this.admin = admin;
+        this.id = id;
     }
 
     // Getters
@@ -55,5 +58,9 @@ public class User {
 
     public boolean isAdmin() {
         return admin;
+    }
+
+    public String getId() {
+        return id;
     }
 }

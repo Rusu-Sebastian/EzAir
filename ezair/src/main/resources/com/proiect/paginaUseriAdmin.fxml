@@ -14,7 +14,7 @@
 
 <VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.PaginaUseriAdminController">
    <children>
-      <AnchorPane prefHeight="90.0" prefWidth="1233.0">
+      <AnchorPane>
          <children>
             <ImageView fitHeight="83.0" fitWidth="151.0" layoutX="8.0" layoutY="-10.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -37,9 +37,9 @@
             <Button fx:id="butonReloadAdminUser" layoutX="846.0" layoutY="24.0" mnemonicParsing="false" onAction="#reload" text="RELOAD" />
          </children>
       </AnchorPane>
-      <Pane prefHeight="550.0" prefWidth="1233.0">
+      <Pane>
          <children>
-            <TableView fx:id="tabelUseri" layoutY="4.0" prefHeight="540.0" prefWidth="1233.0">
+            <TableView fx:id="tabelUseri" layoutX="14.0" layoutY="-4.0">
               <columns>
                 <TableColumn fx:id="coloanaUsername" prefWidth="145.0" text="Username" />
                 <TableColumn fx:id="coloanaParola" prefWidth="174.0" text="Parola" />
@@ -48,6 +48,7 @@
                   <TableColumn fx:id="coloanaPrenume" prefWidth="219.0" text="Prenume" />
                   <TableColumn fx:id="coloanaDataNasterii" minWidth="0.0" prefWidth="206.0" text="Data Nasterii" />
                   <TableColumn fx:id="coloanaAdmin" minWidth="0.0" prefWidth="87.0" text="Admin" />
+                  <TableColumn fx:id="coloanaId" minWidth="0.0" prefWidth="334.0" text="ID" />
               </columns>
             </TableView>
          </children>

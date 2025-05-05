@@ -8,8 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.fxml.FXML;
-
-import com.proiect.User;
+import javafx.scene.control.Alert;
 
 public class CreareContController {
 
@@ -77,7 +76,7 @@ public class CreareContController {
     }
 
     private User creareUserPartial(String nume, String prenume, String dataNasterii) {
-        return new User(nume, prenume, dataNasterii, null, null, null);
+        return new User(nume, prenume, dataNasterii, null, null, null, null);
     }
 
     @FXML
@@ -88,23 +87,39 @@ public class CreareContController {
             String confirmareParola = ((javafx.scene.control.TextField) App.scene.lookup("#confirmareParola")).getText();
             String email = ((javafx.scene.control.TextField) App.scene.lookup("#email")).getText();
 
-            if (username.isEmpty() || parola.isEmpty() || confirmareParola.isEmpty() || email.isEmpty()) {
-                logger.warning("All fields are mandatory.");
-                return;
-            }
+           if (username.isEmpty() || parola.isEmpty() || confirmareParola.isEmpty() || email.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Atenție");
+            alert.setHeaderText("Câmpuri incomplete");
+            alert.setContentText("Toate câmpurile sunt obligatorii.");
+            alert.showAndWait();
+            return;
+        }
 
             if (parola.length() < 8) {
-                logger.warning("Password must be at least 8 characters long.");
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Atenție");
+                alert.setHeaderText("Parolă prea scurtă");
+                alert.setContentText("Parola trebuie să aibă cel puțin 8 caractere.");
+                alert.showAndWait();
                 return;
             }
 
             if (!parola.equals(confirmareParola)) {
-                logger.warning("Passwords do not match.");
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Atenție");
+                alert.setHeaderText("Parolele nu coincid");
+                alert.setContentText("Te rog să introduci aceeași parolă în ambele câmpuri.");
+                alert.showAndWait();
                 return;
             }
 
             if (!email.contains("@")) {
-                logger.warning("Invalid email format.");
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Atenție");
+                alert.setHeaderText("Email invalid");
+                alert.setContentText("Te rog să introduci un email valid.");
+                alert.showAndWait();
                 return;
             }
 
@@ -115,7 +130,9 @@ public class CreareContController {
                 email,
                 username,
                 parola,
-                false // Implicit, utilizatorul nu este admin
+                false, // Implicit, utilizatorul nu este admin
+                null // ID-ul va fi generat de server
+                
             );
 
             String url = "http://localhost:3000/users/creareCont";

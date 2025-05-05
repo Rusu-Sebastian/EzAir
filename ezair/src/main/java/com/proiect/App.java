@@ -46,7 +46,7 @@ public class App extends Application {
             int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 logger.info("Server is responding.");
-                setScene(stage, "paginaPrincipalaAdmin");
+                setScene(stage, "login"); //SCENA DE INCEPUT DE AICI O POTI SCHIMBA PENTRU TESTARE AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA CA SA VEZI BINE
             } else {
                 setScene(stage, CONNECTION_ERROR_SCENE);
                 setScene(stage, CONNECTION_ERROR_SCENE);

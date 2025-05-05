@@ -15,8 +15,6 @@
 - [ ] Setari pentru aplicatie
 - [ ] Simulare plată
 - [ ] Adăugare pop-up-uri pentru erorile de conectare la server/verificarea datelor de login și creare contS
-- [ ] Metodă pentru a face debug simultan la server și aplicație
-- [ ] Un meniu frumos după conectare
 
 ## Optional (dacă rămâne timp)
 - [ ] Mutarea bazei de date din JSON în SQL

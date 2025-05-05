@@ -6,9 +6,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.fxml.FXML;
 
-import com.proiect.User;
+import javafx.fxml.FXML;
 
 
 public class CreareContControllerAdmin {
@@ -85,7 +84,7 @@ public class CreareContControllerAdmin {
     }
 
     private User creareUserPartial(String nume, String prenume, String dataNasterii) {
-        return new User(nume, prenume, dataNasterii, null, null, null, false); // Add the 'admin' argument
+        return new User(nume, prenume, dataNasterii, null, null, null, false, null); // Add the 'admin' argument
     }
 
     @FXML
@@ -124,7 +123,8 @@ public class CreareContControllerAdmin {
                 email,
                 username,
                 parola,
-                admin
+                admin,
+                null // ID-ul va fi generat de server
             );
 
             String url = "http://localhost:3000/users/creareCont";

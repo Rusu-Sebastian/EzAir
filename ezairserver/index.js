@@ -24,7 +24,7 @@ class user {
 }
 
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+    res.send('E bine ma merge');
 }
 );
 
@@ -63,6 +63,21 @@ app.post('/users/creareCont', async (req, res) => {
     }
 });
 
+app.delete('/users/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        if(await stergereUser(id) === true) {
+            res.status(200).send('User sters cu succes');
+        }
+        else {
+            res.status(404).send('Userul nu a fost gasit');
+        }
+    } catch (error) {
+        console.error("Eroare la stergerea userului:", error);
+        res.status(500).send('Eroare la stergerea userului');
+    }
+});
+
 //pornirea serverului
 app.listen(port, async () => {
     console.log(`Server is running on http://localhost:${port}`);
@@ -86,7 +101,6 @@ async function initializareBaza() {
 async function editareUser(id, dateUpdatate) {
     try {
         let users = await db.getData("/users");
-        await verificareArray(users);
         const index = users.findIndex(users => users.id === id);
         if (index !== -1) {
             users[index] = { ...users[index], ...dateUpdatate };
@@ -116,23 +130,32 @@ async function verificareDateLogin(username, parola) {
     }
 }
 
-//verificarea matritei(nu merge fara uneori ns)
-async function verificareArray(ar) {
-    if (!Array.isArray(ar)) {
-        ar = [];
-    }
-    return ar;
-}
 
 //adaugarea userului in baza de date
 async function creareContUserNou(user) {
     try {
         let users = await db.getData("/users");
-        await verificareArray(users);
         users.push(user);
         db.push("/users", users, true);
     } catch (error) {
         console.error("Eroaore la salvarea datelor userului. ", error);
+        throw error;
+    }
+}
+
+async function stergereUser(id) {
+    try {
+        let users = await db.getData("/users");
+        const index = users.findIndex(users => users.id === id);
+        if (index !== -1) {
+            users.splice(index, 1);
+            db.push("/users", users, true);
+            return true;
+        } else {
+            throw new Error("Userul nu a fost găsit");
+        }
+    } catch (error) {
+        console.error("Eroare la stergerea userului:", error);
         throw error;
     }
 }

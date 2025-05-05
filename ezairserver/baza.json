@@ -1,6 +1,16 @@
 {
     "users": [
         {
+            "id": "admin",
+            "username": "admin",
+            "parola": "admin",
+            "email": "admin",
+            "nume": "admin",
+            "prenume": "admin",
+            "dataNasterii": "admin",
+            "admin": true
+        },
+        {
             "id": "76479d48-b35e-4653-b430-b9d1ea66e84e",
             "username": "rusu.admin",
             "parola": "134679852",
@@ -9,16 +19,6 @@
             "prenume": "Sebastian",
             "dataNasterii": "09/05/2004",
             "admin": true
-        },
-        {
-            "id": "1aeea654-275a-47fb-8df9-7d56f53733f7",
-            "username": "Rususebastian",
-            "parola": "labalacai",
-            "email": "sebastianrusu01@gmail.com",
-            "nume": "Rusu",
-            "prenume": "Sebastian",
-            "dataNasterii": "09/05/2004",
-            "admin": false
         },
         {
             "id": "d9c617a2-e3e5-4798-9487-6c235025d670",
@@ -48,46 +48,6 @@
             "nume": "laborator",
             "prenume": "laborator",
             "dataNasterii": "1/8/2002",
-            "admin": true
-        },
-        {
-            "id": "58520369-b2b7-4616-b584-fad662984ec0",
-            "username": "mare",
-            "parola": "labamaremare",
-            "email": "laba@sex.com",
-            "nume": "pula",
-            "prenume": "mare",
-            "dataNasterii": "2/8/2005",
-            "admin": false
-        },
-        {
-            "id": "2721566b-aaea-4a9f-b69f-e3a7a8098e4e",
-            "username": "lalaalalalalalalalallalalalal",
-            "parola": "lalaalalalalalalalallalalalal",
-            "email": "aklfjsaklfjkla@gmail.com",
-            "nume": "mvn clean install",
-            "prenume": "mvn clean install",
-            "dataNasterii": "13/1/2000",
-            "admin": false
-        },
-        {
-            "id": "0ce8b1d9-a2b9-4300-9185-4731b9055af3",
-            "username": "labagiultestul;ioui",
-            "parola": "labagiultestul;ioui",
-            "email": "labgiudetest@admin.test",
-            "nume": "labagiumare",
-            "prenume": "labamareiaratestasmin",
-            "dataNasterii": "1/2/2000",
-            "admin": false
-        },
-        {
-            "id": "0cfb3e79-e214-404c-98c2-b15d62728101",
-            "username": "labagiu@laba.com",
-            "parola": "labagiu@laba.com",
-            "email": "labagiu@laba.com",
-            "nume": "labatestadmindoi",
-            "prenume": "labatestadminidoi",
-            "dataNasterii": "1/2/2000",
             "admin": true
         },
         {
