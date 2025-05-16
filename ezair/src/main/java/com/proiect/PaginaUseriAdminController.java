@@ -88,7 +88,7 @@ public class PaginaUseriAdminController {
 
     @FXML
     private void reload() throws Exception {
-        App.setRoot("paginaPrincipalaAdmin");
+        App.setRoot("paginaUseriAdmin");
     }
 
     @FXML
