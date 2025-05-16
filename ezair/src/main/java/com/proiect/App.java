@@ -62,7 +62,7 @@ public class App extends Application {
 
     private static void setScene(Stage stage, String fxml) {
         try {
-            scene = new Scene(loadFXML(fxml), 1144, 640);
+            scene = new Scene(loadFXML(fxml), 1680, 720);
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {

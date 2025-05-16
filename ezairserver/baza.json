@@ -49,30 +49,7 @@
             "prenume": "Capucina",
             "dataNasterii": "2/3/2005",
             "admin": false
-        },
-        {
-            "id": "605d716e-2157-4da3-be16-3da248450ac8",
-            "username": "labagiu123",
-            "parola": "labagiu123",
-            "email": "labagiu@labamica.com",
-            "nume": "pulentiu",
-            "prenume": "marinescu",
-            "dataNasterii": "9/5/2004",
-            "admin": true
         }
     ],
-    "zboruri": [
-        {
-            "id": "0f769203-cbd8-43a3-9c1c-5f42de862306",
-            "origine": "Bucuresti",
-            "destinatie": "Cluj-Napoca",
-            "dataPlecare": "2025-05-15",
-            "oraPlecare": "08:30",
-            "dataSosire": "2025-05-15",
-            "oraSosire": "09:45",
-            "modelAvion": "Airbus A320",
-            "locuriLibere": 150,
-            "pret": 299.99
-        }
-    ]
+    "zboruri": []
 }

@@ -35,6 +35,7 @@
             <Button fx:id="butonEditAdminUser" layoutX="669.0" layoutY="24.0" mnemonicParsing="false" onAction="#editareUser" text="EDIT" />
             <Button fx:id="butonDeleteAdminUser" layoutX="749.0" layoutY="24.0" mnemonicParsing="false" onAction="#deleteUser" text="DELETE" />
             <Button fx:id="butonReloadAdminUser" layoutX="846.0" layoutY="24.0" mnemonicParsing="false" onAction="#reload" text="RELOAD" />
+            <Button fx:id="butonDshboard" layoutX="929.0" layoutY="23.0" mnemonicParsing="false" onAction="#backToDashboard" text="DASHBOARSD" />
          </children>
       </AnchorPane>
       <Pane>

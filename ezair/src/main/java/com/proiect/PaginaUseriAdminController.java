@@ -92,6 +92,11 @@ public class PaginaUseriAdminController {
     }
 
     @FXML
+    private void backToDashboard() throws Exception {
+        App.setRoot("paginaPrincipalaAdmin");
+    }
+
+    @FXML
     private void initialize() {
         // Configurează coloanele
         coloanaUsername.setCellValueFactory(new PropertyValueFactory<>("username"));

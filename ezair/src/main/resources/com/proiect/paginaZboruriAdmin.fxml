@@ -35,6 +35,7 @@
             <Button fx:id="butonEditAdminZbor" layoutX="669.0" layoutY="24.0" mnemonicParsing="false" onAction="#editareZbor" text="EDIT" />
             <Button fx:id="butonDeleteAdminZbor" layoutX="749.0" layoutY="24.0" mnemonicParsing="false" onAction="#deleteZbor" text="DELETE" />
             <Button fx:id="butonReloadAdminZbor" layoutX="846.0" layoutY="24.0" mnemonicParsing="false" onAction="#reload" text="RELOAD" />
+            <Button fx:id="butonReloadAdminZbor1" layoutX="932.0" layoutY="24.0" mnemonicParsing="false" onAction="#backToDashboard" text="DASHBOARD" />
          </children>
       </AnchorPane>
       <Pane prefHeight="690.0" prefWidth="1269.0">
@@ -50,6 +51,7 @@
                   <TableColumn fx:id="coloanaModelAvion" prefWidth="222.0" text="Model Avion" />
                   <TableColumn fx:id="coloanaLocuriLibere" prefWidth="116.0" text="Locuri libere" />
                   <TableColumn fx:id="coloanaPret" prefWidth="116.0" text="Pret" />
+                  <TableColumn fx:id="coloanaId" prefWidth="184.0" text="Id" />
               </columns>
             </TableView>
          </children>
