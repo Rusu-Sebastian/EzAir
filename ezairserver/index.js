@@ -23,11 +23,27 @@ class user {
     }
 }
 
+class zbor {
+    constructor(origine, destinatie, dataPlecare, oraPlecare, dataSosire, oraSosire, modelAvion, locuriLibere, pret) {
+        this.id = uuidv4();
+        this.origine = origine;
+        this.destinatie = destinatie;
+        this.dataPlecare = dataPlecare;
+        this.oraPlecare = oraPlecare;
+        this.dataSosire = dataSosire;
+        this.oraSosire = oraSosire;
+        this.modelAvion = modelAvion;
+        this.locuriLibere = locuriLibere;
+        this.pret = pret;
+    }
+}
+
 app.get('/', (req, res) => {
     res.send('E bine ma merge');
 }
 );
 
+// popularea listelor de clienti si zborurii
 app.get('/users/populareLista', async (req, res) => {
     try {
         const users = await db.getData("/users");
@@ -35,6 +51,32 @@ app.get('/users/populareLista', async (req, res) => {
     } catch (error) {
         console.error("Eroare la obținerea utilizatorilor:", error);
         res.status(500).send("Eroare la obținerea utilizatorilor");
+    }
+});
+
+app.get('/zboruri/populareLista', async (req, res) => {
+    try {
+        const zboruri = await db.getData("/zboruri");
+        res.status(200).json(zboruri);
+    } catch (error) {
+        console.error("Eroare la obținerea zborurilor:", error);
+        res.status(500).send("Eroare la obținerea zborurilor");
+    }
+}
+);
+
+//metoda pentru adaugarea unui zbor
+app.post('/zboruri/adaugareZbor', async (req, res) => {
+    try {
+        const { origine, destinatie, dataPlecare, oraPlecare, dataSosire, oraSosire, modelAvion, locuriLibere, pret } = req.body;
+        const zborNou = new zbor(origine, destinatie, dataPlecare, oraPlecare, dataSosire, oraSosire, modelAvion, locuriLibere, pret);
+        let zboruri = await db.getData("/zboruri");
+        zboruri.push(zborNou);
+        db.push("/zboruri", zboruri, true);
+        res.status(200).send('Zbor adaugat cu succes');
+    } catch (error) {
+        console.error("Eroare la adaugarea zborului:", error);
+        res.status(500).send('Eroare la adaugarea zborului');
     }
 });
 
@@ -78,6 +120,93 @@ app.delete('/users/:id', async (req, res) => {
     }
 });
 
+app.delete('/zboruri/stergereZbor/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        let zboruri = await db.getData("/zboruri");
+        const index = zboruri.findIndex(zbor => zbor.id === id);
+        if (index !== -1) {
+            zboruri.splice(index, 1);
+            db.push("/zboruri", zboruri, true);
+            res.status(200).send('Zbor sters cu succes');
+        } else {
+            res.status(404).send('Zborul nu a fost gasit');
+        }
+    } catch (error) {
+        console.error("Eroare la stergerea zborului:", error);
+        res.status(500).send('Eroare la stergerea zborului');
+    }
+}
+);
+//metoda pentru editarea userului
+app.put('/users/editareUser/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const dateUpdatate = req.body;
+        await editareUser(id, dateUpdatate);
+        res.status(200).send('User updated successfully');
+    } catch (error) {
+        console.error("Eroare la editarea userului:", error);
+        res.status(500).send('Eroare la editarea userului');
+    }
+}
+);
+//metoda pentru editarea zborului
+app.put('/zboruri/editareZbor/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const dateUpdatate = req.body;
+        let zboruri = await db.getData("/zboruri");
+        const index = zboruri.findIndex(zbor => zbor.id === id);
+        if (index !== -1) {
+            zboruri[index] = { ...zboruri[index], ...dateUpdatate };
+            db.push("/zboruri", zboruri, true);
+            res.status(200).send('Zbor updated successfully');
+        } else {
+            res.status(404).send('Zborul nu a fost gasit');
+        }
+    } catch (error) {
+        console.error("Eroare la editarea zborului:", error);
+        res.status(500).send('Eroare la editarea zborului');
+    }
+}
+);
+//metoda pentru cautarea zborului
+app.get('/zboruri/cautareZbor', async (req, res) => {
+    try {
+        const { origine, destinatie } = req.query;
+        let zboruri = await db.getData("/zboruri");
+        const zboruriGasite = zboruri.filter(zbor => zbor.origine === origine && zbor.destinatie === destinatie);
+        if (zboruriGasite.length > 0) {
+            res.status(200).json(zboruriGasite);
+        } else {
+            res.status(404).send('Nu au fost gasite zboruri');
+        }
+    } catch (error) {
+        console.error("Eroare la cautarea zborului:", error);
+        res.status(500).send('Eroare la cautarea zborului');
+    }
+}
+);
+//metoda pentru cautarea userului
+app.get('/users/cautareUser', async (req, res) => {
+    try {
+        const { username } = req.query;
+        let users = await db.getData("/users");
+        const userGasit = users.find(user => user.username === username);
+        if (userGasit) {
+            res.status(200).json(userGasit);
+        } else {
+            res.status(404).send('Userul nu a fost gasit');
+        }
+    } catch (error) {
+        console.error("Eroare la cautarea userului:", error);
+        res.status(500).send('Eroare la cautarea userului');
+    }
+}
+);
+
+
 //pornirea serverului
 app.listen(port, async () => {
     console.log(`Server is running on http://localhost:${port}`);
@@ -91,6 +220,9 @@ async function initializareBaza() {
     try {
         if (!await db.exists("/users")) {
             await db.push("/users", []);
+        }
+        if (!await db.exists("/zboruri")) {
+            await db.push("/zboruri", []);
         }
     } catch (error) {
         console.error("Eroare la initializarea bazei de date:", error);

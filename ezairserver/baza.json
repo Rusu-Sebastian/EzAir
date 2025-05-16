@@ -41,16 +41,6 @@
             "admin": false
         },
         {
-            "id": "23505099-8dc7-48af-8e81-aa65c41cd637",
-            "username": "laborator",
-            "parola": "laborator",
-            "email": "laborator@laborator.com",
-            "nume": "laborator",
-            "prenume": "laborator",
-            "dataNasterii": "1/8/2002",
-            "admin": true
-        },
-        {
             "id": "18ed8d9e-fd71-4dc2-89a0-cbe6e1e803b0",
             "username": "BalerinaCapucina69",
             "parola": "BalerinaSmecherina12",
@@ -59,6 +49,20 @@
             "prenume": "Capucina",
             "dataNasterii": "2/3/2005",
             "admin": false
+        }
+    ],
+    "zboruri": [
+        {
+            "id": "0f769203-cbd8-43a3-9c1c-5f42de862306",
+            "origine": "Bucuresti",
+            "destinatie": "Cluj-Napoca",
+            "dataPlecare": "2025-05-15",
+            "oraPlecare": "08:30",
+            "dataSosire": "2025-05-15",
+            "oraSosire": "09:45",
+            "modelAvion": "Airbus A320",
+            "locuriLibere": 150,
+            "pret": 299.99
         }
     ]
 }

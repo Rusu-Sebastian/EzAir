@@ -8,13 +8,13 @@
 - [x] Pagina principală admin
 - [x] Adaugare useri direct de admin
 ## Tasks in Progress
+- [Y] Adăugare pop-up-uri pentru erorile de conectare la server/verificarea datelor de login și creare contS
 - [ ] Pagina principală
 - [ ] Funcționalitate bilete (cumpărare/anulare/editare dată zbor)
 - [ ] Asociere zboruri cu useri in cont
 - [ ] Pagina de cont a clientului
 - [ ] Setari pentru aplicatie
 - [ ] Simulare plată
-- [ ] Adăugare pop-up-uri pentru erorile de conectare la server/verificarea datelor de login și creare contS
 
 ## Optional (dacă rămâne timp)
 - [ ] Mutarea bazei de date din JSON în SQL
