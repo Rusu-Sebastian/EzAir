@@ -76,7 +76,7 @@ public class CreareContController {
     }
 
     private User creareUserPartial(String nume, String prenume, String dataNasterii) {
-        return new User(nume, prenume, dataNasterii, null, null, null, null);
+        return new User(nume, prenume, dataNasterii, null, null, null, null, null);
     }
 
     @FXML
@@ -131,7 +131,8 @@ public class CreareContController {
                 username,
                 parola,
                 false, // Implicit, utilizatorul nu este admin
-                null // ID-ul va fi generat de server
+                null, // ID-ul va fi generat de server
+                null
                 
             );
 

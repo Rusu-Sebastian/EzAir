@@ -7,15 +7,21 @@
 - [x] Pagina de eroare la conexiune
 - [x] Pagina principală admin
 - [x] Adaugare useri direct de admin
+- [x] Adăugare pop-up-uri pentru erorile de conectare la server/verificarea datelor de login și creare cont
+- [x] CSS pentru JavaFX
+- [x] Pagina de cont a clientului
+- [x] Funcționalitate bilete (cumpărare/anulare/editare dată zbor)
+- [x] Asociere zboruri cu useri in cont
+- [x] Setari pentru aplicatie
+- [x] Simulare plată de bază
+
 ## Tasks in Progress
-- [Y] Adăugare pop-up-uri pentru erorile de conectare la server/verificarea datelor de login și creare contS
-- [ ] Pagina principală
-- [ ] Funcționalitate bilete (cumpărare/anulare/editare dată zbor)
-- [ ] Asociere zboruri cu useri in cont
-- [ ] Pagina de cont a clientului
-- [ ] Setari pentru aplicatie
-- [ ] Simulare plată
+- [ ] Îmbunătățiri interfață utilizator
+- [ ] Testare și depanare
+- [ ] Documentație
 
 ## Optional (dacă rămâne timp)
-- [ ] Mutarea bazei de date din JSON în SQL
-- [ ] CSS pentru JavaFX
+- [ ] Sistem de notificări pentru zboruri
+- [ ] Istoric tranzacții
+- [ ] Rapoarte administrative
+- [ ] Optimizări de performanță

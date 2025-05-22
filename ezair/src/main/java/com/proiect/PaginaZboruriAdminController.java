@@ -1,9 +1,11 @@
 package com.proiect;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import java.util.Scanner;
 
 import org.json.JSONArray;
@@ -48,18 +50,33 @@ public class PaginaZboruriAdminController {
     }
 
     @FXML
-    private void editareZbor() throws Exception {
-        // Zbor zborSelectat = tabelZboruri.getSelectionModel().getSelectedItem();
-        // if (zborSelectat == null) {
-        //     // Afișează un pop-up pentru utilizatorul neales
-        //     Alert alert = new Alert(Alert.AlertType.WARNING);
-        //     alert.setTitle("Atenție");
-        //     alert.setHeaderText("Niciun zbor selectat");
-        //     alert.setContentText("Te rog să selectezi un zbor din tabel pentru a-l edita.");
-        //     alert.showAndWait();
-        //     return;
-        // }
-        // App.setRoot("editareZbor");
+    private void editareZbor() throws IOException {
+        Zbor zborSelectat = tabelZboruri.getSelectionModel().getSelectedItem();
+        if (zborSelectat == null) {
+            // Afișează un pop-up pentru utilizatorul neales
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Atenție");
+            alert.setHeaderText("Niciun zbor selectat");
+            alert.setContentText("Te rog să selectezi un zbor din tabel pentru a-l edita.");
+            alert.showAndWait();
+            return;
+        }
+        
+        // Store selected flight data in App.userData
+        Map<String, String> userData = App.getUserData();
+        userData.clear();
+        userData.put("id", zborSelectat.getId());
+        userData.put("origine", zborSelectat.getOrigine());
+        userData.put("destinatie", zborSelectat.getDestinatie());
+        userData.put("dataPlecare", zborSelectat.getDataPlecare());
+        userData.put("oraPlecare", zborSelectat.getOraPlecare());
+        userData.put("dataSosire", zborSelectat.getDataSosire());
+        userData.put("oraSosire", zborSelectat.getOraSosire());
+        userData.put("modelAvion", zborSelectat.getModelAvion());
+        userData.put("locuriLibere", String.valueOf(zborSelectat.getLocuriLibere()));
+        userData.put("pret", String.valueOf(zborSelectat.getPret()));
+        
+        App.setRoot("editareZbor");
     }
     @FXML
     private void deleteZbor() throws Exception {

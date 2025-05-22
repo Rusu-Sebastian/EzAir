@@ -9,8 +9,9 @@ public class User {
     private String parola;
     private boolean admin;
     private String id;
+    private String telefon;
 
-    public User(String nume, String prenume, String dataNasterii, String email, String username, String parola, String id) {
+    public User(String nume, String prenume, String dataNasterii, String email, String username, String parola, String id, String telefon) {
         this.nume = nume;
         this.prenume = prenume;
         this.dataNasterii = dataNasterii;
@@ -18,9 +19,10 @@ public class User {
         this.username = username;
         this.parola = parola;
         this.id = id;
+        this.telefon = telefon;
     }
 
-    public User(String nume, String prenume, String dataNasterii, String email, String username, String parola, boolean admin, String id) {
+    public User(String nume, String prenume, String dataNasterii, String email, String username, String parola, boolean admin, String id, String telefon) {
         this.nume = nume;
         this.prenume = prenume;
         this.dataNasterii = dataNasterii;
@@ -29,6 +31,7 @@ public class User {
         this.parola = parola;
         this.admin = admin;
         this.id = id;
+        this.telefon = telefon;
     }
 
     // Getters
@@ -62,5 +65,8 @@ public class User {
 
     public String getId() {
         return id;
+    }
+    public String getTelefon(){
+        return telefon;
     }
 }

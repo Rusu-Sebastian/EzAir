@@ -49,7 +49,63 @@
             "prenume": "Capucina",
             "dataNasterii": "2/3/2005",
             "admin": false
+        },
+        {
+            "id": "62ca3d26-aaab-4a29-970e-31faae8f54ab",
+            "username": "sebastianrusu01",
+            "parola": "134679852",
+            "email": "sebastianrusu01@gmail.com",
+            "nume": "Rusu",
+            "prenume": "Sebastian",
+            "dataNasterii": "9/5/2004",
+            "admin": false,
+            "setari": {
+                "notificariEmail": true,
+                "notificariSMS": false,
+                "notificariPushWeb": true,
+                "notificariPromotii": true,
+                "notificariAnulari": true,
+                "notificariModificari": true
+            }
         }
     ],
-    "zboruri": []
+    "zboruri": [
+        {
+            "id": "94b082e4-c544-40f6-9fc1-3ed73554b9c0",
+            "origine": "mata",
+            "destinatie": "mar",
+            "dataPlecare": "1/12/2025",
+            "oraPlecare": "1:20",
+            "dataSosire": "1/12/2025",
+            "oraSosire": "6:12",
+            "modelAvion": "laba",
+            "locuriLibere": 420,
+            "pret": 69
+        },
+        {
+            "id": "1d5af4d0-6d0e-403e-aa04-df0f34c050c7",
+            "origine": "lalalabagiumare",
+            "destinatie": "lalalaalal",
+            "dataPlecare": "02.03.2026",
+            "oraPlecare": "2:3",
+            "dataSosire": "03.03.2026",
+            "oraSosire": "2:3",
+            "modelAvion": "mareavion",
+            "locuriLibere": 211,
+            "pret": 200
+        },
+        {
+            "id": "e367b6a7-92e0-4bc2-8baa-fb3e3aeead4a",
+            "origine": "Bucuresti",
+            "destinatie": "Londra",
+            "dataPlecare": "3/6/2025",
+            "oraPlecare": "10:30",
+            "dataSosire": "3/6/2025",
+            "oraSosire": "14:40",
+            "modelAvion": "Smecker",
+            "locuriLibere": 200,
+            "pret": 100
+        }
+    ],
+    "bilete": []
 }

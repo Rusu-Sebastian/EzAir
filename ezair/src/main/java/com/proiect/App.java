@@ -3,6 +3,7 @@ package com.proiect;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -19,7 +20,7 @@ public class App extends Application {
     private static final Logger logger = Logger.getLogger(App.class.getName());
     private static final Map<String, String> userData = new HashMap<>();
     private static final String CONNECTION_ERROR_SCENE = "eroareConexiune";
-
+    
     public static Map<String, String> getUserData() {
         return userData;
     }
@@ -33,30 +34,37 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) {
+        String serverUrl = System.getProperty("server.url", "http://localhost:3000");
+        HttpURLConnection connection = null;
+        
         try {
-            // Create a connection to the server
-            String serverUrl = System.getProperty("server.url", "http://localhost:3000");
             URI uri = new URI(serverUrl);
-            HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
+            connection = (HttpURLConnection) uri.toURL().openConnection();
             connection.setRequestMethod("GET");
-            connection.setConnectTimeout(5000); // Set timeout to 5 seconds
-            connection.setReadTimeout(5000);
-
-            // Connect and check the response code
+            connection.setConnectTimeout(10000); // 10 secunde
+            connection.setReadTimeout(10000);
+            connection.setInstanceFollowRedirects(true);
+            connection.setUseCaches(true);
+            
             int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                logger.info("Server is responding.");
-                setScene(stage, "paginaPrincipalaAdmin"); //SCENA DE INCEPUT DE AICI O POTI SCHIMBA PENTRU TESTARE AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA CA SA VEZI BINE
+                logger.info("Server is responding");
+                setScene(stage, "paginaPrincipalaUser");
             } else {
-                setScene(stage, CONNECTION_ERROR_SCENE);
+                logger.log(Level.WARNING, "Server returned unexpected response code: {0}", responseCode);
                 setScene(stage, CONNECTION_ERROR_SCENE);
             }
-        } catch (java.net.URISyntaxException | java.net.MalformedURLException e) {
-            logger.log(Level.SEVERE, "Invalid server URL", e);
+            
+        } catch (URISyntaxException e) {
+            logger.log(Level.SEVERE, "Invalid server URL: {0}", serverUrl);
             setScene(stage, CONNECTION_ERROR_SCENE);
-        } catch (java.io.IOException e) {
-            logger.log(Level.SEVERE, "I/O error while connecting to the server", e);
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "Failed to connect to server: {0}", e.getMessage());
             setScene(stage, CONNECTION_ERROR_SCENE);
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
     }
 
@@ -66,7 +74,7 @@ public class App extends Application {
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
-            logger.log(Level.SEVERE, "Failed to load FXML: " + fxml, e);
+            logger.log(Level.SEVERE, "Failed to load FXML file {0}: {1}", new Object[]{fxml, e.getMessage()});
         }
     }
 

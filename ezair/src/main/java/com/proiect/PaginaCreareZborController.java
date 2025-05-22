@@ -6,124 +6,158 @@ import java.nio.charset.StandardCharsets;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TextField;
 
 public class PaginaCreareZborController {
+    private static final String TITLU_ATENTIONARE = "Atenție";
+    private static final String TITLU_EROARE = "Eroare";
+    private static final String TITLU_SUCCES = "Succes";
+    private static final String MESAJ_EROARE_ADAUGARE = "A apărut o eroare la adăugarea zborului. Te rog să încerci din nou.";
+
+    @FXML private TextField origine;
+    @FXML private TextField destinatie;
+    @FXML private TextField modelAvion;
+    @FXML private TextField locuriLibere;
+    @FXML private TextField pret;
+    @FXML private TextField dataPlecarii1;
+    @FXML private TextField dataPlecarii2;
+    @FXML private TextField dataPlecarii3;
+    @FXML private TextField oraPlecarii1;
+    @FXML private TextField oraPlecarii2;
+    @FXML private TextField dataSosirii1;
+    @FXML private TextField dataSosirii2;
+    @FXML private TextField dataSosirii3;
+    @FXML private TextField oraSosirii1;
+    @FXML private TextField oraSosirii2;
+    
     @FXML
     private void backZbor() throws Exception {
         App.setRoot("paginaZboruriAdmin");
     }
 
-
-
     @FXML
     private void finalizareAdaugareZbor() throws Exception {
-        String origine = ((javafx.scene.control.TextField) App.scene.lookup("#origine")).getText();
-        String destinatie = ((javafx.scene.control.TextField) App.scene.lookup("#destinatie")).getText();
-        String modelAvion = ((javafx.scene.control.TextField) App.scene.lookup("#modelAvion")).getText();
-        String pret = ((javafx.scene.control.TextField) App.scene.lookup("#pret")).getText();
+        // Obține valorile din câmpurile de text
+        String valoareOrigine = origine.getText();
+        String valoareDestinatie = destinatie.getText();
+        String valoareModelAvion = modelAvion.getText();
 
-        if(origine.isEmpty() || destinatie.isEmpty() || modelAvion.isEmpty() || pret.isEmpty() ||
-                ((javafx.scene.control.TextField) App.scene.lookup("#dataPlecare1")).getText().isEmpty() ||
-                ((javafx.scene.control.TextField) App.scene.lookup("#dataPlecare2")).getText().isEmpty() ||
-                ((javafx.scene.control.TextField) App.scene.lookup("#dataPlecare3")).getText().isEmpty() ||
-                ((javafx.scene.control.TextField) App.scene.lookup("#oraPlecare1")).getText().isEmpty() ||
-                ((javafx.scene.control.TextField) App.scene.lookup("#oraPlecare2")).getText().isEmpty() ||
-                ((javafx.scene.control.TextField) App.scene.lookup("#dataSosire1")).getText().isEmpty() ||
-                ((javafx.scene.control.TextField) App.scene.lookup("#dataSosire2")).getText().isEmpty() ||
-                ((javafx.scene.control.TextField) App.scene.lookup("#dataSosire3")).getText().isEmpty() ||
-                ((javafx.scene.control.TextField) App.scene.lookup("#oraSosire1")).getText().isEmpty() ||
-                ((javafx.scene.control.TextField) App.scene.lookup("#oraSosire2")).getText().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Atenție");
-            alert.setHeaderText("Toate câmpurile sunt obligatorii");
-            alert.setContentText("Te rog să completezi toate câmpurile.");
-            alert.showAndWait();
+        // Check if any field is empty
+        if(valoareOrigine.isEmpty() || valoareDestinatie.isEmpty() || valoareModelAvion.isEmpty() || 
+                pret.getText().isEmpty() ||
+                dataPlecarii1.getText().isEmpty() ||
+                dataPlecarii2.getText().isEmpty() ||
+                dataPlecarii3.getText().isEmpty() ||
+                oraPlecarii1.getText().isEmpty() ||
+                oraPlecarii2.getText().isEmpty() ||
+                dataSosirii1.getText().isEmpty() ||
+                dataSosirii2.getText().isEmpty() ||
+                dataSosirii3.getText().isEmpty() ||
+                oraSosirii1.getText().isEmpty() ||
+                oraSosirii2.getText().isEmpty() ||
+                locuriLibere.getText().isEmpty()) {
+            Alert alerta = new Alert(Alert.AlertType.WARNING);
+            alerta.setTitle(TITLU_ATENTIONARE);
+            alerta.setHeaderText("Toate câmpurile sunt obligatorii");
+            alerta.setContentText("Te rog să completezi toate câmpurile.");
+            alerta.showAndWait();
             return;
         }
-        int locuriLibere = Integer.parseInt(((javafx.scene.control.TextField) App.scene.lookup("#locuriLibere")).getText());
-        int dataPlecare1 = Integer.parseInt(((javafx.scene.control.TextField) App.scene.lookup("#dataPlecare1")).getText());
-        int dataPlecare2 = Integer.parseInt(((javafx.scene.control.TextField) App.scene.lookup("#dataPlecare2")).getText());
-        int dataPlecare3 = Integer.parseInt(((javafx.scene.control.TextField) App.scene.lookup("#dataPlecare3")).getText());
-        int oraPlecare1 = Integer.parseInt(((javafx.scene.control.TextField) App.scene.lookup("#oraPlecare1")).getText());
-        int oraPlecare2 = Integer.parseInt(((javafx.scene.control.TextField) App.scene.lookup("#oraPlecare2")).getText());
-        int dataSosire1 = Integer.parseInt(((javafx.scene.control.TextField) App.scene.lookup("#dataSosire1")).getText());
-        int dataSosire2 = Integer.parseInt(((javafx.scene.control.TextField) App.scene.lookup("#dataSosire2")).getText());
-        int dataSosire3 = Integer.parseInt(((javafx.scene.control.TextField) App.scene.lookup("#dataSosire3")).getText());
-        int oraSosire1 = Integer.parseInt(((javafx.scene.control.TextField) App.scene.lookup("#oraSosire1")).getText());
-        int oraSosire2 = Integer.parseInt(((javafx.scene.control.TextField) App.scene.lookup("#oraSosire2")).getText());
+        
+        // Procesează valorile numerice
+        int valoareLocuriLibere = Integer.parseInt(locuriLibere.getText());
+        int valoareDataPlecare1 = Integer.parseInt(dataPlecarii1.getText());
+        int valoareDataPlecare2 = Integer.parseInt(dataPlecarii2.getText());
+        int valoareDataPlecare3 = Integer.parseInt(dataPlecarii3.getText());
+        int valoareOraPlecare1 = Integer.parseInt(oraPlecarii1.getText());
+        int valoareOraPlecare2 = Integer.parseInt(oraPlecarii2.getText());
+        int valoareDataSosire1 = Integer.parseInt(dataSosirii1.getText());
+        int valoareDataSosire2 = Integer.parseInt(dataSosirii2.getText());
+        int valoareDataSosire3 = Integer.parseInt(dataSosirii3.getText());
+        int valoareOraSosire1 = Integer.parseInt(oraSosirii1.getText());
+        int valoareOraSosire2 = Integer.parseInt(oraSosirii2.getText());
+        int valoarePret = Integer.parseInt(pret.getText());
 
-        int currentYear = java.time.Year.now().getValue();
-        int currentMonth = java.time.Month.from(java.time.LocalDate.now()).getValue();
-        int currentDay = java.time.LocalDate.now().getDayOfMonth();
-        if (dataPlecare1 < currentDay && dataPlecare2 == currentMonth && dataPlecare3 == currentYear) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Atenție");
-            alert.setHeaderText("Data plecării nu poate fi în trecut");
-            alert.setContentText("Te rog să alegi o dată de plecare validă.");
-            alert.showAndWait();
+        int anCurent = java.time.Year.now().getValue();
+        int lunaCurenta = java.time.Month.from(java.time.LocalDate.now()).getValue();
+        int ziuaCurenta = java.time.LocalDate.now().getDayOfMonth();
+        if (valoareDataPlecare1 < ziuaCurenta && valoareDataPlecare2 == lunaCurenta && valoareDataPlecare3 == anCurent) {
+            Alert alerta = new Alert(Alert.AlertType.WARNING);
+            alerta.setTitle(TITLU_ATENTIONARE);
+            alerta.setHeaderText("Data plecării nu poate fi în trecut");
+            alerta.setContentText("Te rog să alegi o dată de plecare validă.");
+            alerta.showAndWait();
             return;
         }
-        if (dataSosire1 < currentDay && dataSosire2 == currentMonth && dataSosire3 == currentYear) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Atenție");
-            alert.setHeaderText("Data sosirii nu poate fi în trecut");
-            alert.setContentText("Te rog să alegi o dată de sosire validă.");
-            alert.showAndWait();
+        if (valoareDataSosire1 < ziuaCurenta && valoareDataSosire2 == lunaCurenta && valoareDataSosire3 == anCurent) {
+            Alert alerta = new Alert(Alert.AlertType.WARNING);
+            alerta.setTitle(TITLU_ATENTIONARE);
+            alerta.setHeaderText("Data sosirii nu poate fi în trecut");
+            alerta.setContentText("Te rog să alegi o dată de sosire validă.");
+            alerta.showAndWait();
             return;
         }
-        if (locuriLibere < 0) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Atenție");
-            alert.setHeaderText("Numărul de locuri libere nu poate fi negativ");
-            alert.setContentText("Te rog să introduci un număr valid de locuri libere.");
-            alert.showAndWait();
+        if (valoareLocuriLibere < 0) {
+            Alert alerta = new Alert(Alert.AlertType.WARNING);
+            alerta.setTitle("Atenție");
+            alerta.setHeaderText("Numărul de locuri libere nu poate fi negativ");
+            alerta.setContentText("Te rog să introduci un număr valid de locuri libere.");
+            alerta.showAndWait();
             return;
         }
-        if (Double.parseDouble(pret) < 0) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Atenție");
-            alert.setHeaderText("Prețul nu poate fi negativ");
-            alert.setContentText("Te rog să introduci un preț valid.");
-            alert.showAndWait();
+        if (valoarePret < 0) {
+            Alert alerta = new Alert(Alert.AlertType.WARNING);
+            alerta.setTitle(TITLU_ATENTIONARE);
+            alerta.setHeaderText("Prețul nu poate fi negativ");
+            alerta.setContentText("Te rog să introduci un preț valid.");
+            alerta.showAndWait();
             return;
         }
 
-        String dataPlecare = dataPlecare1 + "/" + dataPlecare2 + "/" + dataPlecare3;
-        String oraPlecare = oraPlecare1 + ":" + oraPlecare2;
-        String dataSosire = dataSosire1 + "/" + dataSosire2 + "/" + dataSosire3;
-        String oraSosire = oraSosire1 + ":" + oraSosire2;
+        String dataPlecare = valoareDataPlecare1 + "/" + valoareDataPlecare2 + "/" + valoareDataPlecare3;
+        String oraPlecare = valoareOraPlecare1 + ":" + valoareOraPlecare2;
+        String dataSosire = valoareDataSosire1 + "/" + valoareDataSosire2 + "/" + valoareDataSosire3;
+        String oraSosire = valoareOraSosire1 + ":" + valoareOraSosire2;
 
-        String url = "http://localhost:3000/zboruri/adaugareZbor";
-        String jsonInputString = String.format(
-                "{\"origine\": \"%s\", \"destinatie\": \"%s\", \"dataPlecare\": \"%s\", \"oraPlecare\": \"%s\", \"dataSosire\": \"%s\", \"oraSosire\": \"%s\", \"modelAvion\": \"%s\", \"locuriLibere\": %d, \"pret\": %.2f}",
-                origine, destinatie, dataPlecare, oraPlecare, dataSosire, oraSosire, modelAvion, locuriLibere, Double.parseDouble(pret));
-        HttpURLConnection httpClient = (HttpURLConnection) new URL(url).openConnection();
-        httpClient.setRequestMethod("POST");
-        httpClient.setRequestProperty("Content-Type", "application/json");
-        httpClient.setDoOutput(true);
-        httpClient.getOutputStream().write(jsonInputString.getBytes(StandardCharsets.UTF_8));
-        int responseCode = httpClient.getResponseCode();
-        if (responseCode == HttpURLConnection.HTTP_OK) {
-            // Afișează un pop-up pentru confirmarea adăugării
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Succes");
-            alert.setHeaderText("Zbor adăugat cu succes");
-            alert.setContentText("Zborul a fost adăugat cu succes în sistem.");
-            alert.showAndWait();
-        } else {
-            // Afișează un pop-up pentru eroare
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Eroare");
-            alert.setHeaderText("Eroare la adăugarea zborului");
-            alert.setContentText("A apărut o eroare la adăugarea zborului. Te rog să încerci din nou.");
-            alert.showAndWait();
+        try {
+            String url = "http://localhost:3000/zboruri/adaugareZbor";
+            String sirDateJson = String.format(
+                    "{\"origine\": \"%s\", \"destinatie\": \"%s\", \"dataPlecare\": \"%s\", \"oraPlecare\": \"%s\", \"dataSosire\": \"%s\", \"oraSosire\": \"%s\", \"modelAvion\": \"%s\", \"locuriLibere\": %d, \"pret\": %d}",
+                    valoareOrigine, valoareDestinatie, dataPlecare, oraPlecare, dataSosire, oraSosire, valoareModelAvion, valoareLocuriLibere, valoarePret);
+            
+            // Creează URL-ul și conexiunea
+            URL adresaServer = new URL(url);
+            HttpURLConnection clientHttp = (HttpURLConnection) adresaServer.openConnection();
+            clientHttp.setRequestMethod("POST");
+            clientHttp.setRequestProperty("Content-Type", "application/json");
+            clientHttp.setDoOutput(true);
+            clientHttp.getOutputStream().write(sirDateJson.getBytes(StandardCharsets.UTF_8));
+            int codRaspuns = clientHttp.getResponseCode();
+            if (codRaspuns == HttpURLConnection.HTTP_OK) {
+                // Afișează un pop-up pentru confirmarea adăugării
+                Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+                alerta.setTitle("Succes");
+                alerta.setHeaderText("Zbor adăugat cu succes");
+                alerta.setContentText("Zborul a fost adăugat cu succes în sistem.");
+                alerta.showAndWait();
+            } else {
+                // Afișează un pop-up pentru eroare
+                Alert alerta = new Alert(Alert.AlertType.ERROR);
+                alerta.setTitle(TITLU_EROARE);
+                alerta.setHeaderText("Eroare la adăugarea zborului");
+                alerta.setContentText(MESAJ_EROARE_ADAUGARE);
+                alerta.showAndWait();
+            }
+        } catch (Exception e) {
+            // Afișează un pop-up pentru eroare generală
+            Alert alerta = new Alert(Alert.AlertType.ERROR);
+            alerta.setTitle(TITLU_EROARE);
+            alerta.setHeaderText("Eroare la adăugarea zborului");
+            alerta.setContentText(MESAJ_EROARE_ADAUGARE);
+            alerta.showAndWait();
+            e.printStackTrace();
         }
 
         App.setRoot("paginaZboruriAdmin");
-
-        
     }
-
-
-
 }

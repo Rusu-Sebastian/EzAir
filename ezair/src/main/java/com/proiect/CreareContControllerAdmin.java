@@ -84,7 +84,7 @@ public class CreareContControllerAdmin {
     }
 
     private User creareUserPartial(String nume, String prenume, String dataNasterii) {
-        return new User(nume, prenume, dataNasterii, null, null, null, false, null); // Add the 'admin' argument
+        return new User(nume, prenume, dataNasterii, null, null, null, false, null, null); // Add the 'admin' argument
     }
 
     @FXML
@@ -124,7 +124,8 @@ public class CreareContControllerAdmin {
                 username,
                 parola,
                 admin,
-                null // ID-ul va fi generat de server
+                null, // ID-ul va fi generat de server
+                null
             );
 
             String url = "http://localhost:3000/users/creareCont";

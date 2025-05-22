@@ -11,7 +11,7 @@ const db = new JsonDB(new Config("baza", true, true, "/"));
 app.use(express.json());
 
 class user {
-    constructor(username, parola, email, nume, prenume, dataNasterii, admin) {
+    constructor(username, parola, email, nume, prenume, dataNasterii, admin = false, telefon){
         this.id = uuidv4();
         this.username = username;
         this.parola = parola;
@@ -20,6 +20,15 @@ class user {
         this.prenume = prenume;
         this.dataNasterii = dataNasterii;
         this.admin = admin;
+        this.setari = {
+            notificariEmail: true,
+            notificariSMS: false,
+            notificariPushWeb: true,
+            notificariPromotii: true,
+            notificariAnulari: true,
+            notificariModificari: true
+        };
+        this.telefon = telefon;
     }
 }
 
@@ -34,6 +43,19 @@ class zbor {
         this.oraSosire = oraSosire;
         this.modelAvion = modelAvion;
         this.locuriLibere = locuriLibere;
+        this.pret = pret;
+    }
+}
+
+// Clasa pentru bilete
+class bilet {
+    constructor(userId, zborId, detaliiZbor, dataZbor, pret) {
+        this.id = uuidv4();
+        this.userId = userId;
+        this.zborId = zborId;
+        this.detaliiZbor = detaliiZbor;
+        this.dataZbor = dataZbor;
+        this.stare = "ACTIV";
         this.pret = pret;
     }
 }
@@ -139,18 +161,22 @@ app.delete('/zboruri/stergereZbor/:id', async (req, res) => {
 }
 );
 //metoda pentru editarea userului
-app.put('/users/editareUser/:id', async (req, res) => {
+app.put('/users/:id', async (req, res) => {
     try {
         const id = req.params.id;
         const dateUpdatate = req.body;
+        console.log("Editare utilizator:", id, dateUpdatate);
         await editareUser(id, dateUpdatate);
         res.status(200).send('User updated successfully');
     } catch (error) {
         console.error("Eroare la editarea userului:", error);
-        res.status(500).send('Eroare la editarea userului');
+        if (error.message === "Userul nu a fost găsit") {
+            res.status(404).send('Utilizatorul nu a fost găsit');
+        } else {
+            res.status(500).send('Eroare la editarea userului');
+        }
     }
-}
-);
+});
 //metoda pentru editarea zborului
 app.put('/zboruri/editareZbor/:id', async (req, res) => {
     try {
@@ -206,6 +232,141 @@ app.get('/users/cautareUser', async (req, res) => {
 }
 );
 
+// Endpoint pentru obținerea unui utilizator după ID
+app.get('/users/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        
+        let users = await db.getData("/users");
+        
+        const user = users.find(u => u.id === id);
+        
+        if (user) {
+            res.status(200).json(user);
+        } else {
+            res.status(404).send('Utilizatorul nu a fost găsit');
+        }
+    } catch (error) {
+        console.error("Eroare la obținerea utilizatorului:", error);
+        res.status(500).send('Eroare la obținerea utilizatorului');
+    }
+});
+
+// Endpoint pentru a obține biletele unui utilizator
+app.get('/users/:id/bilete', async (req, res) => {
+    try {
+        const userId = req.params.id;
+        let bilete = await db.getData("/bilete") || [];
+        const bileteleUtilizatorului = bilete.filter(bilet => bilet.userId === userId);
+        res.status(200).json(bileteleUtilizatorului);
+    } catch (error) {
+        console.error("Eroare la obținerea biletelor:", error);
+        res.status(500).send("Eroare la obținerea biletelor");
+    }
+});
+
+// Endpoint pentru cumpărarea unui bilet
+app.post('/bilete/cumpara', async (req, res) => {
+    try {
+        const { userId, zborId, detaliiZbor, dataZbor, pret } = req.body;
+        const biletNou = new bilet(userId, zborId, detaliiZbor, dataZbor, pret);
+        
+        // Actualizează numărul de locuri disponibile pentru zbor
+        let zboruri = await db.getData("/zboruri");
+        const indexZbor = zboruri.findIndex(z => z.id === zborId);
+        if (indexZbor !== -1) {
+            zboruri[indexZbor].locuriLibere--;
+            await db.push("/zboruri", zboruri, true);
+        }
+
+        // Salvează biletul
+        let bilete = await db.getData("/bilete") || [];
+        bilete.push(biletNou);
+        await db.push("/bilete", bilete, true);
+        
+        res.status(200).json(biletNou);
+    } catch (error) {
+        console.error("Eroare la cumpărarea biletului:", error);
+        res.status(500).send("Eroare la cumpărarea biletului");
+    }
+});
+
+// Endpoint pentru anularea unui bilet
+app.put('/bilete/:id/anulare', async (req, res) => {
+    try {
+        const biletId = req.params.id;
+        let bilete = await db.getData("/bilete");
+        const indexBilet = bilete.findIndex(b => b.id === biletId);
+        
+        if (indexBilet !== -1) {
+            bilete[indexBilet].stare = "ANULAT";
+            
+            // Incrementează locurile disponibile pentru zbor
+            let zboruri = await db.getData("/zboruri");
+            const indexZbor = zboruri.findIndex(z => z.id === bilete[indexBilet].zborId);
+            if (indexZbor !== -1) {
+                zboruri[indexZbor].locuriLibere++;
+                await db.push("/zboruri", zboruri, true);
+            }
+            
+            await db.push("/bilete", bilete, true);
+            res.status(200).send("Bilet anulat cu succes");
+        } else {
+            res.status(404).send("Biletul nu a fost găsit");
+        }
+    } catch (error) {
+        console.error("Eroare la anularea biletului:", error);
+        res.status(500).send("Eroare la anularea biletului");
+    }
+});
+
+// Endpoint pentru modificarea datei unui bilet
+app.put('/bilete/:id/modificare-data', async (req, res) => {
+    try {
+        const biletId = req.params.id;
+        const { dataNoua } = req.body;
+        
+        let bilete = await db.getData("/bilete");
+        const indexBilet = bilete.findIndex(b => b.id === biletId);
+        
+        if (indexBilet !== -1) {
+            bilete[indexBilet].dataZbor = dataNoua;
+            bilete[indexBilet].stare = "MODIFICAT";
+            await db.push("/bilete", bilete, true);
+            res.status(200).send("Data biletului a fost modificată cu succes");
+        } else {
+            res.status(404).send("Biletul nu a fost găsit");
+        }
+    } catch (error) {
+        console.error("Eroare la modificarea datei biletului:", error);
+        res.status(500).send("Eroare la modificarea datei biletului");
+    }
+});
+
+// Endpoint pentru salvarea setărilor utilizatorului
+app.put('/users/:id/setari', async (req, res) => {
+    try {
+        const { notificariEmail, notificariSMS, notificariPushWeb } = req.body;
+        const id = req.params.id;
+        let users = await db.getData("/users");
+        const index = users.findIndex(u => u.id === id);
+        
+        if (index !== -1) {
+            users[index].setari = {
+                notificariEmail: notificariEmail || false,
+                notificariSMS: notificariSMS || false,
+                notificariPushWeb: notificariPushWeb || false
+            };
+            await db.push("/users", users, true);
+            res.status(200).json(users[index].setari);
+        } else {
+            res.status(404).send("Utilizatorul nu a fost găsit");
+        }
+    } catch (error) {
+        console.error("Eroare la actualizarea setărilor:", error);
+        res.status(500).send("Eroare la actualizarea setărilor");
+    }
+});
 
 //pornirea serverului
 app.listen(port, async () => {
@@ -224,6 +385,9 @@ async function initializareBaza() {
         if (!await db.exists("/zboruri")) {
             await db.push("/zboruri", []);
         }
+        if (!await db.exists("/bilete")) {
+            await db.push("/bilete", []);
+        }
     } catch (error) {
         console.error("Eroare la initializarea bazei de date:", error);
         throw error;
@@ -233,11 +397,23 @@ async function initializareBaza() {
 async function editareUser(id, dateUpdatate) {
     try {
         let users = await db.getData("/users");
-        const index = users.findIndex(users => users.id === id);
+        const index = users.findIndex(user => user.id === id);
+        console.log("Căutare utilizator cu ID:", id);
+        console.log("Index găsit:", index);
+        
         if (index !== -1) {
-            users[index] = { ...users[index], ...dateUpdatate };
-            db.push("/users", users, true);
+            // Păstrează ID-ul original
+            const idOriginal = users[index].id;
+            // Actualizează datele, păstrând valorile existente pentru câmpurile nelipsite
+            users[index] = {
+                ...users[index],
+                ...dateUpdatate,
+                id: idOriginal // Asigură că ID-ul rămâne neschimbat
+            };
+            await db.push("/users", users, true);
+            console.log("Utilizator actualizat:", users[index]);
         } else {
+            console.log("Nu s-a găsit utilizatorul cu ID:", id);
             throw new Error("Userul nu a fost găsit");
         }
     } catch (error) {
