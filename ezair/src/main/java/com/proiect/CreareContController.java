@@ -112,7 +112,7 @@ public class CreareContController {
                 alert.setContentText("Te rog să introduci aceeași parolă în ambele câmpuri.");
                 alert.showAndWait();
                 return;
-            }
+            // // }
 
             if (!email.contains("@")) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
