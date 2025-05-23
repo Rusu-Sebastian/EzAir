@@ -38,7 +38,12 @@
             "nume": "Testare",
             "prenume": "Testare",
             "dataNasterii": "11/09/2021",
-            "admin": false
+            "admin": false,
+            "setari": {
+                "notificariEmail": true,
+                "notificariSMS": true,
+                "notificariPushWeb": true
+            }
         },
         {
             "id": "18ed8d9e-fd71-4dc2-89a0-cbe6e1e803b0",
@@ -103,9 +108,37 @@
             "dataSosire": "3/6/2025",
             "oraSosire": "14:40",
             "modelAvion": "Smecker",
-            "locuriLibere": 200,
+            "locuriLibere": 198,
             "pret": 100
         }
     ],
-    "bilete": []
+    "bilete": [
+        {
+            "id": "ec46d6fa-af74-4244-88a9-f15d77fde2a2",
+            "userId": "b22c383c-acdd-4fb5-8642-78c6ae90c763",
+            "zborId": "e367b6a7-92e0-4bc2-8baa-fb3e3aeead4a",
+            "detaliiZbor": "Bucuresti -> Londra",
+            "dataZbor": "2025-06-26T06:00",
+            "stare": "MODIFICAT",
+            "pret": 100
+        },
+        {
+            "id": "1f09459c-d5d4-4005-9166-7e039a56d240",
+            "userId": "b22c383c-acdd-4fb5-8642-78c6ae90c763",
+            "zborId": "e367b6a7-92e0-4bc2-8baa-fb3e3aeead4a",
+            "detaliiZbor": "Bucuresti -> Londra",
+            "dataZbor": "2025-06-03T10:30:00",
+            "stare": "ANULAT",
+            "pret": 100
+        },
+        {
+            "id": "c582f487-19f4-4e4b-b80a-d642ee157bab",
+            "userId": "b22c383c-acdd-4fb5-8642-78c6ae90c763",
+            "zborId": "e367b6a7-92e0-4bc2-8baa-fb3e3aeead4a",
+            "detaliiZbor": "Bucuresti -> Londra",
+            "dataZbor": "2025-06-03T10:30:00",
+            "stare": "ACTIV",
+            "pret": 100
+        }
+    ]
 }

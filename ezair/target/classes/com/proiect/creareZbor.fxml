@@ -16,15 +16,15 @@
          <children>
             <TextField fx:id="origine" layoutX="425.0" layoutY="37.0" prefHeight="26.0" prefWidth="485.0" />
             <TextField fx:id="destinatie" layoutX="425.0" layoutY="77.0" prefHeight="26.0" prefWidth="485.0" />
-            <Text layoutX="252.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Destinatie" />
-            <Text layoutX="252.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data Plecarii" />
+            <Text layoutX="252.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Destinație" />
+            <Text layoutX="252.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data Plecării" />
             <Text layoutX="252.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Origine" />
             <ImageView fitHeight="180.0" fitWidth="180.0" layoutX="6.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@logo.png" />
                </image>
             </ImageView>
-            <Text layoutX="19.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add a flight">
+            <Text layoutX="19.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Adaugă un zbor">
                <font>
                   <Font name="Noto Sans Math Regular" size="25.0" />
                </font>
@@ -34,7 +34,7 @@
                   <Font name="Noto Sans Math Regular" size="15.0" />
                </font>
             </Text>
-            <Text layoutX="252.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ora Plecarii" />
+            <Text layoutX="252.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ora Plecării" />
             <TextField fx:id="dataPlecarii1" layoutX="428.0" layoutY="116.0" prefHeight="26.0" prefWidth="129.0" />
             <TextField fx:id="dataPlecarii2" layoutX="582.0" layoutY="116.0" prefHeight="26.0" prefWidth="129.0" />
             <TextField fx:id="dataPlecarii3" layoutX="741.0" layoutY="116.0" prefHeight="26.0" prefWidth="172.0" />
@@ -55,11 +55,11 @@
             <Text layoutX="657.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text=":" />
             <Text layoutX="249.0" layoutY="300.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Model Avion" />
             <TextField fx:id="modelAvion" layoutX="425.0" layoutY="282.0" prefHeight="26.0" prefWidth="485.0" />
-            <Text layoutX="249.0" layoutY="340.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pret" />
+            <Text layoutX="249.0" layoutY="340.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Preț" />
             <TextField fx:id="pret" layoutX="425.0" layoutY="322.0" prefHeight="26.0" prefWidth="485.0" />
             <TextField fx:id="locuriLibere" layoutX="425.0" layoutY="357.0" prefHeight="26.0" prefWidth="485.0" />
             <Button fx:id="butonFinalizare" defaultButton="true" layoutX="675.0" layoutY="411.0" mnemonicParsing="false" onAction="#finalizareAdaugareZbor" text="Finalizare" />
-            <Button fx:id="butonback" mnemonicParsing="false" onAction="#backZbor" text="Back" textAlignment="JUSTIFY" />
+            <Button fx:id="butonback" mnemonicParsing="false" onAction="#backZbor" text="Înapoi" textAlignment="JUSTIFY" />
             <Text layoutX="249.0" layoutY="375.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Locuri " />
          </children>
       </Pane>

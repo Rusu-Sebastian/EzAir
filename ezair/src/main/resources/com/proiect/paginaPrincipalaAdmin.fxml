@@ -19,7 +19,7 @@
                   <Image url="@logo.png" />
                </image>
             </ImageView>
-            <Text layoutX="105.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pagina Principala a Adminului">
+            <Text layoutX="105.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pagina Principală a Administratorului">
                <font>
                   <Font size="24.0" />
                </font>
@@ -29,7 +29,7 @@
       <Pane prefHeight="219.0" prefWidth="735.0">
          <children>
             <Button fx:id="butonZboruri" layoutX="128.0" layoutY="68.0" mnemonicParsing="false" onAction="#zboruriAdmin" prefHeight="83.0" prefWidth="83.0" text="Zboruri" />
-            <Button fx:id="butonUseri" layoutX="507.0" layoutY="68.0" mnemonicParsing="false" onAction="#useriAdmin" prefHeight="83.0" prefWidth="83.0" text="Useri" />
+            <Button fx:id="butonUseri" layoutX="507.0" layoutY="68.0" mnemonicParsing="false" onAction="#useriAdmin" prefHeight="83.0" prefWidth="83.0" text="Utilizatori" />
          </children>
       </Pane>
    </children>

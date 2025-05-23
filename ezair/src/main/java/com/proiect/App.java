@@ -17,15 +17,15 @@ import javafx.stage.Stage;
 
 public class App extends Application {
 
-    private static final Logger logger = Logger.getLogger(App.class.getName());
-    private static final Map<String, String> userData = new HashMap<>();
-    private static final String CONNECTION_ERROR_SCENE = "eroareConexiune";
+    private static final Logger jurnal = Logger.getLogger(App.class.getName());
+    private static final Map<String, String> dateUtilizator = new HashMap<>();
+    private static final String SCENA_EROARE_CONEXIUNE = "eroareConexiune";
     
-    public static Map<String, String> getUserData() {
-        return userData;
+    public static Map<String, String> getDateUtilizator() {
+        return dateUtilizator;
     }
 
-    static Scene scene;
+    static Scene scena;
 
     @Override
     public void init() throws Exception {
@@ -34,52 +34,53 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) {
-        String serverUrl = System.getProperty("server.url", "http://localhost:3000");
-        HttpURLConnection connection = null;
+        String urlServer = System.getProperty("server.url", "http://localhost:3000");
+        HttpURLConnection conexiune = null;
         
         try {
-            URI uri = new URI(serverUrl);
-            connection = (HttpURLConnection) uri.toURL().openConnection();
-            connection.setRequestMethod("GET");
-            connection.setConnectTimeout(10000); // 10 secunde
-            connection.setReadTimeout(10000);
-            connection.setInstanceFollowRedirects(true);
-            connection.setUseCaches(true);
+            URI uri = new URI(urlServer);
+            conexiune = (HttpURLConnection) uri.toURL().openConnection();
+            conexiune.setRequestMethod("GET");
+            conexiune.setConnectTimeout(30000); // 30 secunde
+            conexiune.setReadTimeout(30000);
+            conexiune.setRequestProperty("Accept", "application/json");
+            conexiune.setInstanceFollowRedirects(true);
+            conexiune.setUseCaches(true);
             
-            int responseCode = connection.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                logger.info("Server is responding");
-                setScene(stage, "paginaPrincipalaUser");
+            int codRaspuns = conexiune.getResponseCode();
+            if (codRaspuns == HttpURLConnection.HTTP_OK) {
+                jurnal.info("Serverul răspunde");
+                setScene(stage, "login");
             } else {
-                logger.log(Level.WARNING, "Server returned unexpected response code: {0}", responseCode);
-                setScene(stage, CONNECTION_ERROR_SCENE);
+                jurnal.log(Level.WARNING, "Serverul a returnat un cod de răspuns neașteptat: {0}", codRaspuns);
+                setScene(stage, SCENA_EROARE_CONEXIUNE);
             }
             
         } catch (URISyntaxException e) {
-            logger.log(Level.SEVERE, "Invalid server URL: {0}", serverUrl);
-            setScene(stage, CONNECTION_ERROR_SCENE);
+            jurnal.log(Level.SEVERE, "URL-ul serverului este invalid: {0}", urlServer);
+            setScene(stage, SCENA_EROARE_CONEXIUNE);
         } catch (IOException e) {
-            logger.log(Level.SEVERE, "Failed to connect to server: {0}", e.getMessage());
-            setScene(stage, CONNECTION_ERROR_SCENE);
+            jurnal.log(Level.SEVERE, "Conexiunea la server a eșuat: {0}", e.getMessage());
+            setScene(stage, SCENA_EROARE_CONEXIUNE);
         } finally {
-            if (connection != null) {
-                connection.disconnect();
+            if (conexiune != null) {
+                conexiune.disconnect();
             }
         }
     }
 
     private static void setScene(Stage stage, String fxml) {
         try {
-            scene = new Scene(loadFXML(fxml), 1680, 720);
-            stage.setScene(scene);
+            scena = new Scene(loadFXML(fxml), 1680, 720);
+            stage.setScene(scena);
             stage.show();
         } catch (IOException e) {
-            logger.log(Level.SEVERE, "Failed to load FXML file {0}: {1}", new Object[]{fxml, e.getMessage()});
+            jurnal.log(Level.SEVERE, "Nu s-a putut încărca fișierul FXML {0}: {1}", new Object[]{fxml, e.getMessage()});
         }
     }
 
     static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
+        scena.setRoot(loadFXML(fxml));
     }
 
     private static Parent loadFXML(String fxml) throws IOException {

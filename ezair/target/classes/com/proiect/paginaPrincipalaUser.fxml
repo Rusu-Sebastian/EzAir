@@ -46,6 +46,7 @@
                   <ComboBox fx:id="comboDestinatie" prefWidth="200" />
                   <Label text="Data plecare:" />
                   <DatePicker fx:id="dataPlecare" />
+                  <Label fx:id="labelDataOptionala" />
                   <Button mnemonicParsing="false" onAction="#cautaZboruri" text="Caută zboruri" />
                </children>
             </HBox>

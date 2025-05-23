@@ -10,16 +10,42 @@ const db = new JsonDB(new Config("baza", true, true, "/"));
 // Middleware to parse JSON request bodies
 app.use(express.json());
 
+// Constante pentru chei și mesaje
+const CHEI = {
+    ID_UTILIZATOR: "userId",
+    NUME_UTILIZATOR: "username",
+    PAROLA: "parola",
+    EMAIL: "email",
+    NUME: "nume",
+    PRENUME: "prenume",
+    DATA_NASTERII: "dataNasterii",
+    ADMIN: "admin",
+    TELEFON: "telefon",
+    ID: "id",
+    STARE: "stare"
+};
+
+const MESAJE = {
+    EROARE_SERVER: "Eroare internă server",
+    EROARE_AUTENTIFICARE: "Date de autentificare incorecte",
+    SUCCES_CREARE_CONT: "Cont creat cu succes",
+    EROARE_CREARE_CONT: "Eroare la crearea contului",
+    UTILIZATOR_NEGASIT: "Utilizatorul nu a fost găsit",
+    SUCCES_STERGERE: "Utilizator șters cu succes",
+    EROARE_STERGERE: "Eroare la ștergerea utilizatorului"
+};
+
+// Actualizăm constructorul pentru User
 class user {
-    constructor(username, parola, email, nume, prenume, dataNasterii, admin = false, telefon){
-        this.id = uuidv4();
-        this.username = username;
-        this.parola = parola;
-        this.email = email;
-        this.nume = nume;
-        this.prenume = prenume;
-        this.dataNasterii = dataNasterii;
-        this.admin = admin;
+    constructor(username, parola, email, nume, prenume, dataNasterii, admin = false, telefon) {
+        this[CHEI.ID] = uuidv4();
+        this[CHEI.NUME_UTILIZATOR] = username;
+        this[CHEI.PAROLA] = parola;
+        this[CHEI.EMAIL] = email;
+        this[CHEI.NUME] = nume;
+        this[CHEI.PRENUME] = prenume;
+        this[CHEI.DATA_NASTERII] = dataNasterii;
+        this[CHEI.ADMIN] = admin;
         this.setari = {
             notificariEmail: true,
             notificariSMS: false,
@@ -28,7 +54,7 @@ class user {
             notificariAnulari: true,
             notificariModificari: true
         };
-        this.telefon = telefon;
+        this[CHEI.TELEFON] = telefon;
     }
 }
 
@@ -50,12 +76,12 @@ class zbor {
 // Clasa pentru bilete
 class bilet {
     constructor(userId, zborId, detaliiZbor, dataZbor, pret) {
-        this.id = uuidv4();
-        this.userId = userId;
+        this[CHEI.ID] = uuidv4();
+        this[CHEI.ID_UTILIZATOR] = userId;
         this.zborId = zborId;
         this.detaliiZbor = detaliiZbor;
         this.dataZbor = dataZbor;
-        this.stare = "ACTIV";
+        this[CHEI.STARE] = "ACTIV";
         this.pret = pret;
     }
 }
@@ -87,6 +113,22 @@ app.get('/zboruri/populareLista', async (req, res) => {
 }
 );
 
+app.get('/zboruri/orase', async (req, res) => {
+    try {
+        const zboruri = await db.getData("/zboruri");
+        const orase = new Set();
+        zboruri.forEach(zbor => {
+            orase.add(zbor.origine);
+            orase.add(zbor.destinatie);
+        });
+        res.status(200).json(Array.from(orase));
+    } catch (error) {
+        console.error("Eroare la obținerea orașelor:", error);
+        res.status(500).send("Eroare la obținerea orașelor");
+    }
+}
+);
+
 //metoda pentru adaugarea unui zbor
 app.post('/zboruri/adaugareZbor', async (req, res) => {
     try {
@@ -107,38 +149,37 @@ app.post('/users/login', async (req, res) => {
     try {
         const { username, parola } = req.body;
         const user = await verificareDateLogin(username, parola);
-        res.status(200).json(user); // Trimite răspuns JSON
+        res.status(200).json(user);
     } catch (error) {
         console.error("Eroare la verificarea datelor de login:", error);
-        res.status(401).json({ error: "Invalid credentials" }); // Trimite eroare JSON
+        res.status(401).json({ error: MESAJE.EROARE_AUTENTIFICARE });
     }
 });
 
 //metoda pentru creare cont
 app.post('/users/creareCont', async (req, res) => {
     try {
-        const { username, parola, email, nume, prenume, dataNasterii, admin} = req.body;
+        const { username, parola, email, nume, prenume, dataNasterii, admin } = req.body;
         const userNou = new user(username, parola, email, nume, prenume, dataNasterii, admin);
         await creareContUserNou(userNou);
-        res.status(200).send('User created successfully');
-    } catch (error){
-        console.error("Eroare la autentificare.", error);
-        res.status(500).send('Eroare la creearea userului');
+        res.status(200).json({ mesaj: MESAJE.SUCCES_CREARE_CONT });
+    } catch (error) {
+        console.error("Eroare la crearea contului:", error);
+        res.status(500).json({ error: MESAJE.EROARE_CREARE_CONT });
     }
 });
 
 app.delete('/users/:id', async (req, res) => {
     try {
         const id = req.params.id;
-        if(await stergereUser(id) === true) {
-            res.status(200).send('User sters cu succes');
-        }
-        else {
-            res.status(404).send('Userul nu a fost gasit');
+        if (await stergereUser(id)) {
+            res.status(200).json({ mesaj: MESAJE.SUCCES_STERGERE });
+        } else {
+            res.status(404).json({ error: MESAJE.UTILIZATOR_NEGASIT });
         }
     } catch (error) {
-        console.error("Eroare la stergerea userului:", error);
-        res.status(500).send('Eroare la stergerea userului');
+        console.error("Eroare la ștergerea utilizatorului:", error);
+        res.status(500).json({ error: MESAJE.EROARE_STERGERE });
     }
 });
 
@@ -200,9 +241,22 @@ app.put('/zboruri/editareZbor/:id', async (req, res) => {
 //metoda pentru cautarea zborului
 app.get('/zboruri/cautareZbor', async (req, res) => {
     try {
-        const { origine, destinatie } = req.query;
+        const { origine, destinatie, data } = req.query;
         let zboruri = await db.getData("/zboruri");
-        const zboruriGasite = zboruri.filter(zbor => zbor.origine === origine && zbor.destinatie === destinatie);
+        
+        // Filtrare după origine și destinație (obligatorii)
+        let zboruriGasite = zboruri.filter(zbor => zbor.origine === origine && zbor.destinatie === destinatie);
+        
+        // Filtrare suplimentară după dată (opțională)
+        if (data) {
+            zboruriGasite = zboruriGasite.filter(zbor => {
+                // Verifică dacă data coincide
+                // În funcție de formatul datelor, ar putea fi necesar să convertim
+                const dataPlecare = zbor.dataPlecare;
+                return dataPlecare.includes(data) || data.includes(dataPlecare);
+            });
+        }
+        
         if (zboruriGasite.length > 0) {
             res.status(200).json(zboruriGasite);
         } else {
@@ -343,6 +397,65 @@ app.put('/bilete/:id/modificare-data', async (req, res) => {
     }
 });
 
+// Endpoint pentru modificarea zborului biletului
+app.put('/bilete/:id/modificare-zbor', async (req, res) => {
+    try {
+        const biletId = req.params.id;
+        const { zborId, dataNoua } = req.body;
+        
+        // Verificare dacă zborul există și are locuri disponibile
+        let zboruri = await db.getData("/zboruri");
+        const zborIndex = zboruri.findIndex(z => z.id === zborId);
+        
+        if (zborIndex === -1) {
+            return res.status(404).send("Zborul selectat nu a fost găsit");
+        }
+        
+        if (zboruri[zborIndex].locuriLibere <= 0) {
+            return res.status(400).send("Nu mai sunt locuri disponibile pe acest zbor");
+        }
+        
+        // Obține detaliile noului zbor pentru actualizarea biletului
+        const zborNou = zboruri[zborIndex];
+        
+        // Actualizează biletul cu noul zbor
+        let bilete = await db.getData("/bilete");
+        const indexBilet = bilete.findIndex(b => b.id === biletId);
+        
+        if (indexBilet === -1) {
+            return res.status(404).send("Biletul nu a fost găsit");
+        }
+        
+        // Salvează ID-ul vechi pentru a incrementa locurile disponibile
+        const zborVechiId = bilete[indexBilet].zborId;
+        
+        // Actualizează biletul
+        bilete[indexBilet].zborId = zborId;
+        bilete[indexBilet].dataZbor = dataNoua;
+        bilete[indexBilet].detaliiZbor = `${zborNou.origine} -> ${zborNou.destinatie}`;
+        bilete[indexBilet].pret = zborNou.pret; // Actualizează și prețul cu prețul noului zbor
+        bilete[indexBilet].stare = "MODIFICAT";
+        
+        // Decrementează locurile disponibile pentru noul zbor
+        zboruri[zborIndex].locuriLibere--;
+        
+        // Incrementează locurile disponibile pentru zborul vechi
+        const zborVechiIndex = zboruri.findIndex(z => z.id === zborVechiId);
+        if (zborVechiIndex !== -1) {
+            zboruri[zborVechiIndex].locuriLibere++;
+        }
+        
+        // Salvează modificările
+        await db.push("/bilete", bilete, true);
+        await db.push("/zboruri", zboruri, true);
+        
+        res.status(200).send("Biletul a fost mutat pe un alt zbor cu succes");
+    } catch (error) {
+        console.error("Eroare la modificarea zborului biletului:", error);
+        res.status(500).send("Eroare la modificarea zborului biletului");
+    }
+});
+
 // Endpoint pentru salvarea setărilor utilizatorului
 app.put('/users/:id/setari', async (req, res) => {
     try {
@@ -426,12 +539,14 @@ async function editareUser(id, dateUpdatate) {
 async function verificareDateLogin(username, parola) {
     try {
         let users = await db.getData("/users");
-        const user = users.find(users => users.username === username && users.parola === parola);
+        const user = users.find(user => 
+            user[CHEI.NUME_UTILIZATOR] === username && 
+            user[CHEI.PAROLA] === parola
+        );
         if (user) {
             return user;
-        } else {
-            throw new Error("Date de login incorecte");
         }
+        throw new Error(MESAJE.EROARE_AUTENTIFICARE);
     } catch (error) {
         console.error("Eroare la verificarea datelor de login:", error);
         throw error;
