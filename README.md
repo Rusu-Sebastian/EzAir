@@ -19,8 +19,6 @@
 - [ ] Îmbunătățiri interfață utilizator
 - [ ] Testare și depanare
 - [ ] Documentație
-
-## Optional (dacă rămâne timp)
 - [ ] Sistem de notificări pentru zboruri
 - [ ] Istoric tranzacții
 - [ ] Rapoarte administrative

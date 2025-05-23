@@ -41,13 +41,12 @@
       <Pane>
          <children>
             <TableView fx:id="tabelUtilizatori" layoutX="14.0" layoutY="-4.0">
-              <columns>
-                <TableColumn fx:id="coloanaNumeUtilizator" prefWidth="145.0" text="Nume Utilizator" />
-                <TableColumn fx:id="coloanaParola" prefWidth="174.0" text="Parola" />
+              <columns>                  <TableColumn fx:id="coloanaNumeUtilizator" prefWidth="145.0" text="Nume Utilizator" />
+                <TableColumn fx:id="coloanaParola" prefWidth="174.0" text="Parolă" />
                   <TableColumn fx:id="coloanaEmail" prefWidth="187.0" text="Email" />
                   <TableColumn fx:id="coloanaNume" prefWidth="214.0" text="Nume" />
                   <TableColumn fx:id="coloanaPrenume" prefWidth="219.0" text="Prenume" />
-                  <TableColumn fx:id="coloanaDataNasterii" minWidth="0.0" prefWidth="206.0" text="Data Nasterii" />
+                  <TableColumn fx:id="coloanaDataNasterii" minWidth="0.0" prefWidth="206.0" text="Data Nașterii" />
                   <TableColumn fx:id="coloanaAdmin" minWidth="0.0" prefWidth="87.0" text="Admin" />
                   <TableColumn fx:id="coloanaId" minWidth="0.0" prefWidth="334.0" text="ID" />
               </columns>

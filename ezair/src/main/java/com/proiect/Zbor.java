@@ -1,7 +1,6 @@
 package com.proiect;
 
 public class Zbor {
-    // constructor(origine, destinatie, dataPlecare, oraPlecare, dataSosire, oraSosire, modelAvion, locuriLibere, pret)
     private String origine;
     private String destinatie;
     private String dataPlecare;
@@ -13,20 +12,58 @@ public class Zbor {
     private double pret;
     private String id;
 
-    private Zbor(Builder builder) {
-        this.origine = builder.origine;
-        this.destinatie = builder.destinatie;
-        this.dataPlecare = builder.dataPlecare;
-        this.oraPlecare = builder.oraPlecare;
-        this.dataSosire = builder.dataSosire;
-        this.oraSosire = builder.oraSosire;
-        this.modelAvion = builder.modelAvion;
-        this.locuriLibere = builder.locuriLibere;
-        this.pret = builder.pret;
-        this.id = builder.id;
+    // Helper method to normalize date formats - handles both DD/MM/YYYY and DD.MM.YYYY
+    public static String normalizeazaFormatData(String data) {
+        if (data == null) return null;
+        // Replace dots with slashes for consistent format
+        return data.replace(".", "/");
     }
 
-    public static class Builder {
+    /**
+     * Converts date strings to a standard ISO format for easier parsing
+     * @param dateStr The date string to normalize (e.g., "DD/MM/YYYY", "DD.MM.YYYY")
+     * @return ISO formatted date string (YYYY-MM-DD) or original string if conversion fails
+     */
+    public static String convertesteInFormatISO(String dataStr) {
+        if (dataStr == null || dataStr.trim().isEmpty()) {
+            return dataStr;
+        }
+        
+        try {
+            // First normalize separators
+            String formatNormalizat = dataStr.replace('.', '/');
+            
+            String[] parti = formatNormalizat.split("/");
+            if (parti.length != 3) {
+                return dataStr; // Return original if not in expected format
+            }
+            
+            int zi = Integer.parseInt(parti[0]);
+            int luna = Integer.parseInt(parti[1]);
+            int an = Integer.parseInt(parti[2]);
+            
+            // Return in ISO format YYYY-MM-DD
+            return String.format("%04d-%02d-%02d", an, luna, zi);
+        } catch (Exception e) {
+            // If parsing fails, return the original string
+            return dataStr;
+        }
+    }
+
+    private Zbor(Constructor constructor) {
+        this.origine = constructor.origine;
+        this.destinatie = constructor.destinatie;
+        this.dataPlecare = constructor.dataPlecare;
+        this.oraPlecare = constructor.oraPlecare;
+        this.dataSosire = constructor.dataSosire;
+        this.oraSosire = constructor.oraSosire;
+        this.modelAvion = constructor.modelAvion;
+        this.locuriLibere = constructor.locuriLibere;
+        this.pret = constructor.pret;
+        this.id = constructor.id;
+    }
+
+    public static class Constructor {
         private String origine;
         private String destinatie;
         private String dataPlecare;
@@ -38,91 +75,70 @@ public class Zbor {
         private double pret;
         private String id;
 
-        public Builder setOrigine(String origine) {
+        public Constructor setOrigine(String origine) {
             this.origine = origine;
             return this;
         }
 
-        public Builder setDestinatie(String destinatie) {
+        public Constructor setDestinatie(String destinatie) {
             this.destinatie = destinatie;
             return this;
         }
 
-        public Builder setDataPlecare(String dataPlecare) {
-            this.dataPlecare = dataPlecare;
+        public Constructor setDataPlecare(String dataPlecare) {
+            this.dataPlecare = normalizeazaFormatData(dataPlecare);
             return this;
         }
 
-        public Builder setOraPlecare(String oraPlecare) {
+        public Constructor setOraPlecare(String oraPlecare) {
             this.oraPlecare = oraPlecare;
             return this;
         }
 
-        public Builder setDataSosire(String dataSosire) {
-            this.dataSosire = dataSosire;
+        public Constructor setDataSosire(String dataSosire) {
+            this.dataSosire = normalizeazaFormatData(dataSosire);
             return this;
         }
 
-        public Builder setOraSosire(String oraSosire) {
+        public Constructor setOraSosire(String oraSosire) {
             this.oraSosire = oraSosire;
             return this;
         }
 
-        public Builder setModelAvion(String modelAvion) {
+        public Constructor setModelAvion(String modelAvion) {
             this.modelAvion = modelAvion;
             return this;
         }
 
-        public Builder setLocuriLibere(int locuriLibere) {
+        public Constructor setLocuriLibere(int locuriLibere) {
             this.locuriLibere = locuriLibere;
             return this;
         }
 
-        public Builder setPret(double pret) {
+        public Constructor setPret(double pret) {
             this.pret = pret;
             return this;
         }
 
-        public Builder setId(String id) {
+        public Constructor setId(String id) {
             this.id = id;
             return this;
         }
 
-        public Zbor build() {
+        public Zbor construieste() {
             return new Zbor(this);
         }
     }
 
-    // Getters
-    public String getOrigine() {
-        return origine;
-    }
-    public String getDestinatie() {
-        return destinatie;
-    }
-    public String getDataPlecare() {
-        return dataPlecare;
-    }
-    public String getOraPlecare() {
-        return oraPlecare;
-    }
-    public String getDataSosire() {
-        return dataSosire;
-    }
-    public String getOraSosire() {
-        return oraSosire;
-    }
-    public String getModelAvion() {
-        return modelAvion;
-    }
-    public int getLocuriLibere() {
-        return locuriLibere;
-    }
-    public double getPret() {
-        return pret;
-    }
-    public String getId() {
-        return id;
-    }
-
+    // Getteri
+    public String getOrigine() { return origine; }
+    public String getDestinatie() { return destinatie; }
+    public String getDataPlecare() { return dataPlecare; }
+    public String getOraPlecare() { return oraPlecare; }
+    public String getDataSosire() { return dataSosire; }
+    public String getOraSosire() { return oraSosire; }
+    public String getModelAvion() { return modelAvion; }
+    public int getLocuriLibere() { return locuriLibere; }
+    public double getPret() { return pret; }
+    public String getId() { return id; }
 }

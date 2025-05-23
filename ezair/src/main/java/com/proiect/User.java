@@ -5,36 +5,37 @@ public class User {
     private String prenume;
     private String dataNasterii;
     private String email;
-    private String username;
+    private String numeUtilizator;
     private String parola;
-    private boolean admin;
+    private boolean esteAdmin;
     private String id;
     private String telefon;
 
-    public User(String nume, String prenume, String dataNasterii, String email, String username, String parola, String id, String telefon) {
+    public User(String nume, String prenume, String dataNasterii, String email, String numeUtilizator, String parola, String id, String telefon) {
         this.nume = nume;
         this.prenume = prenume;
         this.dataNasterii = dataNasterii;
         this.email = email;
-        this.username = username;
+        this.numeUtilizator = numeUtilizator;
         this.parola = parola;
         this.id = id;
         this.telefon = telefon;
+        this.esteAdmin = false;
     }
 
-    public User(String nume, String prenume, String dataNasterii, String email, String username, String parola, boolean admin, String id, String telefon) {
+    public User(String nume, String prenume, String dataNasterii, String email, String numeUtilizator, String parola, boolean esteAdmin, String id, String telefon) {
         this.nume = nume;
         this.prenume = prenume;
         this.dataNasterii = dataNasterii;
         this.email = email;
-        this.username = username;
+        this.numeUtilizator = numeUtilizator;
         this.parola = parola;
-        this.admin = admin;
+        this.esteAdmin = esteAdmin;
         this.id = id;
         this.telefon = telefon;
     }
 
-    // Getters
+    // Getteri
     public String getNume() {
         return nume;
     }
@@ -51,22 +52,23 @@ public class User {
         return email;
     }
 
-    public String getUsername() {
-        return username;
+    public String getNumeUtilizator() {
+        return numeUtilizator;
     }
 
     public String getParola() {
         return parola;
     }
 
-    public boolean isAdmin() {
-        return admin;
+    public boolean esteAdmin() {
+        return esteAdmin;
     }
 
     public String getId() {
         return id;
     }
-    public String getTelefon(){
+
+    public String getTelefon() {
         return telefon;
     }
 }

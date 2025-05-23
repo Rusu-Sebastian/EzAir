@@ -1,10 +1,12 @@
 package com.proiect;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.json.JSONArray;
@@ -23,6 +25,13 @@ public class PaginaUseriAdminController {
     private static final String TITLU_ATENTIONARE = "Atenție";
     private static final String TITLU_EROARE = "Eroare";
     private static final String TITLU_SUCCES = "Succes";
+    private static final String URL_SERVER = "http://localhost:3000";
+    private static final int TIMP_EXPIRARE_CONEXIUNE = 5000; // 5 secunde
+
+    private static final String EROARE_STERGERE = "Eroare la ștergerea utilizatorului";
+    private static final String EROARE_INCARCARE = "Eroare la încărcarea datelor";
+    private static final String EROARE_SERVER = "A apărut o eroare la comunicarea cu serverul. Te rog să încerci din nou.";
+    private static final String SELECTEAZA_UTILIZATOR = "Te rog să selectezi un utilizator din tabel";
     
     @FXML
     private TableView<User> tabelUtilizatori;
@@ -44,93 +53,89 @@ public class PaginaUseriAdminController {
     private TableColumn<User, String> coloanaId;
 
     @FXML
-    private void adaugareUser() throws Exception {
+    public void adaugareUser() throws IOException {
         App.setRoot("creareContInceputAdmin");
     }
 
     @FXML
-    private void editareUtilizator() throws Exception {
+    public void editareUtilizator() throws IOException {
         User utilizatorSelectat = tabelUtilizatori.getSelectionModel().getSelectedItem();
-        logger.info("Încercare editare utilizator");
+        logger.log(Level.INFO, "Încercare editare utilizator");
         
         if (utilizatorSelectat == null) {
-            logger.warning("Niciun utilizator selectat pentru editare");
-            Alert alerta = new Alert(Alert.AlertType.WARNING);
-            alerta.setTitle(TITLU_ATENTIONARE);
-            alerta.setHeaderText("Niciun utilizator selectat");
-            alerta.setContentText("Te rog să selectezi un utilizator din tabel pentru a-l edita.");
-            alerta.showAndWait();
+            logger.log(Level.WARNING, "Niciun utilizator selectat pentru editare");
+            afiseazaAlerta(Alert.AlertType.WARNING, 
+                          TITLU_ATENTIONARE,
+                          "Niciun utilizator selectat",
+                          SELECTEAZA_UTILIZATOR + " pentru a-l edita.");
             return;
         }
 
         String idUtilizator = utilizatorSelectat.getId();
-        logger.info("ID utilizator selectat pentru editare: " + idUtilizator);
-        logger.info("Date utilizator: username=" + utilizatorSelectat.getUsername() + 
-                   ", email=" + utilizatorSelectat.getEmail() +
-                   ", nume=" + utilizatorSelectat.getNume());
-
-        // Salvăm utilizatorul în userData pentru a-l folosi în controllerul de editare
-        App.getUserData().put("idUtilizator", idUtilizator);
-        
-        // Verifică dacă ID-ul a fost salvat corect
-        String idSalvat = (String) App.getUserData().get("idUtilizator");
-        logger.info("ID utilizator salvat în userData: " + idSalvat);
-
+        logger.log(Level.INFO, "ID utilizator selectat pentru editare: {0}", idUtilizator);
         App.setRoot("editareUtilizator");
     }
 
     @FXML
-    private void stergereUtilizator() throws Exception {
+    public void stergereUtilizator() {
         User utilizatorSelectat = tabelUtilizatori.getSelectionModel().getSelectedItem();
         if (utilizatorSelectat == null) {
-            // Afișează un pop-up pentru utilizatorul neales
-            Alert alerta = new Alert(Alert.AlertType.WARNING);
-            alerta.setTitle(TITLU_ATENTIONARE);
-            alerta.setHeaderText("Niciun utilizator selectat");
-            alerta.setContentText("Te rog să selectezi un utilizator din tabel pentru a-l șterge.");
-            alerta.showAndWait();
+            afiseazaAlerta(Alert.AlertType.WARNING,
+                          TITLU_ATENTIONARE,
+                          "Niciun utilizator selectat",
+                          SELECTEAZA_UTILIZATOR + " pentru a-l șterge.");
             return;
         }
 
-        String idUtilizator = utilizatorSelectat.getId();
-        String url = "http://localhost:3000/users/" + idUtilizator;
-        HttpURLConnection clientHttp = (HttpURLConnection) new URL(url).openConnection();
-        clientHttp.setRequestMethod("DELETE");
-        int codRaspuns = clientHttp.getResponseCode();
-
-        if (codRaspuns == HttpURLConnection.HTTP_OK) {
-            // Afișează un pop-up pentru ștergere reușită
-            Alert alerta = new Alert(Alert.AlertType.INFORMATION);
-            alerta.setTitle(TITLU_SUCCES);
-            alerta.setHeaderText("Utilizator șters");
-            alerta.setContentText("Utilizatorul a fost șters cu succes.");
-            alerta.showAndWait();
-
-            tabelUtilizatori.getItems().remove(utilizatorSelectat); // Elimină utilizatorul din tabel
-            incarcaDate(); // Reîncarcă datele
-        } else {
-            // Afișează un pop-up pentru eroare
-            Alert alerta = new Alert(Alert.AlertType.ERROR);
-            alerta.setTitle(TITLU_EROARE);
-            alerta.setHeaderText("Eroare la ștergerea utilizatorului");
-            alerta.setContentText("Cod răspuns: " + codRaspuns);
-            alerta.showAndWait();
+        try {
+            String idUtilizator = utilizatorSelectat.getId();
+            HttpURLConnection conexiune = (HttpURLConnection) URI.create(URL_SERVER + "/users/" + idUtilizator)
+                                                               .toURL()
+                                                               .openConnection();
+            conexiune.setRequestMethod("DELETE");
+            conexiune.setConnectTimeout(TIMP_EXPIRARE_CONEXIUNE);
+            conexiune.setReadTimeout(TIMP_EXPIRARE_CONEXIUNE);
+            
+            int codRaspuns = conexiune.getResponseCode();
+            if (codRaspuns == HttpURLConnection.HTTP_OK) {
+                afiseazaAlerta(Alert.AlertType.INFORMATION,
+                              TITLU_SUCCES,
+                              "Utilizator șters",
+                              "Utilizatorul a fost șters cu succes.");
+                tabelUtilizatori.getItems().remove(utilizatorSelectat);
+                actualizeazaDate();
+            } else {
+                afiseazaAlerta(Alert.AlertType.ERROR,
+                              TITLU_EROARE,
+                              EROARE_STERGERE,
+                              "Cod răspuns: " + codRaspuns);
+            }
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, EROARE_STERGERE, e);
+            afiseazaAlerta(Alert.AlertType.ERROR,
+                          TITLU_EROARE,
+                          EROARE_STERGERE,
+                          EROARE_SERVER);
         }
     }
 
     @FXML
-    private void reincarca() throws Exception {
-        incarcaDate();
+    public void reincarca() {
+        actualizeazaDate();
     }
 
     @FXML
-    private void inapoiLaTablouDeBord() throws Exception {
+    public void inapoiLaTablouDeBord() throws IOException {
         App.setRoot("paginaPrincipalaAdmin");
     }
 
     @FXML
-    private void initialize() {
-        // Configurează coloanele
+    public void initialize() {
+        configurareColoane();
+        actualizeazaDate();
+    }
+
+    private void configurareColoane() {
         coloanaNumeUtilizator.setCellValueFactory(new PropertyValueFactory<>("username"));
         coloanaParola.setCellValueFactory(new PropertyValueFactory<>("parola"));
         coloanaEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
@@ -139,58 +144,67 @@ public class PaginaUseriAdminController {
         coloanaDataNasterii.setCellValueFactory(new PropertyValueFactory<>("dataNasterii"));
         coloanaAdmin.setCellValueFactory(new PropertyValueFactory<>("isAdmin"));
         coloanaId.setCellValueFactory(new PropertyValueFactory<>("id"));
-
-        // Încarcă datele în tabel
-        incarcaDate();
     }
 
-    private void incarcaDate() {
+    private void actualizeazaDate() {
         try {
-            String url = "http://localhost:3000/users/populareLista";
-            HttpURLConnection clientHttp = (HttpURLConnection) new URL(url).openConnection();
-            clientHttp.setRequestMethod("GET");
+            HttpURLConnection conexiune = (HttpURLConnection) URI.create(URL_SERVER + "/users/populareLista")
+                                                               .toURL()
+                                                               .openConnection();
+            conexiune.setRequestMethod("GET");
+            conexiune.setConnectTimeout(TIMP_EXPIRARE_CONEXIUNE);
+            conexiune.setReadTimeout(TIMP_EXPIRARE_CONEXIUNE);
 
-            int codRaspuns = clientHttp.getResponseCode();
+            int codRaspuns = conexiune.getResponseCode();
             if (codRaspuns == HttpURLConnection.HTTP_OK) {
-                try (InputStream is = clientHttp.getInputStream();
+                try (InputStream is = conexiune.getInputStream();
                      Scanner scanner = new Scanner(is, StandardCharsets.UTF_8.name())) {
                     String jsonResponse = scanner.useDelimiter("\\A").next();
-
-                    JSONArray utilizatoriArray = new JSONArray(jsonResponse);
-                    ObservableList<User> utilizatori = FXCollections.observableArrayList();
-
-                    for (int i = 0; i < utilizatoriArray.length(); i++) {
-                        JSONObject utilizatorJson = utilizatoriArray.getJSONObject(i);
-                        User utilizator = new User(
-                            utilizatorJson.getString("nume"),
-                            utilizatorJson.getString("prenume"),
-                            utilizatorJson.getString("dataNasterii"),
-                            utilizatorJson.getString("email"),
-                            utilizatorJson.getString("username"),
-                            utilizatorJson.getString("parola"),
-                            utilizatorJson.getBoolean("admin"),
-                            utilizatorJson.getString("id"),
-                            utilizatorJson.getString("telefon")
-                        );
-                        utilizatori.add(utilizator);
-                    }
-
-                    tabelUtilizatori.setItems(utilizatori);
+                    proceseazaDateUtilizatori(jsonResponse);
                 }
             } else {
-                Alert alerta = new Alert(Alert.AlertType.ERROR);
-                alerta.setTitle(TITLU_EROARE);
-                alerta.setHeaderText("Eroare la încărcarea datelor");
-                alerta.setContentText("Cod răspuns: " + codRaspuns);
-                alerta.showAndWait();
+                afiseazaAlerta(Alert.AlertType.ERROR,
+                              TITLU_EROARE,
+                              EROARE_INCARCARE,
+                              "Cod răspuns: " + codRaspuns);
             }
-        } catch (Exception e) {
-            Alert alerta = new Alert(Alert.AlertType.ERROR);
-            alerta.setTitle(TITLU_EROARE);
-            alerta.setHeaderText("Eroare la încărcarea datelor");
-            alerta.setContentText("A apărut o eroare la încărcarea datelor. Te rog să încerci din nou.");
-            alerta.showAndWait();
-            e.printStackTrace();
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, EROARE_INCARCARE, e);
+            afiseazaAlerta(Alert.AlertType.ERROR,
+                          TITLU_EROARE,
+                          EROARE_INCARCARE,
+                          EROARE_SERVER);
         }
+    }
+
+    private void proceseazaDateUtilizatori(String jsonResponse) {
+        JSONArray utilizatoriArray = new JSONArray(jsonResponse);
+        ObservableList<User> utilizatori = FXCollections.observableArrayList();
+
+        for (int i = 0; i < utilizatoriArray.length(); i++) {
+            JSONObject utilizatorJson = utilizatoriArray.getJSONObject(i);
+            User utilizator = new User(
+                utilizatorJson.getString("nume"),
+                utilizatorJson.getString("prenume"),
+                utilizatorJson.getString("dataNasterii"),
+                utilizatorJson.getString("email"),
+                utilizatorJson.getString("username"),
+                utilizatorJson.getString("parola"),
+                utilizatorJson.getBoolean("admin"),
+                utilizatorJson.getString("id"),
+                utilizatorJson.getString("telefon")
+            );
+            utilizatori.add(utilizator);
+        }
+
+        tabelUtilizatori.setItems(utilizatori);
+    }
+
+    private void afiseazaAlerta(Alert.AlertType tip, String titlu, String antet, String continut) {
+        Alert alerta = new Alert(tip);
+        alerta.setTitle(titlu);
+        alerta.setHeaderText(antet);
+        alerta.setContentText(continut);
+        alerta.showAndWait();
     }
 }
