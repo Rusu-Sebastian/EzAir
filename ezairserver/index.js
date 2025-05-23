@@ -129,6 +129,9 @@ app.get('/zboruri/orase', async (req, res) => {
 }
 );
 
+
+
+
 //metoda pentru adaugarea unui zbor
 app.post('/zboruri/adaugareZbor', async (req, res) => {
     try {
@@ -305,6 +308,27 @@ app.get('/users/:id', async (req, res) => {
         res.status(500).send('Eroare la obținerea utilizatorului');
     }
 });
+
+// Endpoint pentru obținerea unui zbor după ID
+app.get('/zboruri/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        
+        let users = await db.getData("/zboruri");
+        
+        const user = users.find(u => u.id === id);
+        
+        if (user) {
+            res.status(200).json(user);
+        } else {
+            res.status(404).send('Zborul nu a fost găsit');
+        }
+    } catch (error) {
+        console.error("Eroare la obținerea Zborului:", error);
+        res.status(500).send('Eroare la obținerea Zborului');
+    }
+});
+
 
 // Endpoint pentru a obține biletele unui utilizator
 app.get('/users/:id/bilete', async (req, res) => {

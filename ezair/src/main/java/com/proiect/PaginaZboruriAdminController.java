@@ -43,7 +43,7 @@ public class PaginaZboruriAdminController {
     @FXML private TableColumn<Zbor, String> coloanaOraSosire;
 
     @FXML
-    private void initializeaza() {
+    public void initialize() {
         configureazaColoaneTabel();
         incarcaZboruri();
     }
@@ -124,7 +124,8 @@ public class PaginaZboruriAdminController {
         }
     }
 
-    private void incarcaZboruri() {
+    @FXML
+    public void incarcaZboruri() {
         HttpURLConnection conexiune = null;
         try {
             jurnal.info("Se încearcă încărcarea zborurilor de la server...");
@@ -208,12 +209,10 @@ public class PaginaZboruriAdminController {
             for (int i = 0; i < arrayZboruri.length(); i++) {
                 try {
                     JSONObject obiectZbor = arrayZboruri.getJSONObject(i);
-                    jurnal.info("Se procesează zborul " + (i + 1) + ": " + obiectZbor.toString(2));
                     
                     Zbor zbor = construiesteZborDinJSON(obiectZbor, i);
                     if (zbor != null) {
                         listaZboruri.add(zbor);
-                        jurnal.info("Zbor procesat cu succes, ID: " + zbor.getId());
                     }
                 } catch (Exception e) {
                     jurnal.warning("Eroare la procesarea zborului " + (i + 1) + ": " + e.getMessage());

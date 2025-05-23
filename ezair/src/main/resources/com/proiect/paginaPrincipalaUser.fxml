@@ -67,7 +67,7 @@
             <HBox spacing="20" alignment="CENTER">
                <children>
                   <Button mnemonicParsing="false" onAction="#rezervaBilet" text="Rezervă bilet" />
-                  <Button mnemonicParsing="false" onAction="#contulMeu" text="Contul meu" />
+                  <Button mnemonicParsing="false" onAction="#navigheazaContulMeu" text="Contul meu" />
                   <Button mnemonicParsing="false" onAction="#deconectare" text="Deconectare" />
                </children>
             </HBox>

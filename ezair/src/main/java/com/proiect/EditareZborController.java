@@ -42,30 +42,23 @@ public class EditareZborController {
     @FXML private TextField idZbor;
 
     @FXML
-    private void initializeaza() {
-        Map<String, String> dateUtilizator = App.getDateUtilizator();
+    private void initialize() {
         
-        if (!dateUtilizator.containsKey("id")) {
-            afiseazaEroare("Eroare la încărcarea zborului", "Nu s-au găsit datele zborului pentru editare.");
-            return;
-        }
-
-        incarcaCampuri(dateUtilizator);
     }
 
-    private void incarcaCampuri(Map<String, String> dateUtilizator) {
-        idZbor.setText(dateUtilizator.get("id"));
-        origine.setText(dateUtilizator.get("origine"));
-        destinatie.setText(dateUtilizator.get("destinatie"));
+    private void incarcaCampuri(Map<String, String> dateZbor) {
+        idZbor.setText(dateZbor.get("id"));
+        origine.setText(dateZbor.get("origine"));
+        destinatie.setText(dateZbor.get("destinatie"));
         
-        incarcaDataPlecarii(dateUtilizator.get("dataPlecare"));
-        incarcaOraPlecarii(dateUtilizator.get("oraPlecare"));
-        incarcaDataSosirii(dateUtilizator.get("dataSosire"));
-        incarcaOraSosirii(dateUtilizator.get("oraSosire"));
+        incarcaDataPlecarii(dateZbor.get("dataPlecare"));
+        incarcaOraPlecarii(dateZbor.get("oraPlecare"));
+        incarcaDataSosirii(dateZbor.get("dataSosire"));
+        incarcaOraSosirii(dateZbor.get("oraSosire"));
         
-        modelAvion.setText(dateUtilizator.get("modelAvion"));
-        locuriLibere.setText(dateUtilizator.get("locuriLibere"));
-        pret.setText(dateUtilizator.get("pret"));
+        modelAvion.setText(dateZbor.get("modelAvion"));
+        locuriLibere.setText(dateZbor.get("locuriLibere"));
+        pret.setText(dateZbor.get("pret"));
     }
 
     private void incarcaDataPlecarii(String dataPlecare) {
@@ -135,8 +128,10 @@ public class EditareZborController {
         return new String[0];
     }
 
+
+
     @FXML
-    private void finalizeazaEditareZbor() {
+    private void finalizareEditareZbor() {
         if (!valideazaDate()) {
             return;
         }
@@ -226,13 +221,13 @@ public class EditareZborController {
     }
 
     private String determinaSeparatorData() {
-        Map<String, String> dateUtilizator = App.getDateUtilizator();
-        if (dateUtilizator.containsKey("dataPlecare") && 
-            dateUtilizator.get("dataPlecare").contains(SEPARATOR_DATA_SLASH)) {
-            return SEPARATOR_DATA_SLASH;
-        }
-        return SEPARATOR_DATA_PUNCT;
-    }
+    //     Map<String, String> dateZbor = App.getdateZbor();
+    //     if (dateZbor.containsKey("dataPlecare") && 
+    //         dateZbor.get("dataPlecare").contains(SEPARATOR_DATA_SLASH)) {
+    //         return SEPARATOR_DATA_SLASH;
+    //     }
+    //     return SEPARATOR_DATA_PUNCT;
+    // }
 
     private void trimiteActualizareZbor(JSONObject dateZbor) throws Exception {
         String url = URL_SERVER + idZbor.getText();

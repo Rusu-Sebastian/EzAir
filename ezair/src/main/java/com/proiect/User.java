@@ -60,15 +60,16 @@ public class User {
         return parola;
     }
 
-    public boolean esteAdmin() {
-        return esteAdmin;
-    }
-
     public String getId() {
         return id;
     }
 
     public String getTelefon() {
         return telefon;
+    }
+
+    // Getter for admin status
+    public boolean getEsteAdmin() {
+        return esteAdmin;
     }
 }

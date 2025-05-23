@@ -23,8 +23,8 @@
             <Text layoutX="425.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" />
             <Text layoutX="422.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Parola" />
             <Text layoutX="425.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" />
-            <Button fx:id="butonback" layoutX="418.0" layoutY="290.0" mnemonicParsing="false" onAction="#backCreareContFinal" text="Back" textAlignment="JUSTIFY" />
-            <Button fx:id="butonFinalNext" defaultButton="true" layoutX="751.0" layoutY="290.0" mnemonicParsing="false" onAction="#creareContFinal" text="Next" />
+            <Button fx:id="butonback" layoutX="418.0" layoutY="290.0" mnemonicParsing="false" onAction="#revinoPagina" text="Back" textAlignment="JUSTIFY" />
+            <Button fx:id="butonFinalNext" defaultButton="true" layoutX="751.0" layoutY="290.0" mnemonicParsing="false" onAction="#finalizeazaCreareCont" text="Next" />
             <ImageView fitHeight="180.0" fitWidth="180.0" layoutX="6.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@logo.png" />
@@ -40,7 +40,7 @@
                   <Font name="Noto Sans Math Regular" size="15.0" />
                </font>
             </Text>
-            <Text fx:id="ButonText" layoutX="545.0" layoutY="340.0" onMouseClicked="#cancelCreareCont" strokeType="OUTSIDE" strokeWidth="0.0" text="Am deja cont!" underline="true" />
+            <Text fx:id="ButonText" layoutX="545.0" layoutY="340.0" onMouseClicked="#anuleazaCreareCont" strokeType="OUTSIDE" strokeWidth="0.0" text="Am deja cont!" underline="true" />
             <Text layoutX="422.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Confirmare Parola" />
             <CheckBox fx:id="checkAdmin" layoutX="625.0" layoutY="242.0" mnemonicParsing="false" text="Admin" />
          </children>

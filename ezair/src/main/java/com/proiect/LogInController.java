@@ -21,25 +21,34 @@ import javafx.scene.control.TextField;
 
 public class LogInController {
     private static final Logger jurnal = Logger.getLogger(LogInController.class.getName());
-    private static final String URL_SERVER = "http://localhost:3000";
+    static final String URL_SERVER = "http://localhost:3000";
     private static final String TITLU_EROARE = "Eroare";
     private static final String TITLU_ATENTIONARE = "Atenționare";
-    private static final int TIMP_EXPIRARE_CONEXIUNE = 5000; // 5 secunde
+    private static final int TIMP_EXPIRARE_CONEXIUNE = 5000;
     
-    // Constants for user data keys
-    private static final String CHEIE_NUME_UTILIZATOR = "username";
-    private static final String CHEIE_NUME = "nume";
-    private static final String CHEIE_PRENUME = "prenume";
-    private static final String CHEIE_ID_UTILIZATOR = "userId";
-    private static final String CHEIE_ADMIN = "admin";
+    public static final String CHEIE_NUME_UTILIZATOR = "username";
+    public static final String CHEIE_NUME = "nume";
+    public static final String CHEIE_PRENUME = "prenume";
+    public static final String CHEIE_ID_UTILIZATOR = "userId";
+    public static final String CHEIE_ADMIN = "admin";
     
-    // Constants for JSON fields
-    private static final String CAMP_USERNAME = "username";
-    private static final String CAMP_PAROLA = "parola";
-    private static final String CAMP_ID = "id";
+    public static final String CAMP_USERNAME = "username";
+    public static final String CAMP_PAROLA = "parola";
+    public static final String CAMP_ID = "id";
 
-    @FXML private TextField numeUtilizator;
-    @FXML private PasswordField parola;
+    @FXML public TextField numeUtilizator;
+    @FXML public PasswordField parola;
+    
+    public final HttpConnectionFactory connectionFactory;
+
+    public LogInController() {
+        this(new DefaultHttpConnectionFactory());
+    }
+    
+    // Constructor for testing
+    LogInController(HttpConnectionFactory connectionFactory) {
+        this.connectionFactory = connectionFactory;
+    }
 
     @FXML
     public void autentificare() {
@@ -59,7 +68,7 @@ public class LogInController {
         }
     }
 
-    private boolean valideazaIntrari() {
+    public boolean valideazaIntrari() {
         if (numeUtilizator.getText().trim().isEmpty() || parola.getText().isEmpty()) {
             afiseazaAlerta(Alert.AlertType.WARNING,
                           TITLU_ATENTIONARE,
@@ -73,9 +82,13 @@ public class LogInController {
     private void autentificaUtilizator(JSONObject dateAutentificare) throws IOException, URISyntaxException {
         HttpURLConnection conexiune = null;
         try {
-            conexiune = configureazaConexiune("/users/login", "POST");
+            URI uri = new URI(URL_SERVER + "/users/login");
+            conexiune = connectionFactory.createConnection(uri);
+            conexiune.setRequestMethod("POST");
             conexiune.setRequestProperty("Content-Type", "application/json");
             conexiune.setDoOutput(true);
+            conexiune.setConnectTimeout(TIMP_EXPIRARE_CONEXIUNE);
+            conexiune.setReadTimeout(TIMP_EXPIRARE_CONEXIUNE);
 
             try (OutputStream os = conexiune.getOutputStream()) {
                 os.write(dateAutentificare.toString().getBytes(StandardCharsets.UTF_8));
@@ -108,11 +121,14 @@ public class LogInController {
     private void proceseazaRaspunsAutentificare(HttpURLConnection conexiune) throws IOException {
         try (InputStream is = conexiune.getInputStream();
              Scanner scanner = new Scanner(is, StandardCharsets.UTF_8.name())) {
+            
             String raspuns = scanner.useDelimiter("\\A").next();
+            jurnal.info("Răspuns autentificare: " + raspuns);
             JSONObject dateUtilizator = new JSONObject(raspuns);
-
+            
             salveazaDateUtilizator(dateUtilizator);
-            redirectioneazaUtilizator(dateUtilizator.getBoolean(CHEIE_ADMIN));
+            boolean esteAdmin = dateUtilizator.getBoolean(CHEIE_ADMIN);
+            redirectioneazaUtilizator(esteAdmin);
         }
     }
 
@@ -151,18 +167,8 @@ public class LogInController {
             afiseazaAlerta(Alert.AlertType.ERROR,
                           TITLU_EROARE,
                           "Eroare de navigare",
-                          "Nu s-a putut deschide pagina de creare cont. Te rugăm să încerci din nou.");
+                          "Nu s-a putut încărca pagina de creare cont. Te rugăm să încerci din nou.");
         }
-    }
-
-    private HttpURLConnection configureazaConexiune(String caleApi, String metodaHttp) 
-            throws IOException, URISyntaxException {
-        URI uri = new URI(URL_SERVER + caleApi);
-        HttpURLConnection conexiune = (HttpURLConnection) uri.toURL().openConnection();
-        conexiune.setRequestMethod(metodaHttp);
-        conexiune.setConnectTimeout(TIMP_EXPIRARE_CONEXIUNE);
-        conexiune.setReadTimeout(TIMP_EXPIRARE_CONEXIUNE);
-        return conexiune;
     }
 
     private void redirectioneazaLaEroareConexiune() {
@@ -170,20 +176,15 @@ public class LogInController {
             App.setRoot("eroareConexiune");
         } catch (IOException e) {
             jurnal.log(Level.SEVERE, "Eroare la redirecționarea către pagina de eroare", e);
-            afiseazaAlerta(Alert.AlertType.ERROR,
-                          TITLU_EROARE,
-                          "Eroare critică",
-                          "Nu s-a putut afișa pagina de eroare. Vă rugăm să reporniți aplicația.");
+            Platform.exit();
         }
     }
 
     private void afiseazaAlerta(Alert.AlertType tip, String titlu, String antet, String continut) {
-        Platform.runLater(() -> {
-            Alert alerta = new Alert(tip);
-            alerta.setTitle(titlu);
-            alerta.setHeaderText(antet);
-            alerta.setContentText(continut);
-            alerta.showAndWait();
-        });
+        Alert alerta = new Alert(tip);
+        alerta.setTitle(titlu);
+        alerta.setHeaderText(antet);
+        alerta.setContentText(continut);
+        alerta.showAndWait();
     }
 }

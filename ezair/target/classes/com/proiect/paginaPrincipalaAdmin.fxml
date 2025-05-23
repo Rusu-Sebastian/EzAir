@@ -28,10 +28,11 @@
       </AnchorPane>
       <Pane prefHeight="219.0" prefWidth="735.0">
          <children>
-            <Button fx:id="butonZboruri" layoutX="128.0" layoutY="68.0" mnemonicParsing="false" onAction="#zboruriAdmin" prefHeight="83.0" prefWidth="83.0" text="Zboruri" />
-            <Button fx:id="butonUseri" layoutX="507.0" layoutY="68.0" mnemonicParsing="false" onAction="#useriAdmin" prefHeight="83.0" prefWidth="83.0" text="Utilizatori" />
+            <Button fx:id="butonZboruri" layoutX="128.0" layoutY="68.0" mnemonicParsing="false" onAction="#gestioneazaZboruri" prefHeight="83.0" prefWidth="83.0" text="Zboruri" />
+            <Button fx:id="butonUseri" layoutX="507.0" layoutY="68.0" mnemonicParsing="false" onAction="#gestioneazaUtilizatori" prefHeight="83.0" prefWidth="83.0" text="Utilizatori" />
          </children>
       </Pane>
+      <Button fx:id="butonDeconectare" mnemonicParsing="false" onAction="#deconectare" prefHeight="40.0" prefWidth="120.0" text="Deconectare" />
    </children>
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

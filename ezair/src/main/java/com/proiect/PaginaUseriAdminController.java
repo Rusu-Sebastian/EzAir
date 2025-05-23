@@ -136,13 +136,13 @@ public class PaginaUseriAdminController {
     }
 
     private void configurareColoane() {
-        coloanaNumeUtilizator.setCellValueFactory(new PropertyValueFactory<>("username"));
+        coloanaNumeUtilizator.setCellValueFactory(new PropertyValueFactory<>("numeUtilizator"));
         coloanaParola.setCellValueFactory(new PropertyValueFactory<>("parola"));
         coloanaEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         coloanaNume.setCellValueFactory(new PropertyValueFactory<>("nume"));
         coloanaPrenume.setCellValueFactory(new PropertyValueFactory<>("prenume"));
         coloanaDataNasterii.setCellValueFactory(new PropertyValueFactory<>("dataNasterii"));
-        coloanaAdmin.setCellValueFactory(new PropertyValueFactory<>("isAdmin"));
+        coloanaAdmin.setCellValueFactory(new PropertyValueFactory<>("esteAdmin"));
         coloanaId.setCellValueFactory(new PropertyValueFactory<>("id"));
     }
 
@@ -183,16 +183,18 @@ public class PaginaUseriAdminController {
 
         for (int i = 0; i < utilizatoriArray.length(); i++) {
             JSONObject utilizatorJson = utilizatoriArray.getJSONObject(i);
+            // Handle case where telefon may be missing
+            String telefon = utilizatorJson.has("telefon") ? utilizatorJson.getString("telefon") : "";
             User utilizator = new User(
                 utilizatorJson.getString("nume"),
                 utilizatorJson.getString("prenume"),
                 utilizatorJson.getString("dataNasterii"),
                 utilizatorJson.getString("email"),
-                utilizatorJson.getString("username"),
+                utilizatorJson.getString("numeUtilizator"),
                 utilizatorJson.getString("parola"),
-                utilizatorJson.getBoolean("admin"),
+                utilizatorJson.getBoolean("esteAdmin"),
                 utilizatorJson.getString("id"),
-                utilizatorJson.getString("telefon")
+                telefon
             );
             utilizatori.add(utilizator);
         }

@@ -9,18 +9,18 @@ public class EditareContClientController {
     private static final String TITLU_SUCCES = "Succes";
     private static final String REGEX_EMAIL = "^[A-Za-z0-9+_.-]+@(.+)$";
     
-    @FXML private TextField campNume;
-    @FXML private TextField campPrenume;
-    @FXML private TextField campEmail;
-    @FXML private TextField campTelefon;
+    @FXML private TextField fieldNume;
+    @FXML private TextField fieldPrenume;
+    @FXML private TextField fieldEmail;
+    @FXML private TextField fieldTelefon;
     
     @FXML
-    private void initializeaza() {
+    private void initialize() {
         // Populează câmpurile cu datele utilizatorului curent
-        campNume.setText((String) App.getDateUtilizator().get("nume"));
-        campPrenume.setText((String) App.getDateUtilizator().get("prenume"));
-        campEmail.setText((String) App.getDateUtilizator().get("email"));
-        campTelefon.setText((String) App.getDateUtilizator().getOrDefault("telefon", ""));
+        fieldNume.setText((String) App.getDateUtilizator().get("nume"));
+        fieldPrenume.setText((String) App.getDateUtilizator().get("prenume"));
+        fieldEmail.setText((String) App.getDateUtilizator().get("email"));
+        fieldTelefon.setText((String) App.getDateUtilizator().getOrDefault("telefon", ""));
     }
     
     @FXML
@@ -40,14 +40,14 @@ public class EditareContClientController {
     }
     
     private boolean valideazaDate() {
-        if (campNume.getText().isEmpty() || 
-            campPrenume.getText().isEmpty() || 
-            campEmail.getText().isEmpty()) {
+        if (fieldNume.getText().isEmpty() || 
+            fieldPrenume.getText().isEmpty() || 
+            fieldEmail.getText().isEmpty()) {
             afiseazaEroare("Numele, prenumele și email-ul sunt obligatorii.");
             return false;
         }
         
-        if (!esteEmailValid(campEmail.getText())) {
+        if (!esteEmailValid(fieldEmail.getText())) {
             afiseazaEroare("Adresa de email nu este validă.");
             return false;
         }
@@ -56,14 +56,19 @@ public class EditareContClientController {
     }
     
     private void actualizeazaDateUtilizator() {
-        App.getDateUtilizator().put("nume", campNume.getText());
-        App.getDateUtilizator().put("prenume", campPrenume.getText());
-        App.getDateUtilizator().put("email", campEmail.getText());
-        App.getDateUtilizator().put("telefon", campTelefon.getText());
+        App.getDateUtilizator().put("nume", fieldNume.getText());
+        App.getDateUtilizator().put("prenume", fieldPrenume.getText());
+        App.getDateUtilizator().put("email", fieldEmail.getText());
+        App.getDateUtilizator().put("telefon", fieldTelefon.getText());
     }
     
     @FXML
     private void revino() throws Exception {
+        App.setRoot("paginaContClient");
+    }
+    
+    @FXML
+    private void anuleaza() throws Exception {
         App.setRoot("paginaContClient");
     }
     

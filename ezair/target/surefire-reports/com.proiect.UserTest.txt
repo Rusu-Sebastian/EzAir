@@ -1,0 +1,13 @@
+-------------------------------------------------------------------------------
+Test set: com.proiect.UserTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 0, Errors: 3, Skipped: 0, Time elapsed: 0.024 s <<< FAILURE! - in com.proiect.UserTest
+com.proiect.UserTest.testConstructorAdmin  Time elapsed: 0.016 s  <<< ERROR!
+java.lang.reflect.InaccessibleObjectException: Unable to make void com.proiect.UserTest.setUp() accessible: module com.proiect does not "opens com.proiect" to unnamed module @3b69e7d1
+
+com.proiect.UserTest.testConstructorNullValues  Time elapsed: 0.001 s  <<< ERROR!
+java.lang.reflect.InaccessibleObjectException: Unable to make void com.proiect.UserTest.setUp() accessible: module com.proiect does not "opens com.proiect" to unnamed module @3b69e7d1
+
+com.proiect.UserTest.testConstructorNonAdmin  Time elapsed: 0.001 s  <<< ERROR!
+java.lang.reflect.InaccessibleObjectException: Unable to make void com.proiect.UserTest.setUp() accessible: module com.proiect does not "opens com.proiect" to unnamed module @3b69e7d1
+

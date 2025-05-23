@@ -1,0 +1,86 @@
+-------------------------------------------------------------------------------
+Test set: com.proiect.LogInControllerTest
+-------------------------------------------------------------------------------
+Tests run: 7, Failures: 0, Errors: 7, Skipped: 0, Time elapsed: 0.917 s <<< FAILURE! - in com.proiect.LogInControllerTest
+com.proiect.LogInControllerTest.testAutentificareCredentialeInvalide  Time elapsed: 0.852 s  <<< ERROR!
+org.mockito.exceptions.base.MockitoException: 
+
+Mockito cannot mock this class: class javafx.scene.control.TextField.
+
+If you're not sure why you're getting this error, please open an issue on GitHub.
+
+
+Java               : 23
+JVM vendor name    : Oracle Corporation
+JVM vendor version : 23.0.2+7-58
+JVM name           : Java HotSpot(TM) 64-Bit Server VM
+JVM version        : 23.0.2+7-58
+JVM info           : mixed mode
+OS name            : Linux
+OS version         : 6.11.0-26-generic
+
+
+You are seeing this disclaimer because Mockito is configured to create inlined mocks.
+You can learn about inline mocks and their limitations under item #39 of the Mockito class javadoc.
+
+Underlying exception : org.mockito.exceptions.base.MockitoException: Cannot instrument class javafx.scene.control.TextField because it or one of its supertypes could not be initialized
+Caused by: org.mockito.exceptions.base.MockitoException: Cannot instrument class javafx.scene.control.TextField because it or one of its supertypes could not be initialized
+Caused by: java.lang.IllegalStateException: Toolkit not initialized
+
+com.proiect.LogInControllerTest.testValideazaIntrariCampuriGoale  Time elapsed: 0.006 s  <<< ERROR!
+org.mockito.exceptions.base.MockitoException: 
+
+Mockito cannot mock this class: class javafx.scene.control.TextField.
+
+If you're not sure why you're getting this error, please open an issue on GitHub.
+
+
+Java               : 23
+JVM vendor name    : Oracle Corporation
+JVM vendor version : 23.0.2+7-58
+JVM name           : Java HotSpot(TM) 64-Bit Server VM
+JVM version        : 23.0.2+7-58
+JVM info           : mixed mode
+OS name            : Linux
+OS version         : 6.11.0-26-generic
+
+
+You are seeing this disclaimer because Mockito is configured to create inlined mocks.
+You can learn about inline mocks and their limitations under item #39 of the Mockito class javadoc.
+
+Underlying exception : java.lang.IllegalArgumentException: Could not create type
+Caused by: java.lang.IllegalArgumentException: Could not create type
+Caused by: java.lang.InternalError: class redefinition failed: invalid class
+
+com.proiect.LogInControllerTest.testAutentificareSuccesUtilizatorNormal  Time elapsed: 0.003 s  <<< ERROR!
+java.lang.NoClassDefFoundError: Could not initialize class javafx.scene.control.TextField
+Caused by: java.lang.ExceptionInInitializerError: Exception java.lang.ExceptionInInitializerError [in thread "main"]
+
+com.proiect.LogInControllerTest.testAutentificareSuccesAdmin  Time elapsed: 0.004 s  <<< ERROR!
+org.mockito.exceptions.misusing.UnfinishedMockingSessionException: 
+
+Unfinished mocking session detected.
+Previous MockitoSession was not concluded with 'finishMocking()'.
+For examples of correct usage see javadoc for MockitoSession class.
+
+com.proiect.LogInControllerTest.testAutentificareEroareServer  Time elapsed: 0.001 s  <<< ERROR!
+org.mockito.exceptions.misusing.UnfinishedMockingSessionException: 
+
+Unfinished mocking session detected.
+Previous MockitoSession was not concluded with 'finishMocking()'.
+For examples of correct usage see javadoc for MockitoSession class.
+
+com.proiect.LogInControllerTest.testAutentificareTimeoutConexiune  Time elapsed: 0.002 s  <<< ERROR!
+org.mockito.exceptions.misusing.UnfinishedMockingSessionException: 
+
+Unfinished mocking session detected.
+Previous MockitoSession was not concluded with 'finishMocking()'.
+For examples of correct usage see javadoc for MockitoSession class.
+
+com.proiect.LogInControllerTest.testValideazaIntrariCampuriCompletate  Time elapsed: 0.002 s  <<< ERROR!
+org.mockito.exceptions.misusing.UnfinishedMockingSessionException: 
+
+Unfinished mocking session detected.
+Previous MockitoSession was not concluded with 'finishMocking()'.
+For examples of correct usage see javadoc for MockitoSession class.
+

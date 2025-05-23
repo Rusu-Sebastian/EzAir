@@ -42,7 +42,7 @@ public class PaginaContClientController {
     @FXML private TableColumn<Bilet, String> coloanaStare;
 
     @FXML
-    private void initializeaza() {
+    private void initialize() {
         configureazaTabele();
         incarcaInformatiiUtilizator();
         incarcaBilete();
@@ -363,6 +363,33 @@ public class PaginaContClientController {
     @FXML
     private void revino() throws Exception {
         App.setRoot("paginaPrincipalaUser");
+    }
+    
+    @FXML
+    private void inapoi() throws Exception {
+        App.setRoot("paginaPrincipalaUser");
+    }
+    
+    @FXML
+    private void anulareBilet() {
+        // Redirecționează la metoda existentă
+        anuleazaBilet();
+    }
+    
+    @FXML
+    private void schimbaData() throws Exception {
+        // Redirecționează la metoda existentă
+        schimbaDataZbor();
+    }
+    
+    @FXML
+    private void notificari() throws Exception {
+        App.setRoot("setariNotificari");
+    }
+    
+    @FXML
+    private void editareInformatii() throws Exception {
+        App.setRoot("editareContClient");
     }
 
     private void afiseazaEroare(String mesaj) {

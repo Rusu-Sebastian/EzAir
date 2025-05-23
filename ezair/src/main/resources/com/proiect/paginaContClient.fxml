@@ -26,8 +26,8 @@
                   <VBox spacing="10" styleClass="card">
                      <Label fx:id="labelNume" />
                      <Label fx:id="labelEmail" />
-                     <Label fx:id="labelUsername" />
-                     <Button onAction="#editareInformatii" text="Editare informații" />
+                     <Label fx:id="labelNumeUtilizator" />
+                     <Button onAction="#editeazaInformatii" text="Editare informații" />
                   </VBox>
                </content>
             </Tab>
@@ -44,7 +44,7 @@
                      </TableView>
                      <HBox spacing="10">
                         <Button onAction="#anulareBilet" text="Anulare bilet" />
-                        <Button onAction="#schimbaData" text="Schimbă data" />
+                        <Button onAction="#schimbaDataZbor" text="Schimbă data" />
                      </HBox>
                   </VBox>
                </content>

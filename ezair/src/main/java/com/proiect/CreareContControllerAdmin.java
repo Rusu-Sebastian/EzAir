@@ -22,28 +22,24 @@ public class CreareContControllerAdmin {
     private static final String CAMP_ZI_NASTERE = "#ziuaNasterii";
     private static final String CAMP_LUNA_NASTERE = "#lunaNasterii";
     private static final String CAMP_AN_NASTERE = "#anNasterii";
-    private static final String CAMP_NUME_UTILIZATOR = "#numeUtilizator";
+    private static final String CAMP_NUME_UTILIZATOR = "#username";
 
     @FXML
-    private void backCreareContInceput() throws IOException {
+    private void anuleazaCreareCont() throws IOException {
         jurnal.info("Navigare înapoi la pagina de utilizatori.");
         App.setRoot(PAGINA_USERI_ADMIN);
     }
 
     @FXML
-    private void backCreareContFinal() throws IOException {
+    private void revinoPagina() throws IOException {
         jurnal.info("Navigare înapoi la pagina creareContInceput.");
         App.setRoot("creareContInceputAdmin");
     }
 
-    @FXML
-    private void cancelCreareCont() throws IOException {
-        jurnal.info("Anulare creare cont și navigare înapoi la pagina de utilizatori.");
-        App.setRoot(PAGINA_USERI_ADMIN);
-    }
+    /* This method is now replaced by anuleazaCreareCont */
 
     @FXML
-    private void creareContInceput() throws IOException {
+    private void proceseazaDatePersonale() throws IOException {
         try {
             String nume = ((TextField) App.scena.lookup("#nume")).getText();
             String prenume = ((TextField) App.scena.lookup("#prenume")).getText();
@@ -121,7 +117,7 @@ public class CreareContControllerAdmin {
     }
 
     @FXML
-    private void creareContFinal() throws IOException {
+    private void finalizeazaCreareCont() throws IOException {
         try {
             TextField campNumeUtilizator = (TextField) App.scena.lookup(CAMP_NUME_UTILIZATOR);
             TextField campParola = (TextField) App.scena.lookup("#parola");
@@ -209,7 +205,7 @@ public class CreareContControllerAdmin {
         String jsonCerere = String.format(
             "{\"nume\": \"%s\", \"prenume\": \"%s\", \"dataNasterii\": \"%s\", \"email\": \"%s\", \"numeUtilizator\": \"%s\", \"parola\": \"%s\", \"esteAdmin\": %b}",
             utilizatorNou.getNume(), utilizatorNou.getPrenume(), utilizatorNou.getDataNasterii(),
-            utilizatorNou.getEmail(), utilizatorNou.getNumeUtilizator(), utilizatorNou.getParola(), utilizatorNou.esteAdmin()
+            utilizatorNou.getEmail(), utilizatorNou.getNumeUtilizator(), utilizatorNou.getParola(), utilizatorNou.getEsteAdmin()
         );
 
         try (OutputStream os = conexiuneHttp.getOutputStream()) {

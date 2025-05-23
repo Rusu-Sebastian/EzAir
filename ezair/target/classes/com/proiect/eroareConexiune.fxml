@@ -36,7 +36,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Button fx:id="butonReincercare" layoutX="239.0" layoutY="150.0" mnemonicParsing="false" onAction="#reincarcare" styleClass="retry-button" text="Încearcă din nou">
+            <Button fx:id="butonReincercare" layoutX="239.0" layoutY="150.0" mnemonicParsing="false" onAction="#reincearcaConexiunea" styleClass="retry-button" text="Încearcă din nou">
                <font>
                   <Font size="14.0" />
                </font>

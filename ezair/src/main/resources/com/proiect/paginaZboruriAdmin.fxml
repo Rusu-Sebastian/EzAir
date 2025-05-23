@@ -31,11 +31,11 @@
                   <Font size="24.0" />
                </font>
             </Text>
-            <Button fx:id="butonAdminAddZbor" layoutX="584.0" layoutY="24.0" mnemonicParsing="false" onAction="#adaugareZbor" text="ADAUGĂ" />
-            <Button fx:id="butonEditAdminZbor" layoutX="669.0" layoutY="24.0" mnemonicParsing="false" onAction="#editareZbor" text="EDITEAZĂ" />
-            <Button fx:id="butonDeleteAdminZbor" layoutX="749.0" layoutY="24.0" mnemonicParsing="false" onAction="#deleteZbor" text="ȘTERGE" />
-            <Button fx:id="butonReloadAdminZbor" layoutX="846.0" layoutY="24.0" mnemonicParsing="false" onAction="#reload" text="REÎNCARCĂ" />
-            <Button fx:id="butonReloadAdminZbor1" layoutX="932.0" layoutY="24.0" mnemonicParsing="false" onAction="#backToDashboard" text="TABLOU DE BORD" />
+            <Button fx:id="butonAdminAddZbor" layoutX="584.0" layoutY="24.0" mnemonicParsing="false" onAction="#adaugaZbor" text="ADAUGĂ" />
+            <Button fx:id="butonEditAdminZbor" layoutX="669.0" layoutY="24.0" mnemonicParsing="false" onAction="#editeazaZbor" text="EDITEAZĂ" />
+            <Button fx:id="butonDeleteAdminZbor" layoutX="749.0" layoutY="24.0" mnemonicParsing="false" onAction="#stergeZbor" text="ȘTERGE" />
+            <Button fx:id="butonReloadAdminZbor" layoutX="846.0" layoutY="24.0" mnemonicParsing="false" onAction="#incarcaZboruri" text="REÎNCARCĂ" />
+            <Button fx:id="butonReloadAdminZbor1" layoutX="932.0" layoutY="24.0" mnemonicParsing="false" onAction="#revinoPaginaPrincipala" text="TABLOU DE BORD" />
          </children>
       </AnchorPane>
       <Pane prefHeight="690.0" prefWidth="1269.0">
@@ -44,10 +44,10 @@
               <columns>
                 <TableColumn fx:id="coloanaOrigine" prefWidth="184.0" text="Origine" />
                 <TableColumn fx:id="coloanaDestinatie" prefWidth="173.0" text="Destinație" />
-                  <TableColumn fx:id="coloanaDataPlecarii" prefWidth="153.0" text="Data Plecării" />
-                  <TableColumn fx:id="coloanaOraPlecarii" prefWidth="126.0" text="Ora plecării" />
-                  <TableColumn fx:id="coloanaDataSosirii" prefWidth="153.0" text="Data sosirii" />
-                  <TableColumn fx:id="coloanaOraSosirii" prefWidth="132.0" text="Ora sosirii" />
+                  <TableColumn fx:id="coloanaDataPlecare" prefWidth="153.0" text="Data Plecării" />
+                  <TableColumn fx:id="coloanaOraPlecare" prefWidth="126.0" text="Ora plecării" />
+                  <TableColumn fx:id="coloanaDataSosire" prefWidth="153.0" text="Data sosirii" />
+                  <TableColumn fx:id="coloanaOraSosire" prefWidth="132.0" text="Ora sosirii" />
                   <TableColumn fx:id="coloanaModelAvion" prefWidth="222.0" text="Model Avion" />
                   <TableColumn fx:id="coloanaLocuriLibere" prefWidth="116.0" text="Locuri libere" />
                   <TableColumn fx:id="coloanaPret" prefWidth="116.0" text="Preț" />

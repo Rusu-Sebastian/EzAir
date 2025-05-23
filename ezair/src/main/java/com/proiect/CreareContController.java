@@ -152,7 +152,7 @@ public class CreareContController {
             String jsonCerere = String.format(
                 "{\"nume\": \"%s\", \"prenume\": \"%s\", \"dataNasterii\": \"%s\", \"email\": \"%s\", \"numeUtilizator\": \"%s\", \"parola\": \"%s\", \"esteAdmin\": %b}",
                 utilizatorNou.getNume(), utilizatorNou.getPrenume(), utilizatorNou.getDataNasterii(),
-                utilizatorNou.getEmail(), utilizatorNou.getNumeUtilizator(), utilizatorNou.getParola(), utilizatorNou.esteAdmin()
+                utilizatorNou.getEmail(), utilizatorNou.getNumeUtilizator(), utilizatorNou.getParola(), utilizatorNou.getEsteAdmin()
             );
 
             try (OutputStream os = conexiuneHttp.getOutputStream()) {
