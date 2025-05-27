@@ -74,7 +74,7 @@ public class App extends Application {
         try {
             scena = new Scene(loadFXML(fxml), 1680, 720);
             stage.setTitle("EZAir");
-             Image icon = new Image(App.class.getResourceAsStream("logo.png"));
+            Image icon = new Image(App.class.getResourceAsStream("logo.png"));
             stage.getIcons().add(icon);
             stage.setScene(scena);
             stage.show();
