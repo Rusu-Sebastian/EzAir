@@ -11,15 +11,15 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.CreareContController">
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.CreareContController" styleClass="root" stylesheets="@styles.css">
    <children>
       <Pane prefHeight="358.0" prefWidth="937.0">
          <children>
             <TextField fx:id="email" layoutX="625.0" layoutY="80.0" prefHeight="26.0" prefWidth="173.0" promptText="email.email1@email.com" />
-            <TextField fx:id="username" layoutX="625.0" layoutY="120.0" prefHeight="26.0" prefWidth="173.0" promptText="RusuSebastian123" />
+            <TextField fx:id="numeUtilizator" layoutX="625.0" layoutY="120.0" prefHeight="26.0" prefWidth="173.0" promptText="RusuSebastian123" />
             <PasswordField fx:id="parola" layoutX="625.0" layoutY="157.0" prefHeight="26.0" prefWidth="173.0" promptText="***************" />
             <PasswordField fx:id="confirmareParola" layoutX="625.0" layoutY="199.0" prefHeight="26.0" prefWidth="173.0" promptText="***************" />
-            <Text layoutX="425.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" />
+            <Text layoutX="425.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nume Utilizator" />
             <Text layoutX="422.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Parola" />
             <Text layoutX="425.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" />
             <Button fx:id="butonback" layoutX="425.0" layoutY="242.0" mnemonicParsing="false" onAction="#backCreareContFinal" text="Back" textAlignment="JUSTIFY" />

@@ -60,7 +60,17 @@ public class User {
         return parola;
     }
 
+    public boolean isAdmin() {
+        return esteAdmin;
+    }
+    
+    // Keep legacy getter for backward compatibility
     public boolean esteAdmin() {
+        return esteAdmin;
+    }
+
+    // JavaFX property getter for TableView
+    public boolean getEsteAdmin() {
         return esteAdmin;
     }
 

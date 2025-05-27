@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" prefHeight="850.0" prefWidth="1541.0" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.PaginaZboruriAdminController">
+<VBox alignment="CENTER" prefHeight="850.0" prefWidth="1541.0" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.PaginaZboruriAdminController" styleClass="root" stylesheets="@styles.css">
    <children>
       <AnchorPane prefHeight="46.0" prefWidth="937.0">
          <children>
@@ -31,23 +31,23 @@
                   <Font size="24.0" />
                </font>
             </Text>
-            <Button fx:id="butonAdminAddZbor" layoutX="584.0" layoutY="24.0" mnemonicParsing="false" onAction="#adaugareZbor" text="ADAUGĂ" />
-            <Button fx:id="butonEditAdminZbor" layoutX="669.0" layoutY="24.0" mnemonicParsing="false" onAction="#editareZbor" text="EDITEAZĂ" />
-            <Button fx:id="butonDeleteAdminZbor" layoutX="749.0" layoutY="24.0" mnemonicParsing="false" onAction="#deleteZbor" text="ȘTERGE" />
-            <Button fx:id="butonReloadAdminZbor" layoutX="846.0" layoutY="24.0" mnemonicParsing="false" onAction="#reload" text="REÎNCARCĂ" />
-            <Button fx:id="butonReloadAdminZbor1" layoutX="932.0" layoutY="24.0" mnemonicParsing="false" onAction="#backToDashboard" text="TABLOU DE BORD" />
+            <Button fx:id="butonAdaugareZbor" layoutX="584.0" layoutY="24.0" mnemonicParsing="false" onAction="#adaugaZbor" text="ADAUGĂ" />
+            <Button fx:id="butonEditareZbor" layoutX="669.0" layoutY="24.0" mnemonicParsing="false" onAction="#editeazaZbor" text="EDITEAZĂ" />
+            <Button fx:id="butonStergereZbor" layoutX="749.0" layoutY="24.0" mnemonicParsing="false" onAction="#stergeZbor" text="ȘTERGE" />
+            <Button fx:id="butonReincarcaZboruri" layoutX="846.0" layoutY="24.0" mnemonicParsing="false" onAction="#reincarcaZboruri" text="REÎNCARCĂ" />
+            <Button fx:id="butonRevinoPaginaPrincipala" layoutX="932.0" layoutY="24.0" mnemonicParsing="false" onAction="#revinoPaginaPrincipala" text="TABLOU DE BORD" />
          </children>
       </AnchorPane>
       <Pane prefHeight="690.0" prefWidth="1269.0">
          <children>
-            <TableView fx:id="tabelZboruri" layoutX="6.0" layoutY="6.0" prefHeight="651.0" prefWidth="1490.0">
+            <TableView fx:id="tabelZboruri" prefHeight="651.0" prefWidth="1490.0" VBox.vgrow="ALWAYS">
               <columns>
                 <TableColumn fx:id="coloanaOrigine" prefWidth="184.0" text="Origine" />
                 <TableColumn fx:id="coloanaDestinatie" prefWidth="173.0" text="Destinație" />
-                  <TableColumn fx:id="coloanaDataPlecarii" prefWidth="153.0" text="Data Plecării" />
-                  <TableColumn fx:id="coloanaOraPlecarii" prefWidth="126.0" text="Ora plecării" />
-                  <TableColumn fx:id="coloanaDataSosirii" prefWidth="153.0" text="Data sosirii" />
-                  <TableColumn fx:id="coloanaOraSosirii" prefWidth="132.0" text="Ora sosirii" />
+                  <TableColumn fx:id="coloanaDataPlecare" prefWidth="153.0" text="Data Plecării" />
+                  <TableColumn fx:id="coloanaOraPlecare" prefWidth="126.0" text="Ora plecării" />
+                  <TableColumn fx:id="coloanaDataSosire" prefWidth="153.0" text="Data sosirii" />
+                  <TableColumn fx:id="coloanaOraSosire" prefWidth="132.0" text="Ora sosirii" />
                   <TableColumn fx:id="coloanaModelAvion" prefWidth="222.0" text="Model Avion" />
                   <TableColumn fx:id="coloanaLocuriLibere" prefWidth="116.0" text="Locuri libere" />
                   <TableColumn fx:id="coloanaPret" prefWidth="116.0" text="Preț" />

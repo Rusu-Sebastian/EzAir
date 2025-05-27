@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.EditareContClientController">
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.EditareContClientController" styleClass="root" stylesheets="@styles2.css">
    <children>
       <Label text="Editare informații cont">
          <font>
@@ -16,9 +16,9 @@
          </font>
       </Label>
       
-      <VBox spacing="10">
+      <VBox alignment="CENTER" spacing="10">
          <children>
-            <HBox spacing="10" alignment="CENTER_LEFT">
+            <HBox spacing="10" alignment="CENTER">
                <children>
                   <Label prefWidth="100" text="Nume:" />
                   <TextField fx:id="fieldNume" prefWidth="300" />

@@ -1,0 +1,229 @@
+{
+    "users": [
+        {
+            "id": "admin",
+            "numeUtilizator": "admin",
+            "parola": "admin",
+            "email": "admin",
+            "nume": "admin",
+            "prenume": "admin",
+            "dataNasterii": "admin",
+            "esteAdmin": true,
+            "setari": {
+                "notificariEmail": true,
+                "notificariSMS": false,
+                "notificariPushWeb": true,
+                "notificariPromotii": true,
+                "notificariAnulari": true,
+                "notificariModificari": true
+            }
+        },
+        {
+            "id": "client",
+            "numeUtilizator": "client",
+            "parola": "client",
+            "email": "client",
+            "nume": "client",
+            "prenume": "client",
+            "dataNasterii": "client",
+            "esteAdmin": false,
+            "setari": {
+                "notificariEmail": true,
+                "notificariSMS": true,
+                "notificariPushWeb": true
+            }
+        },
+        {
+            "id": "76479d48-b35e-4653-b430-b9d1ea66e84e",
+            "numeUtilizator": "rusu.admin",
+            "parola": "134679852",
+            "email": "sebastianrusu01@gmail.com",
+            "nume": "Rusu",
+            "prenume": "Sebastian",
+            "dataNasterii": "09/05/2004",
+            "esteAdmin": true,
+            "setari": {
+                "notificariEmail": true,
+                "notificariSMS": false,
+                "notificariPushWeb": true,
+                "notificariPromotii": true,
+                "notificariAnulari": true,
+                "notificariModificari": true
+            }
+        },
+        {
+            "id": "d9c617a2-e3e5-4798-9487-6c235025d670",
+            "numeUtilizator": "admin",
+            "parola": "adminadmin",
+            "email": "admin@admin.com",
+            "nume": "admin",
+            "prenume": "admin",
+            "dataNasterii": "01/01/2001",
+            "esteAdmin": false,
+            "setari": {
+                "notificariEmail": true,
+                "notificariSMS": false,
+                "notificariPushWeb": true,
+                "notificariPromotii": true,
+                "notificariAnulari": true,
+                "notificariModificari": true
+            }
+        },
+        {
+            "id": "b22c383c-acdd-4fb5-8642-78c6ae90c763",
+            "numeUtilizator": "Test",
+            "parola": "TestTest",
+            "email": "test@test.com",
+            "nume": "Testare",
+            "prenume": "Testare",
+            "dataNasterii": "11/09/2021",
+            "esteAdmin": false,
+            "setari": {
+                "notificariEmail": true,
+                "notificariSMS": false,
+                "notificariPushWeb": true,
+                "notificariPromotii": true,
+                "notificariAnulari": true,
+                "notificariModificari": true
+            }
+        },
+        {
+            "id": "18ed8d9e-fd71-4dc2-89a0-cbe6e1e803b0",
+            "numeUtilizator": "BalerinaCapucina69",
+            "parola": "BalerinaSmecherina12",
+            "email": "Balerina.Capucina69@gmail.com",
+            "nume": "Balerina",
+            "prenume": "Capucina",
+            "dataNasterii": "2/3/2005",
+            "esteAdmin": false,
+            "setari": {
+                "notificariEmail": true,
+                "notificariSMS": false,
+                "notificariPushWeb": true,
+                "notificariPromotii": true,
+                "notificariAnulari": true,
+                "notificariModificari": true
+            }
+        },
+        {
+            "id": "62ca3d26-aaab-4a29-970e-31faae8f54ab",
+            "numeUtilizator": "sebastianrusu01",
+            "parola": "134679852",
+            "email": "sebastianrusu01@gmail.com",
+            "nume": "Rusu",
+            "prenume": "Sebastian",
+            "dataNasterii": "09/05/2004",
+            "esteAdmin": false,
+            "setari": {
+                "notificariEmail": true,
+                "notificariSMS": false,
+                "notificariPushWeb": true,
+                "notificariPromotii": true,
+                "notificariAnulari": true,
+                "notificariModificari": true
+            }
+        },
+        {
+            "id": "d39b2590-43eb-45f6-a382-ce358cd129c8",
+            "parola": "tanasa123",
+            "email": "tanasatesodora@gmail.com",
+            "nume": "teodora",
+            "prenume": "tanasa",
+            "dataNasterii": "2/3/2005",
+            "esteAdmin": false,
+            "setari": {
+                "notificariEmail": true,
+                "notificariSMS": false,
+                "notificariPushWeb": true,
+                "notificariPromotii": true,
+                "notificariAnulari": true,
+                "notificariModificari": true
+            }
+        }
+    ],
+    "zboruri": [
+        {
+            "id": "e367b6a7-92e0-4bc2-8baa-fb3e3aeead4a",
+            "origine": "Bucuresti",
+            "destinatie": "Londra",
+            "dataPlecare": "3/6/2025",
+            "oraPlecare": "10:30",
+            "dataSosire": "3/6/2025",
+            "oraSosire": "14:40",
+            "modelAvion": "Smecker",
+            "locuriLibere": 196,
+            "pret": 100
+        },
+        {
+            "id": "35c032e9-060b-4536-9706-5bbe2018b9d5",
+            "origine": "ala",
+            "destinatie": "ala",
+            "dataPlecare": "1/1/2026",
+            "oraPlecare": "1:40",
+            "dataSosire": "10/1/2026",
+            "oraSosire": "1:1",
+            "modelAvion": "ALA",
+            "locuriLibere": 200,
+            "pret": 100
+        },
+        {
+            "id": "b1fe1e98-99db-45c5-99b9-d9b93cab7cf8",
+            "origine": "asa",
+            "destinatie": "da",
+            "dataPlecare": "1/2/2026",
+            "oraPlecare": "2:1",
+            "dataSosire": "2/2/2026",
+            "oraSosire": "2:1",
+            "modelAvion": "olaa",
+            "locuriLibere": 20,
+            "pret": 20
+        }
+    ],
+    "bilete": [
+        {
+            "id": "ec46d6fa-af74-4244-88a9-f15d77fde2a2",
+            "userId": "b22c383c-acdd-4fb5-8642-78c6ae90c763",
+            "zborId": "e367b6a7-92e0-4bc2-8baa-fb3e3aeead4a",
+            "detaliiZbor": "Bucuresti -> Londra",
+            "dataZbor": "2025-06-26T06:00",
+            "stare": "MODIFICAT",
+            "pret": 100
+        },
+        {
+            "id": "1f09459c-d5d4-4005-9166-7e039a56d240",
+            "userId": "b22c383c-acdd-4fb5-8642-78c6ae90c763",
+            "zborId": "e367b6a7-92e0-4bc2-8baa-fb3e3aeead4a",
+            "detaliiZbor": "Bucuresti -> Londra",
+            "dataZbor": "2025-06-03T07:30:00.000Z",
+            "stare": "ANULAT",
+            "pret": 100
+        },
+        {
+            "id": "c582f487-19f4-4e4b-b80a-d642ee157bab",
+            "userId": "b22c383c-acdd-4fb5-8642-78c6ae90c763",
+            "zborId": "e367b6a7-92e0-4bc2-8baa-fb3e3aeead4a",
+            "detaliiZbor": "Bucuresti -> Londra",
+            "dataZbor": "2025-06-03T07:30:00.000Z",
+            "stare": "ACTIV",
+            "pret": 100
+        },
+        {
+            "id": "cd13b634-b28f-4362-8272-1b7298e3c8d0",
+            "userId": "client",
+            "zborId": "e367b6a7-92e0-4bc2-8baa-fb3e3aeead4a",
+            "detaliiZbor": "Bucuresti -> Londra",
+            "dataZbor": "2025-06-03T10:30:00",
+            "stare": "ACTIV",
+            "pret": 100
+        },
+        {
+            "id": "f753fef1-71a9-413a-b298-a329c4835487",
+            "userId": "client",
+            "zborId": "e367b6a7-92e0-4bc2-8baa-fb3e3aeead4a",
+            "detaliiZbor": "Bucuresti -> Londra",
+            "dataZbor": "2025-06-03T10:30:00",
+            "stare": "ACTIV",
+            "pret": 100
+        }
+    ]
+}

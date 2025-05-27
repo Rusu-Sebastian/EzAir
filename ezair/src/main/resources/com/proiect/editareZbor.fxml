@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" prefHeight="508.0" prefWidth="959.0" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.EditareZborController">
+<VBox alignment="CENTER" prefHeight="508.0" prefWidth="959.0" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.EditareZborController" styleClass="root" stylesheets="@styles.css">
    <children>
       <Pane prefHeight="720.0" prefWidth="839.0">
          <children>
@@ -59,7 +59,7 @@
             <TextField fx:id="pret" layoutX="425.0" layoutY="322.0" prefHeight="26.0" prefWidth="485.0" />
             <TextField fx:id="locuriLibere" layoutX="425.0" layoutY="357.0" prefHeight="26.0" prefWidth="485.0" />
             <Button fx:id="butonFinalizare" defaultButton="true" layoutX="675.0" layoutY="411.0" mnemonicParsing="false" onAction="#finalizareEditareZbor" text="Finalizare" />
-            <Button fx:id="butonback" layoutX="425.0" layoutY="411.0" mnemonicParsing="false" onAction="#backZbor" text="Back" textAlignment="JUSTIFY" />
+            <Button fx:id="butonback" layoutX="425.0" layoutY="411.0" mnemonicParsing="false" onAction="#revino" text="Back" textAlignment="JUSTIFY" />
             <Text layoutX="249.0" layoutY="375.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Locuri" />
             <TextField fx:id="idZbor" layoutX="425.0" layoutY="6.0" prefHeight="26.0" prefWidth="485.0" visible="false" />
          </children>

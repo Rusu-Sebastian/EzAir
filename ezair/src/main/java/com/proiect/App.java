@@ -13,6 +13,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class App extends Application {
@@ -72,6 +73,9 @@ public class App extends Application {
     private static void setScene(Stage stage, String fxml) {
         try {
             scena = new Scene(loadFXML(fxml), 1680, 720);
+            stage.setTitle("EZAir");
+             Image icon = new Image(App.class.getResourceAsStream("logo.png"));
+            stage.getIcons().add(icon);
             stage.setScene(scena);
             stage.show();
         } catch (IOException e) {

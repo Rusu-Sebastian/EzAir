@@ -1,5 +1,6 @@
 package com.proiect;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
@@ -35,7 +36,6 @@ public class PaginaPrincipalaUserController {
     @FXML private ComboBox<String> comboDestinatie;
     @FXML private DatePicker dataPlecare;
     @FXML private Label labelNumeUtilizator;
-    @FXML private Label labelDataOptionala;
     
     @FXML private TableView<Zbor> tabelZboruri;
     @FXML private TableColumn<Zbor, String> coloanaOrigine;
@@ -48,11 +48,10 @@ public class PaginaPrincipalaUserController {
     @FXML private TableColumn<Zbor, Integer> coloanaLocuriLibere;
     
     @FXML
-    private void initializeaza() {
+    public void initialize() {
         configureazaTabele();
         incarcaOrase();
         afiseazaNumeUtilizator();
-        configureazaEticheteAuxiliare();
     }
     
     private void configureazaTabele() {
@@ -72,12 +71,6 @@ public class PaginaPrincipalaUserController {
         labelNumeUtilizator.setText(nume + " " + prenume);
     }
     
-    private void configureazaEticheteAuxiliare() {
-        if (labelDataOptionala != null) {
-            labelDataOptionala.setText("(Opțional)");
-            labelDataOptionala.setStyle("-fx-text-fill: gray; -fx-font-style: italic;");
-        }
-    }
     
     private void incarcaOrase() {
         try {
@@ -106,7 +99,7 @@ public class PaginaPrincipalaUserController {
     }
     
     @FXML
-    private void cautaZboruri() {
+    public void cautaZboruri() {
         if (!valideazaFormularCautare()) {
             return;
         }
@@ -135,19 +128,29 @@ public class PaginaPrincipalaUserController {
     }
 
     private String construiesteURLCautare(String origine, String destinatie) {
-        StringBuilder constructorURL = new StringBuilder();
-        constructorURL.append(String.format("%s/zboruri/cautareZbor?origine=%s&destinatie=%s", 
-            URL_SERVER, origine, destinatie));
+        StringBuilder constructorURL = new StringBuilder(URL_SERVER).append("/zboruri/cautareZbor");
+        boolean hasParam = false;
+        
+        // Adaugă parametrii doar dacă sunt specificați
+        if (origine != null && !origine.trim().isEmpty()) {
+            constructorURL.append(hasParam ? "&" : "?").append("origine=").append(origine);
+            hasParam = true;
+        }
+        
+        if (destinatie != null && !destinatie.trim().isEmpty()) {
+            constructorURL.append(hasParam ? "&" : "?").append("destinatie=").append(destinatie);
+            hasParam = true;
+        }
         
         if (dataPlecare.getValue() != null) {
-            constructorURL.append("&data=").append(dataPlecare.getValue().toString());
+            constructorURL.append(hasParam ? "&" : "?").append("data=").append(dataPlecare.getValue().toString());
         }
         
         return constructorURL.toString();
     }
 
     private void proceseazaRaspunsZboruri(JSONArray zboruri) {
-        jurnal.info("S-au primit " + zboruri.length() + " zboruri de la căutare");
+        jurnal.log(Level.INFO, "S-au primit {0} zboruri de la căutare", zboruri.length());
         ObservableList<Zbor> listaZboruri = FXCollections.observableArrayList();
         
         for (int i = 0; i < zboruri.length(); i++) {
@@ -157,7 +160,7 @@ public class PaginaPrincipalaUserController {
                     listaZboruri.add(zbor);
                 }
             } catch (Exception e) {
-                jurnal.warning("Eroare la procesarea zborului " + (i + 1) + ": " + e.getMessage());
+                jurnal.log(Level.WARNING, "Eroare la procesarea zborului {0}: {1}", new Object[]{i + 1, e.getMessage()});
             }
         }
         
@@ -166,7 +169,7 @@ public class PaginaPrincipalaUserController {
 
     private Zbor construiesteZborDinJSON(JSONObject zbor, int index) {
         if (!zbor.has("id") || zbor.isNull("id")) {
-            jurnal.warning("Se omite zborul cu ID lipsă la indexul " + index);
+            jurnal.log(Level.WARNING, "Se omite zborul cu ID lipsă la indexul {0}", index);
             return null;
         }
         
@@ -184,7 +187,7 @@ public class PaginaPrincipalaUserController {
                 .setPret(zbor.optDouble("pret", 0.0))
                 .construieste();
         } catch (Exception e) {
-            jurnal.warning("Eroare la construirea zborului " + index + ": " + e.getMessage());
+            jurnal.log(Level.WARNING, "Eroare la construirea zborului {0}: {1}", new Object[]{index, e.getMessage()});
             return null;
         }
     }
@@ -195,31 +198,58 @@ public class PaginaPrincipalaUserController {
             if (listaZboruri.isEmpty()) {
                 afiseazaInfo("Nu au fost găsite zboruri pentru criteriile selectate.");
             } else {
-                String mesaj = dataPlecare.getValue() == null ? 
-                    "S-au găsit toate zborurile disponibile pentru ruta selectată" : 
-                    "S-au găsit zborurile disponibile pentru data și ruta selectată";
+                StringBuilder sb = new StringBuilder("S-au găsit zboruri ");
+                
+                // Adaugă criteriile de căutare folosite în mesaj
+                boolean hasOrigin = comboOrigine.getValue() != null && !comboOrigine.getValue().trim().isEmpty();
+                boolean hasDestination = comboDestinatie.getValue() != null && !comboDestinatie.getValue().trim().isEmpty();
+                boolean hasDate = dataPlecare.getValue() != null;
+                
+                if (!hasOrigin && !hasDestination && !hasDate) {
+                    sb.append("din toate rutele disponibile");
+                } else {
+                    if (hasOrigin) {
+                        sb.append("cu plecare din ").append(comboOrigine.getValue());
+                    }
+                    if (hasDestination) {
+                        if (hasOrigin) sb.append(" și ");
+                        sb.append("cu sosire în ").append(comboDestinatie.getValue());
+                    }
+                    if (hasDate) {
+                        if (hasOrigin || hasDestination) sb.append(", ");
+                        sb.append("pentru data ").append(dataPlecare.getValue());
+                    }
+                }
+                
+                String mesaj = sb.toString();
                 afiseazaInfo(mesaj);
             }
         });
     }
 
     private boolean valideazaFormularCautare() {
-        if (comboOrigine.getValue() == null || comboOrigine.getValue().trim().isEmpty()) {
-            afiseazaEroare("Te rugăm să selectezi orașul de origine.");
+        String origine = comboOrigine.getValue();
+        String destinatie = comboDestinatie.getValue();
+        LocalDate data = dataPlecare.getValue();
+        
+        // Verifică dacă cel puțin un criteriu de căutare este specificat
+        if ((origine == null || origine.trim().isEmpty()) &&
+            (destinatie == null || destinatie.trim().isEmpty()) &&
+            data == null) {
+            afiseazaEroare("Te rugăm să selectezi cel puțin un criteriu de căutare (origine, destinație sau dată).");
             return false;
         }
         
-        if (comboDestinatie.getValue() == null || comboDestinatie.getValue().trim().isEmpty()) {
-            afiseazaEroare("Te rugăm să selectezi orașul de destinație.");
-            return false;
-        }
-        
-        if (comboOrigine.getValue().equals(comboDestinatie.getValue())) {
+        // Dacă sunt specificate atât originea cât și destinația, verifică să nu fie aceleași
+        if (origine != null && !origine.trim().isEmpty() &&
+            destinatie != null && !destinatie.trim().isEmpty() &&
+            origine.equals(destinatie)) {
             afiseazaEroare("Orașul de origine nu poate fi același cu destinația.");
             return false;
         }
 
-        if (dataPlecare.getValue() != null && dataPlecare.getValue().isBefore(LocalDate.now())) {
+        // Verifică dacă data selectată nu este în trecut
+        if (data != null && data.isBefore(LocalDate.now())) {
             afiseazaEroare("Data plecării nu poate fi în trecut.");
             return false;
         }
@@ -228,8 +258,8 @@ public class PaginaPrincipalaUserController {
     }
 
     @FXML
-    private void rezervaBilet() {
-        jurnal.info("Încercare de rezervare bilet...");
+    public void rezervaBilet() {
+        jurnal.log(Level.INFO, "Încercare de rezervare bilet...");
         Zbor zborSelectat = tabelZboruri.getSelectionModel().getSelectedItem();
         
         if (!valideazaRezervareBilet(zborSelectat)) {
@@ -238,7 +268,7 @@ public class PaginaPrincipalaUserController {
         
         try {
             String idUtilizator = (String) App.getDateUtilizator().get(CHEIE_ID_UTILIZATOR);
-            jurnal.info("Se trimite rezervare pentru utilizatorul: " + idUtilizator);
+            jurnal.log(Level.INFO, "Se trimite rezervare pentru utilizatorul: {0}", idUtilizator);
             
             JSONObject dateBilet = construiesteDateBilet(zborSelectat, idUtilizator);
             trimiteRezervareBilet(dateBilet);
@@ -256,8 +286,8 @@ public class PaginaPrincipalaUserController {
             return false;
         }
         
-        jurnal.info("Zbor selectat pentru rezervare: " + zborSelectat.getId() + 
-                   " (" + zborSelectat.getOrigine() + SEPARATOR_RUTA + zborSelectat.getDestinatie() + ")");
+        jurnal.log(Level.INFO, "Zbor selectat pentru rezervare: {0} ({1}{2}{3})", 
+                 new Object[]{zborSelectat.getId(), zborSelectat.getOrigine(), SEPARATOR_RUTA, zborSelectat.getDestinatie()});
 
         if (zborSelectat.getLocuriLibere() <= 0) {
             jurnal.warning("Încercare de rezervare a unui zbor fără locuri disponibile");
@@ -292,7 +322,7 @@ public class PaginaPrincipalaUserController {
             String dataISO = Zbor.convertesteInFormatISO(zbor.getDataPlecare());
             return dataISO + "T" + zbor.getOraPlecare() + ":00";
         } catch (Exception e) {
-            jurnal.warning("Eroare la conversia datei în format ISO: " + e.getMessage());
+            jurnal.log(Level.WARNING, "Eroare la conversia datei în format ISO: {0}", e.getMessage());
             return zbor.getDataPlecare() + "T" + zbor.getOraPlecare();
         }
     }
@@ -319,7 +349,7 @@ public class PaginaPrincipalaUserController {
 
     private void proceseazaRaspunsRezervare(HttpURLConnection conexiune) throws Exception {
         int codRaspuns = conexiune.getResponseCode();
-        jurnal.info("Cod răspuns server: " + codRaspuns);
+        jurnal.log(Level.INFO, "Cod răspuns server: {0}", codRaspuns);
         
         if (codRaspuns == HttpURLConnection.HTTP_OK) {
             Platform.runLater(() -> {
@@ -337,7 +367,7 @@ public class PaginaPrincipalaUserController {
         try (var fluxEroare = conexiune.getErrorStream()) {
             if (fluxEroare != null) {
                 String eroareBruta = new String(fluxEroare.readAllBytes(), StandardCharsets.UTF_8);
-                jurnal.warning("Eroare de la server: " + eroareBruta);
+                jurnal.log(Level.WARNING, "Eroare de la server: {0}", eroareBruta);
                 
                 try {
                     JSONObject eroare = new JSONObject(eroareBruta);
@@ -345,24 +375,34 @@ public class PaginaPrincipalaUserController {
                         mesajEroare = eroare.getString("error");
                     }
                 } catch (Exception e) {
-                    jurnal.warning("Răspunsul nu este în format JSON: " + e.getMessage());
+                    jurnal.log(Level.WARNING, "Răspunsul nu este în format JSON: {0}", e.getMessage());
                 }
             }
         } catch (Exception e) {
-            jurnal.warning("Nu s-a putut citi răspunsul de eroare: " + e.getMessage());
+            jurnal.log(Level.WARNING, "Nu s-a putut citi răspunsul de eroare: {0}", e.getMessage());
         }
         return mesajEroare;
     }
     
     @FXML
-    private void navigheazaContulMeu() throws Exception {
-        App.setRoot("paginaContClient");
+    public void contulMeu() {
+        try {
+            App.setRoot("paginaContClient");
+        } catch (IOException e) {
+            jurnal.log(Level.SEVERE, "Eroare la navigarea către pagina de cont", e);
+            afiseazaEroare("Nu s-a putut deschide pagina contului tău.");
+        }
     }
     
     @FXML
-    private void deconectare() throws Exception {
-        App.getDateUtilizator().clear();
-        App.setRoot("login");
+    public void deconectare() {
+        try {
+            App.getDateUtilizator().clear();
+            App.setRoot("login");
+        } catch (IOException e) {
+            jurnal.log(Level.SEVERE, "Eroare la deconectare", e);
+            afiseazaEroare("Nu s-a putut realiza deconectarea.");
+        }
     }
     
     private void afiseazaEroare(String mesaj) {

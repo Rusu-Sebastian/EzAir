@@ -14,7 +14,9 @@ public class PaginaPrincipalaAdminController {
     private static final String TITLU_EROARE = "Eroare";
     private static final String TITLU_CONFIRMARE = "Confirmare";
     private static final String CHEIE_ID_UTILIZATOR = "userId";
-    private static final String CHEIE_ADMIN = "admin";
+    private static final String CHEIE_ADMIN = "esteAdmin";
+    private static final String PAGINA_LOGIN = "login";
+    private static final String PAGINA_ZBORURI_ADMIN = "paginaZboruriAdmin";
     
     @FXML
     public void initialize() {
@@ -23,11 +25,24 @@ public class PaginaPrincipalaAdminController {
     
     @FXML
     public void gestioneazaZboruri() {
+        if (!esteUtilizatorAdmin()) {
+            jurnal.severe("Încercare de acces neautorizat la panoul de administrare zboruri");
+            Platform.runLater(() -> {
+                afiseazaEroare("Nu aveți permisiunile necesare pentru accesarea acestei pagini");
+                try {
+                    App.setRoot(PAGINA_LOGIN);
+                } catch (IOException e) {
+                    jurnal.log(Level.SEVERE, "Eroare la redirecționare către login", e);
+                }
+            });
+            return;
+        }
+
         try {
-            App.setRoot("paginaZboruriAdmin");
+            App.setRoot(PAGINA_ZBORURI_ADMIN);
         } catch (IOException e) {
-            jurnal.log(Level.SEVERE, "Eroare la navigarea către pagina de gestionare zboruri", e);
-            afiseazaEroare("Nu s-a putut deschide pagina de gestionare a zborurilor");
+            jurnal.log(Level.SEVERE, "Eroare la navigare către panoul de zboruri", e);
+            afiseazaEroare("Nu s-a putut deschide panoul de zboruri");
         }
     }
 

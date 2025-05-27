@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -29,6 +30,8 @@ public class PaginaZboruriAdminController {
     private static final String TITLU_ATENTIONARE = "Atenție";
     private static final String TITLU_SUCCES = "Succes";
     private static final String TIMP_EXPIRARE = "30000";
+    private static final String CHEIE_ID_UTILIZATOR = "userId";
+    private static final String CHEIE_ADMIN = "esteAdmin";
     
     @FXML private TableView<Zbor> tabelZboruri;
     @FXML private TableColumn<Zbor, String> coloanaOrigine;
@@ -42,32 +45,112 @@ public class PaginaZboruriAdminController {
     @FXML private TableColumn<Zbor, String> coloanaDataSosire;
     @FXML private TableColumn<Zbor, String> coloanaOraSosire;
 
+    private static final String PAGINA_LOGIN = "login";
+
+    private static final String LOG_FORMAT_PROCES_ZBOR = "Se procesează zborul {0}: {1}";
+    private static final String LOG_FORMAT_EROARE_ZBOR = "Eroare la construirea zborului {0}: {1}";
+    private static final String LOG_FORMAT_ZBOR_ID_MISSING = "Se omite zborul cu ID lipsă la indexul {0}";
+    private static final String LOG_FORMAT_ZBOR_INVALID = "Zborul de la indexul {0} are origine sau destinație invalidă: {1}";
+    private static final String LOG_FORMAT_ZBOR_SUCCES = "Zbor procesat cu succes, ID: {0}";
+    private static final String LOG_FORMAT_ZBORURI_INCARCATE = "S-au încărcat cu succes {0} zboruri";
+    private static final String LOG_FORMAT_EROARE_JSON = "Eroare la parsarea JSON: {0}";
+    private static final String LOG_FORMAT_EROARE_SERVER = "Eroare server: {0}, Răspuns: {1}";
+    private static final String LOG_FORMAT_EROARE_FLUX = "Nu s-a putut citi fluxul de eroare: {0}";
+    
+    // Property names used in JSON and TableView
+    private static final String PROP_ORIGINE = "origine";
+    private static final String PROP_DESTINATIE = "destinatie";
+    private static final String PROP_MODEL_AVION = "modelAvion";
+    private static final String PROP_LOCURI_LIBERE = "locuriLibere";
+    private static final String PROP_PRET = "pret";
+    private static final String PROP_ID = "id";
+    private static final String PROP_DATA_PLECARE = "dataPlecare";
+    private static final String PROP_ORA_PLECARE = "oraPlecare";
+    private static final String PROP_DATA_SOSIRE = "dataSosire";
+    private static final String PROP_ORA_SOSIRE = "oraSosire";
+
+    // Logging methods
+    private void logEraoareConstructieZbor(int index, String mesaj) {
+        jurnal.warning(MessageFormat.format(LOG_FORMAT_EROARE_ZBOR, index, mesaj));
+    }
+    
+    private void logZborFaraId(int index) {
+        jurnal.warning(MessageFormat.format(LOG_FORMAT_ZBOR_ID_MISSING, index));
+    }
+    
+    private void logZborInvalid(int index, JSONObject obiectZbor) {
+        jurnal.warning(MessageFormat.format(LOG_FORMAT_ZBOR_INVALID, index, obiectZbor));
+    }
+    
+    private void logProcesareZbor(int index, JSONObject obiectZbor) {
+        jurnal.info(MessageFormat.format(LOG_FORMAT_PROCES_ZBOR, index, obiectZbor.toString(2)));
+    }
+    
+    private void logZborProcesat(String idZbor) {
+        jurnal.info(MessageFormat.format(LOG_FORMAT_ZBOR_SUCCES, idZbor));
+    }
+    
+    private void logTotalZboruriIncarcate(int numarZboruri) {
+        jurnal.info(MessageFormat.format(LOG_FORMAT_ZBORURI_INCARCATE, numarZboruri));
+    }
+    
+    private void logEroareJSON(String mesaj) {
+        jurnal.severe(MessageFormat.format(LOG_FORMAT_EROARE_JSON, mesaj));
+    }
+    
+
+
     @FXML
-    private void initializeaza() {
+    public void initialize() {
+        if (!verificaPermisiuniAdmin()) {
+            return;
+        }
         configureazaColoaneTabel();
         incarcaZboruri();
     }
 
+    private boolean verificaPermisiuniAdmin() {
+        if (!esteUtilizatorAdmin()) {
+            jurnal.severe("Încercare de acces neautorizat la panoul de administrare zboruri");
+            Platform.runLater(() -> {
+                afiseazaEroare("Nu aveți permisiunile necesare pentru accesarea acestei pagini");
+                try {
+                    App.setRoot(PAGINA_LOGIN);
+                } catch (IOException e) {
+                    jurnal.log(Level.SEVERE, "Eroare la redirecționare către login", e);
+                }
+            });
+            return false;
+        }
+        return true;
+    }
+
+    private boolean esteUtilizatorAdmin() {
+        String idUtilizator = App.getDateUtilizator().get(CHEIE_ID_UTILIZATOR);
+        String esteAdmin = App.getDateUtilizator().get(CHEIE_ADMIN);
+        return idUtilizator != null && "true".equals(esteAdmin);
+    }
+
     private void configureazaColoaneTabel() {
-        coloanaOrigine.setCellValueFactory(new PropertyValueFactory<>("origine"));
-        coloanaDestinatie.setCellValueFactory(new PropertyValueFactory<>("destinatie"));
-        coloanaModelAvion.setCellValueFactory(new PropertyValueFactory<>("modelAvion"));
-        coloanaLocuriLibere.setCellValueFactory(new PropertyValueFactory<>("locuriLibere"));
-        coloanaPret.setCellValueFactory(new PropertyValueFactory<>("pret"));
-        coloanaId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        coloanaDataPlecare.setCellValueFactory(new PropertyValueFactory<>("dataPlecare"));
-        coloanaOraPlecare.setCellValueFactory(new PropertyValueFactory<>("oraPlecare"));
-        coloanaDataSosire.setCellValueFactory(new PropertyValueFactory<>("dataSosire"));
-        coloanaOraSosire.setCellValueFactory(new PropertyValueFactory<>("oraSosire"));
+        coloanaOrigine.setCellValueFactory(new PropertyValueFactory<>(PROP_ORIGINE));
+        coloanaDestinatie.setCellValueFactory(new PropertyValueFactory<>(PROP_DESTINATIE));
+        coloanaModelAvion.setCellValueFactory(new PropertyValueFactory<>(PROP_MODEL_AVION));
+        coloanaLocuriLibere.setCellValueFactory(new PropertyValueFactory<>(PROP_LOCURI_LIBERE));
+        coloanaPret.setCellValueFactory(new PropertyValueFactory<>(PROP_PRET));
+        coloanaId.setCellValueFactory(new PropertyValueFactory<>(PROP_ID));
+        coloanaDataPlecare.setCellValueFactory(new PropertyValueFactory<>(PROP_DATA_PLECARE));
+        coloanaOraPlecare.setCellValueFactory(new PropertyValueFactory<>(PROP_ORA_PLECARE));
+        coloanaDataSosire.setCellValueFactory(new PropertyValueFactory<>(PROP_DATA_SOSIRE));
+        coloanaOraSosire.setCellValueFactory(new PropertyValueFactory<>(PROP_ORA_SOSIRE));
     }
 
     @FXML
-    private void adaugaZbor() throws Exception {
+    public void adaugaZbor() throws Exception {
         App.setRoot("creareZbor");
     }
 
     @FXML
-    private void editeazaZbor() throws IOException {
+    public void editeazaZbor() throws IOException {
         Zbor zborSelectat = tabelZboruri.getSelectionModel().getSelectedItem();
         if (zborSelectat == null) {
             afiseazaAtentionare("Niciun zbor selectat", 
@@ -82,20 +165,20 @@ public class PaginaZboruriAdminController {
     private void salveazaDateZborPentruEditare(Zbor zbor) {
         Map<String, String> dateUtilizator = App.getDateUtilizator();
         dateUtilizator.clear();
-        dateUtilizator.put("id", zbor.getId());
-        dateUtilizator.put("origine", zbor.getOrigine());
-        dateUtilizator.put("destinatie", zbor.getDestinatie());
-        dateUtilizator.put("dataPlecare", zbor.getDataPlecare());
-        dateUtilizator.put("oraPlecare", zbor.getOraPlecare());
-        dateUtilizator.put("dataSosire", zbor.getDataSosire());
-        dateUtilizator.put("oraSosire", zbor.getOraSosire());
-        dateUtilizator.put("modelAvion", zbor.getModelAvion());
-        dateUtilizator.put("locuriLibere", String.valueOf(zbor.getLocuriLibere()));
-        dateUtilizator.put("pret", String.valueOf(zbor.getPret()));
+        dateUtilizator.put(PROP_ID, zbor.getId());
+        dateUtilizator.put(PROP_ORIGINE, zbor.getOrigine());
+        dateUtilizator.put(PROP_DESTINATIE, zbor.getDestinatie());
+        dateUtilizator.put(PROP_DATA_PLECARE, zbor.getDataPlecare());
+        dateUtilizator.put(PROP_ORA_PLECARE, zbor.getOraPlecare());
+        dateUtilizator.put(PROP_DATA_SOSIRE, zbor.getDataSosire());
+        dateUtilizator.put(PROP_ORA_SOSIRE, zbor.getOraSosire());
+        dateUtilizator.put(PROP_MODEL_AVION, zbor.getModelAvion());
+        dateUtilizator.put(PROP_LOCURI_LIBERE, String.valueOf(zbor.getLocuriLibere()));
+        dateUtilizator.put(PROP_PRET, String.valueOf(zbor.getPret()));
     }
 
     @FXML
-    private void stergeZbor() throws Exception {
+    public void stergeZbor() throws Exception {
         Zbor zborSelectat = tabelZboruri.getSelectionModel().getSelectedItem();
         if (zborSelectat == null) {
             afiseazaAtentionare("Niciun zbor selectat", 
@@ -124,6 +207,16 @@ public class PaginaZboruriAdminController {
         }
     }
 
+    @FXML
+    public void reincarcaZboruri() {
+        incarcaZboruri();
+    }
+
+    @FXML
+    public void revinoPaginaPrincipala() throws Exception {
+        App.setRoot("paginaPrincipalaAdmin");
+    }
+    
     private void incarcaZboruri() {
         HttpURLConnection conexiune = null;
         try {
@@ -208,12 +301,12 @@ public class PaginaZboruriAdminController {
             for (int i = 0; i < arrayZboruri.length(); i++) {
                 try {
                     JSONObject obiectZbor = arrayZboruri.getJSONObject(i);
-                    jurnal.info("Se procesează zborul " + (i + 1) + ": " + obiectZbor.toString(2));
+                    logProcesareZbor(i, obiectZbor);
                     
                     Zbor zbor = construiesteZborDinJSON(obiectZbor, i);
                     if (zbor != null) {
                         listaZboruri.add(zbor);
-                        jurnal.info("Zbor procesat cu succes, ID: " + zbor.getId());
+                        logZborProcesat(zbor.getId());
                     }
                 } catch (Exception e) {
                     jurnal.warning("Eroare la procesarea zborului " + (i + 1) + ": " + e.getMessage());
@@ -221,42 +314,43 @@ public class PaginaZboruriAdminController {
             }
 
             actualizeazaInterfataUtilizator(listaZboruri);
+            logTotalZboruriIncarcate(listaZboruri.size());
             
         } catch (Exception e) {
-            jurnal.severe("Eroare la parsarea JSON: " + e.getMessage());
+            logEroareJSON(e.getMessage());
             throw new RuntimeException("Eroare la procesarea datelor zborurilor: " + e.getMessage());
         }
     }
 
     private Zbor construiesteZborDinJSON(JSONObject obiectZbor, int index) {
         if (!obiectZbor.has("id") || obiectZbor.isNull("id")) {
-            jurnal.warning("Se omite zborul cu ID lipsă la indexul " + index);
+            logZborFaraId(index);
             return null;
         }
         
         try {
             Zbor zbor = new Zbor.Constructor()
-                .setId(obiectZbor.optString("id", ""))
-                .setOrigine(obiectZbor.optString("origine", ""))
-                .setDestinatie(obiectZbor.optString("destinatie", ""))
-                .setDataPlecare(obiectZbor.optString("dataPlecare", ""))
-                .setOraPlecare(obiectZbor.optString("oraPlecare", ""))
-                .setDataSosire(obiectZbor.optString("dataSosire", ""))
-                .setOraSosire(obiectZbor.optString("oraSosire", ""))
-                .setModelAvion(obiectZbor.optString("modelAvion", ""))
-                .setLocuriLibere(obiectZbor.optInt("locuriLibere", 0))
-                .setPret(obiectZbor.optDouble("pret", 0.0))
+                .setId(obiectZbor.optString(PROP_ID, ""))
+                .setOrigine(obiectZbor.optString(PROP_ORIGINE, ""))
+                .setDestinatie(obiectZbor.optString(PROP_DESTINATIE, ""))
+                .setDataPlecare(obiectZbor.optString(PROP_DATA_PLECARE, ""))
+                .setOraPlecare(obiectZbor.optString(PROP_ORA_PLECARE, ""))
+                .setDataSosire(obiectZbor.optString(PROP_DATA_SOSIRE, ""))
+                .setOraSosire(obiectZbor.optString(PROP_ORA_SOSIRE, ""))
+                .setModelAvion(obiectZbor.optString(PROP_MODEL_AVION, ""))
+                .setLocuriLibere(obiectZbor.optInt(PROP_LOCURI_LIBERE, 0))
+                .setPret(obiectZbor.optDouble(PROP_PRET, 0.0))
                 .construieste();
 
             if (zbor.getOrigine() == null || zbor.getOrigine().isEmpty() || 
                 zbor.getDestinatie() == null || zbor.getDestinatie().isEmpty()) {
-                jurnal.warning("Zborul de la indexul " + index + " are origine sau destinație invalidă: " + obiectZbor);
+                logZborInvalid(index, obiectZbor);
                 return null;
             }
 
             return zbor;
         } catch (Exception e) {
-            jurnal.warning("Eroare la construirea zborului " + index + ": " + e.getMessage());
+            logEraoareConstructieZbor(index, e.getMessage());
             return null;
         }
     }
@@ -271,17 +365,24 @@ public class PaginaZboruriAdminController {
         Platform.runLater(() -> tabelZboruri.setItems(listaZboruri));
     }
 
-    @FXML
-    private void revinoPaginaPrincipala() throws Exception {
-        App.setRoot("paginaPrincipalaAdmin");
+    private void afiseazaEroare(String mesaj) {
+        Platform.runLater(() -> {
+            Alert alerta = new Alert(Alert.AlertType.ERROR);
+            alerta.setTitle(TITLU_EROARE);
+            alerta.setHeaderText(TITLU_EROARE);
+            alerta.setContentText(mesaj);
+            alerta.showAndWait();
+        });
     }
 
-    private void afiseazaEroare(String antet, String continut) {
-        Alert alerta = new Alert(Alert.AlertType.ERROR);
-        alerta.setTitle(TITLU_EROARE);
-        alerta.setHeaderText(antet);
-        alerta.setContentText(continut);
-        alerta.showAndWait();
+    private void afiseazaEroare(String antet, String mesaj) {
+        Platform.runLater(() -> {
+            Alert alerta = new Alert(Alert.AlertType.ERROR);
+            alerta.setTitle(TITLU_EROARE);
+            alerta.setHeaderText(antet);
+            alerta.setContentText(mesaj);
+            alerta.showAndWait();
+        });
     }
 
     private void afiseazaSucces(String antet, String continut) {

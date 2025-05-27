@@ -14,7 +14,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
 
 public class EroareConexiuneController {
     private static final Logger jurnal = Logger.getLogger(EroareConexiuneController.class.getName());
@@ -30,12 +29,10 @@ public class EroareConexiuneController {
     
     @FXML private Label textStatus;
     @FXML private Button butonReincercare;
-    @FXML private ProgressIndicator indicatorProgres;
     
     @FXML
     public void initialize() {
         textStatus.setText("");
-        indicatorProgres.setVisible(false);
     }
     
     @FXML
@@ -46,7 +43,6 @@ public class EroareConexiuneController {
     
     private void pregatestePentruReconectare() {
         butonReincercare.setDisable(true);
-        indicatorProgres.setVisible(true);
         actualizeazaStatus(MESAJ_RECONECTARE);
     }
     
@@ -62,7 +58,6 @@ public class EroareConexiuneController {
             } finally {
                 Platform.runLater(() -> {
                     butonReincercare.setDisable(false);
-                    indicatorProgres.setVisible(false);
                 });
             }
         });

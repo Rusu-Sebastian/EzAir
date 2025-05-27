@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" spacing="20.0" styleClass="root" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.PaginaContClientController">
+<VBox alignment="CENTER" spacing="20.0" styleClass="root" stylesheets="@styles2.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.PaginaContClientController">
    <children>
       <HBox alignment="CENTER" spacing="20">
          <Label styleClass="title-text" text="Contul meu" />
@@ -23,10 +23,10 @@
          <tabs>
             <Tab text="Informații cont">
                <content>
-                  <VBox spacing="10" styleClass="card">
+                  <VBox alignment="CENTER" spacing="10" styleClass="card">
                      <Label fx:id="labelNume" />
                      <Label fx:id="labelEmail" />
-                     <Label fx:id="labelUsername" />
+                     <Label fx:id="labelNumeUtilizator" />
                      <Button onAction="#editareInformatii" text="Editare informații" />
                   </VBox>
                </content>

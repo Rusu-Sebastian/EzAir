@@ -1,5 +1,6 @@
 package com.proiect;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -42,7 +43,7 @@ public class PaginaContClientController {
     @FXML private TableColumn<Bilet, String> coloanaStare;
 
     @FXML
-    private void initializeaza() {
+    private void initialize() {
         configureazaTabele();
         incarcaInformatiiUtilizator();
         incarcaBilete();
@@ -67,7 +68,7 @@ public class PaginaContClientController {
                 JSONObject utilizator = new JSONObject(new String(conexiune.getInputStream().readAllBytes(), StandardCharsets.UTF_8));
                 labelNume.setText(utilizator.getString("nume") + " " + utilizator.getString("prenume"));
                 labelEmail.setText(utilizator.getString("email"));
-                labelNumeUtilizator.setText(utilizator.getString("username"));
+                labelNumeUtilizator.setText(utilizator.getString("numeUtilizator"));
             }
         } catch (Exception e) {
             jurnal.log(Level.WARNING, "Eroare la încărcarea informațiilor utilizatorului: {0}", e.getMessage());
@@ -129,6 +130,17 @@ public class PaginaContClientController {
             return;
         }
 
+        // Confirmă anularea
+        Alert confirmare = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmare.setTitle("Confirmare anulare");
+        confirmare.setHeaderText("Confirmare anulare bilet");
+        confirmare.setContentText("Ești sigur că dorești să anulezi acest bilet?");
+        
+        Optional<ButtonType> rezultat = confirmare.showAndWait();
+        if (rezultat.isEmpty() || rezultat.get() != ButtonType.OK) {
+            return;
+        }
+
         try {
             URI uri = new URI(URL_SERVER + "/bilete/" + biletSelectat.getId() + "/anulare");
             HttpURLConnection conexiune = (HttpURLConnection) uri.toURL().openConnection();
@@ -143,6 +155,46 @@ public class PaginaContClientController {
         } catch (Exception e) {
             jurnal.log(Level.WARNING, "Eroare la anularea biletului: {0}", e.getMessage());
             afiseazaEroare("Nu s-a putut anula biletul.");
+        }
+    }
+
+    @FXML
+    private void anulareBilet() {
+        try {
+            Bilet biletSelectat = tabelBilete.getSelectionModel().getSelectedItem();
+            if (biletSelectat == null) {
+                afiseazaEroare("Te rugăm să selectezi un bilet pentru anulare.");
+                return;
+            }
+
+            String idBilet = biletSelectat.getId();
+            URI uri = new URI(URL_SERVER + "/bilete/" + idBilet);
+            HttpURLConnection conexiune = (HttpURLConnection) uri.toURL().openConnection();
+            conexiune.setRequestMethod("DELETE");
+            conexiune.setConnectTimeout(5000);
+            conexiune.setReadTimeout(5000);
+
+            int codRaspuns = conexiune.getResponseCode();
+            jurnal.log(Level.INFO, "Cod răspuns anulare bilet: {0}", codRaspuns);
+
+            if (codRaspuns == HttpURLConnection.HTTP_OK || codRaspuns == HttpURLConnection.HTTP_NO_CONTENT) {
+                incarcaBilete(); // Reîncarcă lista de bilete
+                afiseazaSucces("Biletul a fost anulat cu succes.");
+            } else {
+                String raspunsEroare = "";
+                try (java.io.InputStream errorStream = conexiune.getErrorStream()) {
+                    if (errorStream != null) {
+                        raspunsEroare = new String(errorStream.readAllBytes(), StandardCharsets.UTF_8);
+                        jurnal.log(Level.WARNING, "Eroare la anulare: {0}", raspunsEroare);
+                    }
+                } catch (Exception ex) {
+                    jurnal.log(Level.WARNING, "Nu s-a putut citi răspunsul de eroare", ex);
+                }
+                afiseazaEroare("Nu s-a putut anula biletul. Te rugăm să încerci din nou. Cod: " + codRaspuns);
+            }
+        } catch (Exception e) {
+            jurnal.log(Level.SEVERE, "Eroare la anularea biletului", e);
+            afiseazaEroare("A apărut o eroare la anularea biletului.");
         }
     }
 
@@ -346,23 +398,48 @@ public class PaginaContClientController {
     }
 
     @FXML
-    private void editeazaInformatii() throws Exception {
-        App.setRoot("editareContClient");
-    }
-
-    @FXML 
-    private void configureazaNotificari() throws Exception {
-        App.setRoot("setariNotificari");
+    private void editareInformatii() {
+        try {
+            App.setRoot("editareContClient");
+        } catch (IOException e) {
+            jurnal.log(Level.SEVERE, "Eroare la navigarea către editare cont", e);
+            afiseazaEroare("Nu s-a putut deschide pagina de editare cont");
+        }
     }
 
     @FXML
-    private void schimbaParola() throws Exception {
-        App.setRoot("schimbaParola");
+    private void notificari() {
+        try {
+            App.setRoot("setariNotificari");
+        } catch (IOException e) {
+            jurnal.log(Level.SEVERE, "Eroare la navigarea către setări notificări", e);
+            afiseazaEroare("Nu s-a putut deschide pagina de setări notificări");
+        }
+    }
+
+    @FXML
+    private void schimbaParola() {
+        try {
+            App.setRoot("schimbaParola");
+        } catch (IOException e) {
+            jurnal.log(Level.SEVERE, "Eroare la navigarea către schimbare parolă", e);
+            afiseazaEroare("Nu s-a putut deschide pagina de schimbare parolă");
+        }
     }
 
     @FXML
     private void revino() throws Exception {
         App.setRoot("paginaPrincipalaUser");
+    }
+
+    @FXML
+    private void inapoi() {
+        try {
+            App.setRoot("paginaPrincipalaUser");
+        } catch (IOException e) {
+            jurnal.log(Level.SEVERE, "Eroare la navigarea înapoi", e);
+            afiseazaEroare("Nu s-a putut reveni la pagina principală");
+        }
     }
 
     private void afiseazaEroare(String mesaj) {
@@ -378,6 +455,14 @@ public class PaginaContClientController {
         alerta.setTitle(TITLU_SUCCES);
         alerta.setHeaderText(antet);
         alerta.setContentText(continut);
+        alerta.showAndWait();
+    }
+
+    private void afiseazaSucces(String mesaj) {
+        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+        alerta.setTitle(TITLU_SUCCES);
+        alerta.setHeaderText(null);
+        alerta.setContentText(mesaj);
         alerta.showAndWait();
     }
 
@@ -418,6 +503,27 @@ public class PaginaContClientController {
         } catch (Exception e) {
             jurnal.severe("Eroare la parsarea datei-timp: " + sirDataTimp + ", eroare: " + e.getMessage());
             throw new IllegalArgumentException("Nu se poate parsa data-timp: " + sirDataTimp, e);
+        }
+    }
+
+    @FXML
+    private void schimbaData() {
+        try {
+            Bilet biletSelectat = tabelBilete.getSelectionModel().getSelectedItem();
+            if (biletSelectat == null) {
+                afiseazaEroare("Te rugăm să selectezi un bilet pentru a schimba data.");
+                return;
+            }
+            
+            // Setăm ID-ul biletului selectat și alte informații necesare în App
+            App.getDateUtilizator().put("biletSelectatId", biletSelectat.getId());
+            App.getDateUtilizator().put("zborSelectatId", biletSelectat.getIdZbor());
+            App.getDateUtilizator().put("detaliiZbor", biletSelectat.getDetaliiZbor());
+            
+            App.setRoot("schimbaDataZbor");
+        } catch (IOException e) {
+            jurnal.log(Level.SEVERE, "Eroare la navigarea către pagina de schimbare dată", e);
+            afiseazaEroare("Nu s-a putut deschide pagina de schimbare a datei");
         }
     }
 }

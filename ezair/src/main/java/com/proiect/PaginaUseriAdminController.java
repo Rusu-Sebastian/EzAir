@@ -33,6 +33,17 @@ public class PaginaUseriAdminController {
     private static final String EROARE_SERVER = "A apărut o eroare la comunicarea cu serverul. Te rog să încerci din nou.";
     private static final String SELECTEAZA_UTILIZATOR = "Te rog să selectezi un utilizator din tabel";
     
+    // JSON property constants
+    private static final String PROP_ID = "id";
+    private static final String PROP_NUME = "nume";
+    private static final String PROP_PRENUME = "prenume";
+    private static final String PROP_DATA_NASTERII = "dataNasterii";
+    private static final String PROP_EMAIL = "email";
+    private static final String PROP_NUME_UTILIZATOR = "numeUtilizator";
+    private static final String PROP_PAROLA = "parola";
+    private static final String PROP_ESTE_ADMIN = "esteAdmin";
+    private static final String PROP_TELEFON = "telefon";
+
     @FXML
     private TableView<User> tabelUtilizatori;
     @FXML
@@ -73,6 +84,7 @@ public class PaginaUseriAdminController {
 
         String idUtilizator = utilizatorSelectat.getId();
         logger.log(Level.INFO, "ID utilizator selectat pentru editare: {0}", idUtilizator);
+        App.getDateUtilizator().put("userId", idUtilizator); // Save ID for edit page
         App.setRoot("editareUtilizator");
     }
 
@@ -136,14 +148,14 @@ public class PaginaUseriAdminController {
     }
 
     private void configurareColoane() {
-        coloanaNumeUtilizator.setCellValueFactory(new PropertyValueFactory<>("username"));
-        coloanaParola.setCellValueFactory(new PropertyValueFactory<>("parola"));
-        coloanaEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
-        coloanaNume.setCellValueFactory(new PropertyValueFactory<>("nume"));
-        coloanaPrenume.setCellValueFactory(new PropertyValueFactory<>("prenume"));
-        coloanaDataNasterii.setCellValueFactory(new PropertyValueFactory<>("dataNasterii"));
-        coloanaAdmin.setCellValueFactory(new PropertyValueFactory<>("isAdmin"));
-        coloanaId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        coloanaNumeUtilizator.setCellValueFactory(new PropertyValueFactory<>(PROP_NUME_UTILIZATOR));
+        coloanaParola.setCellValueFactory(new PropertyValueFactory<>(PROP_PAROLA));
+        coloanaEmail.setCellValueFactory(new PropertyValueFactory<>(PROP_EMAIL));
+        coloanaNume.setCellValueFactory(new PropertyValueFactory<>(PROP_NUME));
+        coloanaPrenume.setCellValueFactory(new PropertyValueFactory<>(PROP_PRENUME));
+        coloanaDataNasterii.setCellValueFactory(new PropertyValueFactory<>(PROP_DATA_NASTERII));
+        coloanaAdmin.setCellValueFactory(new PropertyValueFactory<>(PROP_ESTE_ADMIN));
+        coloanaId.setCellValueFactory(new PropertyValueFactory<>(PROP_ID));
     }
 
     private void actualizeazaDate() {
@@ -178,26 +190,59 @@ public class PaginaUseriAdminController {
     }
 
     private void proceseazaDateUtilizatori(String jsonResponse) {
-        JSONArray utilizatoriArray = new JSONArray(jsonResponse);
-        ObservableList<User> utilizatori = FXCollections.observableArrayList();
+        try {
+            JSONArray utilizatoriArray = new JSONArray(jsonResponse);
+            ObservableList<User> utilizatori = FXCollections.observableArrayList();
 
-        for (int i = 0; i < utilizatoriArray.length(); i++) {
-            JSONObject utilizatorJson = utilizatoriArray.getJSONObject(i);
-            User utilizator = new User(
-                utilizatorJson.getString("nume"),
-                utilizatorJson.getString("prenume"),
-                utilizatorJson.getString("dataNasterii"),
-                utilizatorJson.getString("email"),
-                utilizatorJson.getString("username"),
-                utilizatorJson.getString("parola"),
-                utilizatorJson.getBoolean("admin"),
-                utilizatorJson.getString("id"),
-                utilizatorJson.getString("telefon")
-            );
-            utilizatori.add(utilizator);
+            for (int i = 0; i < utilizatoriArray.length(); i++) {
+                JSONObject utilizatorJson = utilizatoriArray.getJSONObject(i);
+                User utilizator = creeazaUtilizator(utilizatorJson, i);
+                if (utilizator != null) {
+                    utilizatori.add(utilizator);
+                }
+            }
+
+            tabelUtilizatori.setItems(utilizatori);
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Eroare la procesarea JSON: {0}", e.getMessage());
+            afiseazaAlerta(Alert.AlertType.ERROR,
+                          TITLU_EROARE,
+                          EROARE_INCARCARE,
+                          "Eroare la procesarea datelor: " + e.getMessage());
         }
+    }
 
-        tabelUtilizatori.setItems(utilizatori);
+    private User creeazaUtilizator(JSONObject utilizatorJson, int index) {
+        try {
+            // Verify all required fields are present before creating the User
+            String[] campuriObligatorii = {
+                PROP_NUME, PROP_PRENUME, PROP_DATA_NASTERII, PROP_EMAIL,
+                PROP_NUME_UTILIZATOR, PROP_PAROLA, PROP_ID
+            };
+            
+            for (String camp : campuriObligatorii) {
+                if (!utilizatorJson.has(camp)) {
+                    logger.log(Level.WARNING, "Câmpul obligatoriu {0} lipsește pentru utilizatorul {1}",
+                             new Object[]{camp, index});
+                    return null;
+                }
+            }
+
+            return new User(
+                utilizatorJson.getString(PROP_NUME),
+                utilizatorJson.getString(PROP_PRENUME),
+                utilizatorJson.getString(PROP_DATA_NASTERII),
+                utilizatorJson.getString(PROP_EMAIL),
+                utilizatorJson.getString(PROP_NUME_UTILIZATOR),
+                utilizatorJson.getString(PROP_PAROLA),
+                utilizatorJson.optBoolean(PROP_ESTE_ADMIN, false), // Default false if not present
+                utilizatorJson.getString(PROP_ID),
+                utilizatorJson.optString(PROP_TELEFON, null)
+            );
+        } catch (Exception e) {
+            logger.log(Level.WARNING, "Eroare la procesarea utilizatorului {0}: {1}", new Object[]{index, e.getMessage()});
+            return null;
+        }
     }
 
     private void afiseazaAlerta(Alert.AlertType tip, String titlu, String antet, String continut) {

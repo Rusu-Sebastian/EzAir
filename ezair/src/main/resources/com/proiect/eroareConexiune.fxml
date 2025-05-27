@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.EroareConexiuneController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.EroareConexiuneController" styleClass="root" stylesheets="@styles2.css">
    <children>
       <Pane prefHeight="200.0" prefWidth="200.0">
          <children>
@@ -31,12 +31,12 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="statusText" layoutX="126.0" layoutY="120.0" styleClass="status-message" textAlignment="CENTER">
+            <Label fx:id="textStatus" layoutX="126.0" layoutY="120.0" styleClass="status-message" textAlignment="CENTER">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <Button fx:id="butonReincercare" layoutX="239.0" layoutY="150.0" mnemonicParsing="false" onAction="#reincarcare" styleClass="retry-button" text="Încearcă din nou">
+            <Button fx:id="butonReincercare" layoutX="239.0" layoutY="150.0" mnemonicParsing="false" onAction="#reincearcaConexiunea" styleClass="retry-button" text="Încearcă din nou">
                <font>
                   <Font size="14.0" />
                </font>

@@ -42,7 +42,7 @@ public class EditareZborController {
     @FXML private TextField idZbor;
 
     @FXML
-    private void initializeaza() {
+    public void initialize() {
         Map<String, String> dateUtilizator = App.getDateUtilizator();
         
         if (!dateUtilizator.containsKey("id")) {
@@ -136,7 +136,7 @@ public class EditareZborController {
     }
 
     @FXML
-    private void finalizeazaEditareZbor() {
+    private void finalizareEditareZbor() {
         if (!valideazaDate()) {
             return;
         }

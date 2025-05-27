@@ -13,13 +13,13 @@ app.use(express.json());
 // Constante pentru chei și mesaje
 const CHEI = {
     ID_UTILIZATOR: "userId",
-    NUME_UTILIZATOR: "username",
+    NUME_UTILIZATOR: "numeUtilizator",
     PAROLA: "parola",
     EMAIL: "email",
     NUME: "nume",
     PRENUME: "prenume",
     DATA_NASTERII: "dataNasterii",
-    ADMIN: "admin",
+    ADMIN: "esteAdmin",
     TELEFON: "telefon",
     ID: "id",
     STARE: "stare"
@@ -37,15 +37,15 @@ const MESAJE = {
 
 // Actualizăm constructorul pentru User
 class user {
-    constructor(username, parola, email, nume, prenume, dataNasterii, admin = false, telefon) {
+    constructor(numeUtilizator, parola, email, nume, prenume, dataNasterii, esteAdmin = false, telefon) {
         this[CHEI.ID] = uuidv4();
-        this[CHEI.NUME_UTILIZATOR] = username;
+        this[CHEI.NUME_UTILIZATOR] = numeUtilizator;
         this[CHEI.PAROLA] = parola;
         this[CHEI.EMAIL] = email;
         this[CHEI.NUME] = nume;
         this[CHEI.PRENUME] = prenume;
         this[CHEI.DATA_NASTERII] = dataNasterii;
-        this[CHEI.ADMIN] = admin;
+        this[CHEI.ADMIN] = esteAdmin;
         this.setari = {
             notificariEmail: true,
             notificariSMS: false,
@@ -147,8 +147,10 @@ app.post('/zboruri/adaugareZbor', async (req, res) => {
 //metoda pentru logare
 app.post('/users/login', async (req, res) => {
     try {
-        const { username, parola } = req.body;
-        const user = await verificareDateLogin(username, parola);
+        console.log("Cerere de autentificare:", req.body);
+        const { numeUtilizator, parola } = req.body;
+        const user = await verificareDateLogin(numeUtilizator, parola);
+        console.log("Utilizator autentificat:", user.id, user.username, user.admin);
         res.status(200).json(user);
     } catch (error) {
         console.error("Eroare la verificarea datelor de login:", error);
@@ -159,8 +161,8 @@ app.post('/users/login', async (req, res) => {
 //metoda pentru creare cont
 app.post('/users/creareCont', async (req, res) => {
     try {
-        const { username, parola, email, nume, prenume, dataNasterii, admin } = req.body;
-        const userNou = new user(username, parola, email, nume, prenume, dataNasterii, admin);
+        const { numeUtilizator, parola, email, nume, prenume, dataNasterii, admin } = req.body;
+        const userNou = new user(numeUtilizator, parola, email, nume, prenume, dataNasterii, admin);
         await creareContUserNou(userNou);
         res.status(200).json({ mesaj: MESAJE.SUCCES_CREARE_CONT });
     } catch (error) {
@@ -244,14 +246,24 @@ app.get('/zboruri/cautareZbor', async (req, res) => {
         const { origine, destinatie, data } = req.query;
         let zboruri = await db.getData("/zboruri");
         
-        // Filtrare după origine și destinație (obligatorii)
-        let zboruriGasite = zboruri.filter(zbor => zbor.origine === origine && zbor.destinatie === destinatie);
+        // Dacă nu sunt specificate criterii, returnăm toate zborurile
+        if (!origine && !destinatie && !data) {
+            return res.status(200).json(zboruri);
+        }
         
-        // Filtrare suplimentară după dată (opțională)
+        let zboruriGasite = zboruri;
+        
+        // Filtrare după criteriile specificate
+        if (origine) {
+            zboruriGasite = zboruriGasite.filter(zbor => zbor.origine === origine);
+        }
+        
+        if (destinatie) {
+            zboruriGasite = zboruriGasite.filter(zbor => zbor.destinatie === destinatie);
+        }
+        
         if (data) {
             zboruriGasite = zboruriGasite.filter(zbor => {
-                // Verifică dacă data coincide
-                // În funcție de formatul datelor, ar putea fi necesar să convertim
                 const dataPlecare = zbor.dataPlecare;
                 return dataPlecare.includes(data) || data.includes(dataPlecare);
             });
@@ -310,8 +322,10 @@ app.get('/users/:id', async (req, res) => {
 app.get('/users/:id/bilete', async (req, res) => {
     try {
         const userId = req.params.id;
+        console.log("Cerere pentru biletele utilizatorului:", userId);
         let bilete = await db.getData("/bilete") || [];
         const bileteleUtilizatorului = bilete.filter(bilet => bilet.userId === userId);
+        console.log("Bilete găsite:", bileteleUtilizatorului.length);
         res.status(200).json(bileteleUtilizatorului);
     } catch (error) {
         console.error("Eroare la obținerea biletelor:", error);

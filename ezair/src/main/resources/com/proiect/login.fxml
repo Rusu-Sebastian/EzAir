@@ -6,39 +6,52 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" snapToPixel="false" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.LogInController">
+<VBox alignment="CENTER" snapToPixel="false" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.LogInController" styleClass="root" stylesheets="@styles2.css">
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
    <children>
-      <Pane prefHeight="252.0" prefWidth="1104.0">
+      <VBox alignment="CENTER" prefHeight="252.0" prefWidth="1104.0" spacing="15" styleClass="card">
          <children>
-            <ImageView fitHeight="180.0" fitWidth="180.0" layoutX="462.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="180.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@logo.png" />
                </image>
             </ImageView>
-            <Text layoutX="352.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bine ați venit la EzAir" wrappingWidth="400.13000106811523">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bine ați venit la EzAir">
                <font>
                   <Font name="Noto Sans Math Regular" size="48.0" />
                </font>
             </Text>
          </children>
-      </Pane>
-      <Pane prefHeight="265.0" prefWidth="1104.0">
+      </VBox>
+      <VBox alignment="CENTER" prefHeight="265.0" prefWidth="1104.0" spacing="15" styleClass="card">
          <children>
-            <Button fx:id="butonLogIn" defaultButton="true" layoutX="623.0" layoutY="195.0" mnemonicParsing="false" onAction="#logIn" text="Conectare" textAlignment="JUSTIFY" />
-            <Button fx:id="butonCreatCont" layoutX="431.0" layoutY="195.0" mnemonicParsing="false" onAction="#paginaCreazaCont" text="Creare cont" />
-            <TextField fx:id="username" layoutX="519.0" layoutY="96.0" />
-            <Text layoutX="431.0" layoutY="114.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Utilizator" />
-            <Text layoutX="433.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Parolă" />
-            <PasswordField fx:id="parola" layoutX="519.0" layoutY="139.0" />
+            <HBox alignment="CENTER" spacing="10">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Utilizator" />
+                  <TextField fx:id="numeUtilizator" prefWidth="200" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" spacing="10">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Parolă" />
+                  <PasswordField fx:id="parola" prefWidth="200" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" spacing="20">
+               <children>
+                  <Button fx:id="butonCreatCont" mnemonicParsing="false" onAction="#navigheazaLaCreareCont" text="Creare cont" />
+                  <Button fx:id="butonLogIn" defaultButton="true" mnemonicParsing="false" onAction="#autentificare" text="Conectare" textAlignment="JUSTIFY" />
+               </children>
+            </HBox>
          </children>
-      </Pane>
+      </VBox>
    </children>
 </VBox>

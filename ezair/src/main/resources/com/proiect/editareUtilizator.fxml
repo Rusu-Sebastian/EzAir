@@ -11,14 +11,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.EditareUtilizatorController">
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.EditareUtilizatorController" styleClass="root" stylesheets="@styles2.css">
    <children>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Editare Utilizator">
          <font>
             <Font size="24.0" />
          </font>
       </Text>
-      <VBox spacing="10.0">
+      <VBox alignment="CENTER" spacing="10.0">
          <children>
             <Label text="Nume de utilizator:" />
             <TextField fx:id="campNumeUtilizator" />
@@ -47,7 +47,7 @@
       <VBox alignment="CENTER" spacing="10.0">
          <children>
             <Button mnemonicParsing="false" onAction="#salveazaUtilizator" text="Salvează" />
-            <Button mnemonicParsing="false" onAction="#inapoi" text="Înapoi" />
+            <Button mnemonicParsing="false" onAction="#revino" text="Înapoi" />
          </children>
       </VBox>
    </children>

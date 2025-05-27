@@ -20,7 +20,7 @@ public class ControllerAutentificare {
 
         // Verificarea daca toate campurile sunt completate
         if (numeUtilizator.isEmpty() || parola.isEmpty()) {
-            jurnal.warning("Completati toate campurile!");
+            jurnal.log(Level.WARNING, "Completati toate campurile!");
             return;
         }
 
@@ -36,7 +36,7 @@ public class ControllerAutentificare {
             conexiuneHttp.setDoOutput(true);
 
             // Crearea corpului cererii JSON
-            String jsonCerere = String.format("{\"username\": \"%s\", \"parola\": \"%s\"}", numeUtilizator, parola);
+            String jsonCerere = String.format("{\"numeUtilizator\": \"%s\", \"parola\": \"%s\"}", numeUtilizator, parola);
 
             // Trimiterea cererii
             try (java.io.OutputStream os = conexiuneHttp.getOutputStream()) {
@@ -50,13 +50,13 @@ public class ControllerAutentificare {
                 try (java.io.InputStream is = conexiuneHttp.getInputStream();
                      java.util.Scanner scanner = new java.util.Scanner(is, java.nio.charset.StandardCharsets.UTF_8.name())) {
                     String corpRaspuns = scanner.useDelimiter("\\A").next();
-                    jurnal.info("Răspuns server: " + corpRaspuns);
+                    jurnal.log(Level.INFO, "Răspuns server: {0}", corpRaspuns);
 
                     // Parsarea răspunsului JSON
                     org.json.JSONObject raspunsJson = new org.json.JSONObject(corpRaspuns);
 
                     // Verificarea dacă utilizatorul este admin
-                    boolean esteAdmin = raspunsJson.getBoolean("admin");
+                    boolean esteAdmin = raspunsJson.getBoolean("esteAdmin");
                     String nume = raspunsJson.getString("nume");
                     String prenume = raspunsJson.getString("prenume");
 
@@ -64,21 +64,23 @@ public class ControllerAutentificare {
                     App.getDateUtilizator().put("numeUtilizator", numeUtilizator);
                     App.getDateUtilizator().put("nume", nume);
                     App.getDateUtilizator().put("prenume", prenume);
-                    App.getDateUtilizator().put("idUtilizator", raspunsJson.getString("id"));
+                    App.getDateUtilizator().put("userId", raspunsJson.getString("id"));
+                    // Adăugăm și statusul de admin ca string
+                    App.getDateUtilizator().put("esteAdmin", String.valueOf(esteAdmin));
 
                     // Redirecționarea utilizatorului
                     if (esteAdmin) {
-                        jurnal.info("Utilizatorul este administrator.");
+                        jurnal.log(Level.INFO, "Utilizatorul este administrator.");
                         App.setRoot("paginaPrincipalaAdmin");
                     } else {
                         App.setRoot("paginaPrincipalaUser");
                     }
                 }
             } else {
-                jurnal.warning("Datele introduse sunt greșite! Cod răspuns: " + codRaspuns);
+                jurnal.log(Level.WARNING, "Datele introduse sunt greșite! Cod răspuns: {0}", codRaspuns);
             }
-        } catch (IOException | java.net.URISyntaxException e) {
-            jurnal.log(Level.SEVERE, "Eroare la conectarea la server: " + e.getMessage(), e);
+        }        catch (IOException | java.net.URISyntaxException e) {
+            jurnal.log(Level.SEVERE, "Eroare la conectarea la server: {0}", e.getMessage());
             App.setRoot("eroareConexiune");
         } finally {
             if (conexiuneHttp != null) {
@@ -87,7 +89,7 @@ public class ControllerAutentificare {
         }
 
         // Jurnalizarea utilizatorului (fara parola)
-        jurnal.info("Nume utilizator: " + numeUtilizator);
+        jurnal.log(Level.INFO, "Nume utilizator: {0}", numeUtilizator);
     }
 
     @FXML

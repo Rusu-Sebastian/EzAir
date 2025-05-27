@@ -2,43 +2,31 @@
     "users": [
         {
             "id": "admin",
-            "username": "admin",
+            "numeUtilizator": "admin",
             "parola": "admin",
             "email": "admin",
             "nume": "admin",
             "prenume": "admin",
             "dataNasterii": "admin",
-            "admin": true
+            "esteAdmin": true,
+            "setari": {
+                "notificariEmail": true,
+                "notificariSMS": false,
+                "notificariPushWeb": true,
+                "notificariPromotii": true,
+                "notificariAnulari": true,
+                "notificariModificari": true
+            }
         },
         {
-            "id": "76479d48-b35e-4653-b430-b9d1ea66e84e",
-            "username": "rusu.admin",
-            "parola": "134679852",
-            "email": "sebastianrusu01@gmail.com",
-            "nume": "Rusu",
-            "prenume": "Sebastian",
-            "dataNasterii": "09/05/2004",
-            "admin": true
-        },
-        {
-            "id": "d9c617a2-e3e5-4798-9487-6c235025d670",
-            "username": "admin",
-            "parola": "adminadmin",
-            "email": "admin@admin.com",
-            "nume": "admin",
-            "prenume": "admin",
-            "dataNasterii": "01/01/2001",
-            "admin": false
-        },
-        {
-            "id": "b22c383c-acdd-4fb5-8642-78c6ae90c763",
-            "username": "Test",
-            "parola": "TestTest",
-            "email": "test@test.com",
-            "nume": "Testare",
-            "prenume": "Testare",
-            "dataNasterii": "11/09/2021",
-            "admin": false,
+            "id": "client",
+            "numeUtilizator": "client",
+            "parola": "client",
+            "email": "client",
+            "nume": "client",
+            "prenume": "client",
+            "dataNasterii": "client",
+            "esteAdmin": false,
             "setari": {
                 "notificariEmail": true,
                 "notificariSMS": true,
@@ -46,24 +34,103 @@
             }
         },
         {
+            "id": "76479d48-b35e-4653-b430-b9d1ea66e84e",
+            "numeUtilizator": "rusu.admin",
+            "parola": "134679852",
+            "email": "sebastianrusu01@gmail.com",
+            "nume": "Rusu",
+            "prenume": "Sebastian",
+            "dataNasterii": "09/05/2004",
+            "esteAdmin": true,
+            "setari": {
+                "notificariEmail": true,
+                "notificariSMS": false,
+                "notificariPushWeb": true,
+                "notificariPromotii": true,
+                "notificariAnulari": true,
+                "notificariModificari": true
+            }
+        },
+        {
+            "id": "d9c617a2-e3e5-4798-9487-6c235025d670",
+            "numeUtilizator": "admin",
+            "parola": "adminadmin",
+            "email": "admin@admin.com",
+            "nume": "admin",
+            "prenume": "admin",
+            "dataNasterii": "01/01/2001",
+            "esteAdmin": false,
+            "setari": {
+                "notificariEmail": true,
+                "notificariSMS": false,
+                "notificariPushWeb": true,
+                "notificariPromotii": true,
+                "notificariAnulari": true,
+                "notificariModificari": true
+            }
+        },
+        {
+            "id": "b22c383c-acdd-4fb5-8642-78c6ae90c763",
+            "numeUtilizator": "Test",
+            "parola": "TestTest",
+            "email": "test@test.com",
+            "nume": "Testare",
+            "prenume": "Testare",
+            "dataNasterii": "11/09/2021",
+            "esteAdmin": false,
+            "setari": {
+                "notificariEmail": true,
+                "notificariSMS": false,
+                "notificariPushWeb": true,
+                "notificariPromotii": true,
+                "notificariAnulari": true,
+                "notificariModificari": true
+            }
+        },
+        {
             "id": "18ed8d9e-fd71-4dc2-89a0-cbe6e1e803b0",
-            "username": "BalerinaCapucina69",
+            "numeUtilizator": "BalerinaCapucina69",
             "parola": "BalerinaSmecherina12",
             "email": "Balerina.Capucina69@gmail.com",
             "nume": "Balerina",
             "prenume": "Capucina",
             "dataNasterii": "2/3/2005",
-            "admin": false
+            "esteAdmin": false,
+            "setari": {
+                "notificariEmail": true,
+                "notificariSMS": false,
+                "notificariPushWeb": true,
+                "notificariPromotii": true,
+                "notificariAnulari": true,
+                "notificariModificari": true
+            }
         },
         {
             "id": "62ca3d26-aaab-4a29-970e-31faae8f54ab",
-            "username": "sebastianrusu01",
+            "numeUtilizator": "sebastianrusu01",
             "parola": "134679852",
             "email": "sebastianrusu01@gmail.com",
             "nume": "Rusu",
             "prenume": "Sebastian",
-            "dataNasterii": "9/5/2004",
-            "admin": false,
+            "dataNasterii": "09/05/2004",
+            "esteAdmin": false,
+            "setari": {
+                "notificariEmail": true,
+                "notificariSMS": false,
+                "notificariPushWeb": true,
+                "notificariPromotii": true,
+                "notificariAnulari": true,
+                "notificariModificari": true
+            }
+        },
+        {
+            "id": "d39b2590-43eb-45f6-a382-ce358cd129c8",
+            "parola": "tanasa123",
+            "email": "tanasatesodora@gmail.com",
+            "nume": "teodora",
+            "prenume": "tanasa",
+            "dataNasterii": "2/3/2005",
+            "esteAdmin": false,
             "setari": {
                 "notificariEmail": true,
                 "notificariSMS": false,
@@ -76,30 +143,6 @@
     ],
     "zboruri": [
         {
-            "id": "94b082e4-c544-40f6-9fc1-3ed73554b9c0",
-            "origine": "mata",
-            "destinatie": "mar",
-            "dataPlecare": "1/12/2025",
-            "oraPlecare": "1:20",
-            "dataSosire": "1/12/2025",
-            "oraSosire": "6:12",
-            "modelAvion": "laba",
-            "locuriLibere": 420,
-            "pret": 69
-        },
-        {
-            "id": "1d5af4d0-6d0e-403e-aa04-df0f34c050c7",
-            "origine": "lalalabagiumare",
-            "destinatie": "lalalaalal",
-            "dataPlecare": "02.03.2026",
-            "oraPlecare": "2:3",
-            "dataSosire": "03.03.2026",
-            "oraSosire": "2:3",
-            "modelAvion": "mareavion",
-            "locuriLibere": 211,
-            "pret": 200
-        },
-        {
             "id": "e367b6a7-92e0-4bc2-8baa-fb3e3aeead4a",
             "origine": "Bucuresti",
             "destinatie": "Londra",
@@ -107,9 +150,322 @@
             "oraPlecare": "10:30",
             "dataSosire": "3/6/2025",
             "oraSosire": "14:40",
-            "modelAvion": "Smecker",
-            "locuriLibere": 198,
-            "pret": 100
+            "modelAvion": "Boeing 737-800",
+            "locuriLibere": 195,
+            "pret": 229.99
+        },
+        {
+            "id": "f8d72a4b-13c7-4939-a6a7-4c69c2f128b2",
+            "origine": "Bucuresti",
+            "destinatie": "Londra",
+            "dataPlecare": "3/6/2025",
+            "oraPlecare": "18:45",
+            "dataSosire": "3/6/2025",
+            "oraSosire": "22:55",
+            "modelAvion": "Airbus A320",
+            "locuriLibere": 150,
+            "pret": 199.99
+        },
+        {
+            "id": "c9e83a5d-7b24-4f8a-b12c-1d89c2e34d6f",
+            "origine": "Bucuresti",
+            "destinatie": "Paris",
+            "dataPlecare": "4/6/2025",
+            "oraPlecare": "07:15",
+            "dataSosire": "4/6/2025",
+            "oraSosire": "10:45",
+            "modelAvion": "Airbus A321",
+            "locuriLibere": 180,
+            "pret": 249.99
+        },
+        {
+            "id": "a7b92c4e-5f16-4d3a-9e8b-2c45d6f87a1d",
+            "origine": "Bucuresti",
+            "destinatie": "Roma",
+            "dataPlecare": "5/6/2025",
+            "oraPlecare": "11:30",
+            "dataSosire": "5/6/2025",
+            "oraSosire": "14:15",
+            "modelAvion": "Boeing 737-800",
+            "locuriLibere": 165,
+            "pret": 189.99
+        },
+        {
+            "id": "d6e91b3f-4c25-4e7a-8d9a-3f78b5c92e4a",
+            "origine": "Bucuresti",
+            "destinatie": "Barcelona",
+            "dataPlecare": "6/6/2025",
+            "oraPlecare": "14:20",
+            "dataSosire": "6/6/2025",
+            "oraSosire": "17:45",
+            "modelAvion": "Airbus A320",
+            "locuriLibere": 144,
+            "pret": 219.99
+        },
+        {
+            "id": "b5d84a2c-3e16-4f9b-bc7d-2d67a4e91c5b",
+            "origine": "Bucuresti",
+            "destinatie": "Amsterdam",
+            "dataPlecare": "7/6/2025",
+            "oraPlecare": "09:45",
+            "dataSosire": "7/6/2025",
+            "oraSosire": "13:15",
+            "modelAvion": "Boeing 737-800",
+            "locuriLibere": 172,
+            "pret": 209.99
+        },
+        {
+            "id": "e4c73b1d-2f15-4e8a-9c6b-1b34d5f86a9c",
+            "origine": "Bucuresti",
+            "destinatie": "Viena",
+            "dataPlecare": "8/6/2025",
+            "oraPlecare": "12:30",
+            "dataSosire": "8/6/2025",
+            "oraSosire": "14:45",
+            "modelAvion": "Airbus A319",
+            "locuriLibere": 132,
+            "pret": 159.99
+        },
+        {
+            "id": "f3b62a1e-1d14-4d7a-8e5c-0a23c4e75b8d",
+            "origine": "Bucuresti",
+            "destinatie": "Madrid",
+            "dataPlecare": "9/6/2025",
+            "oraPlecare": "15:15",
+            "dataSosire": "9/6/2025",
+            "oraSosire": "19:00",
+            "modelAvion": "Airbus A321",
+            "locuriLibere": 188,
+            "pret": 239.99
+        },
+        {
+            "id": "a2c51b4d-0e13-4c6a-7d4b-9b12d3e64a7c",
+            "origine": "Bucuresti",
+            "destinatie": "Berlin",
+            "dataPlecare": "10/6/2025",
+            "oraPlecare": "08:00",
+            "dataSosire": "10/6/2025",
+            "oraSosire": "11:30",
+            "modelAvion": "Boeing 737-800",
+            "locuriLibere": 156,
+            "pret": 179.99
+        },
+        {
+            "id": "c1d40a3b-9e12-4b5a-6c3a-8a01c2d53b6e",
+            "origine": "Bucuresti",
+            "destinatie": "Atena",
+            "dataPlecare": "11/6/2025",
+            "oraPlecare": "13:45",
+            "dataSosire": "11/6/2025",
+            "oraSosire": "16:15",
+            "modelAvion": "Airbus A320",
+            "locuriLibere": 168,
+            "pret": 169.99
+        },
+        {
+            "id": "b9e30a2c-8d11-4a4a-5b2a-7b90b1c42d5d",
+            "origine": "Bucuresti",
+            "destinatie": "Istanbul",
+            "dataPlecare": "12/6/2025",
+            "oraPlecare": "16:30",
+            "dataSosire": "12/6/2025",
+            "oraSosire": "19:45",
+            "modelAvion": "Boeing 737-800",
+            "locuriLibere": 174,
+            "pret": 149.99
+        },
+        {
+            "id": "e8d29b1c-7c10-4a3a-4b1a-6a89a0b31c4c",
+            "origine": "Bucuresti",
+            "destinatie": "Praga",
+            "dataPlecare": "13/6/2025",
+            "oraPlecare": "10:15",
+            "dataSosire": "13/6/2025",
+            "oraSosire": "13:00",
+            "modelAvion": "Airbus A319",
+            "locuriLibere": 128,
+            "pret": 169.99
+        }
+,
+        {
+            "id": "d1e52c3f-4b16-4c7a-8d3b-9e67f4a21b5d",
+            "origine": "Bucuresti",
+            "destinatie": "Londra",
+            "dataPlecare": "15/6/2025",
+            "oraPlecare": "08:30",
+            "dataSosire": "15/6/2025",
+            "oraSosire": "12:40",
+            "modelAvion": "Boeing 737-800",
+            "locuriLibere": 185,
+            "pret": 219.99
+        },
+        {
+            "id": "c2f41d2e-3a15-4b6a-7c2a-8d56e3b10a4c",
+            "origine": "Bucuresti",
+            "destinatie": "Paris",
+            "dataPlecare": "16/6/2025",
+            "oraPlecare": "11:45",
+            "dataSosire": "16/6/2025",
+            "oraSosire": "15:15",
+            "modelAvion": "Airbus A320",
+            "locuriLibere": 162,
+            "pret": 239.99
+        },
+        {
+            "id": "b3e30c1d-2a14-4a5a-6b1a-7c45d2a09b3d",
+            "origine": "Bucuresti",
+            "destinatie": "Roma",
+            "dataPlecare": "17/6/2025",
+            "oraPlecare": "09:15",
+            "dataSosire": "17/6/2025",
+            "oraSosire": "12:00",
+            "modelAvion": "Airbus A321",
+            "locuriLibere": 175,
+            "pret": 179.99
+        },
+        {
+            "id": "a4d29b0c-1b13-4a4a-5a0a-6b34c1b98a2d",
+            "origine": "Bucuresti",
+            "destinatie": "Barcelona",
+            "dataPlecare": "18/6/2025",
+            "oraPlecare": "13:30",
+            "dataSosire": "18/6/2025",
+            "oraSosire": "16:55",
+            "modelAvion": "Boeing 737-800",
+            "locuriLibere": 158,
+            "pret": 209.99
+        },
+        {
+            "id": "e5f18a9b-0c12-4b3a-4a9a-5a23b0a87b1c",
+            "origine": "Bucuresti",
+            "destinatie": "Amsterdam",
+            "dataPlecare": "19/6/2025",
+            "oraPlecare": "15:45",
+            "dataSosire": "19/6/2025",
+            "oraSosire": "19:15",
+            "modelAvion": "Airbus A320",
+            "locuriLibere": 144,
+            "pret": 199.99
+        },
+        {
+            "id": "f6e07b8a-9b11-4c2a-3b8a-4b12a9b76a0c",
+            "origine": "Bucuresti",
+            "destinatie": "Viena",
+            "dataPlecare": "20/6/2025",
+            "oraPlecare": "07:30",
+            "dataSosire": "20/6/2025",
+            "oraSosire": "09:45",
+            "modelAvion": "Airbus A319",
+            "locuriLibere": 138,
+            "pret": 149.99
+        },
+        {
+            "id": "g7d06a7b-8a10-4b1a-2a7a-3a01b8a65b9b",
+            "origine": "Bucuresti",
+            "destinatie": "Madrid",
+            "dataPlecare": "21/6/2025",
+            "oraPlecare": "12:15",
+            "dataSosire": "21/6/2025",
+            "oraSosire": "16:00",
+            "modelAvion": "Boeing 737-800",
+            "locuriLibere": 172,
+            "pret": 229.99
+        },
+        {
+            "id": "h8c05b6a-7b09-4a0a-1b6a-2b90a7b54a8a",
+            "origine": "Bucuresti",
+            "destinatie": "Berlin",
+            "dataPlecare": "22/6/2025",
+            "oraPlecare": "14:00",
+            "dataSosire": "22/6/2025",
+            "oraSosire": "17:30",
+            "modelAvion": "Airbus A320",
+            "locuriLibere": 166,
+            "pret": 169.99
+        },
+        {
+            "id": "i9b04a5b-6a08-4b9a-0a5a-1a89b6a43b7b",
+            "origine": "Bucuresti",
+            "destinatie": "Atena",
+            "dataPlecare": "23/6/2025",
+            "oraPlecare": "10:45",
+            "dataSosire": "23/6/2025",
+            "oraSosire": "13:15",
+            "modelAvion": "Boeing 737-800",
+            "locuriLibere": 178,
+            "pret": 159.99
+        },
+        {
+            "id": "j0a03b4a-5b07-4a8a-9b4a-0b78a5b32a6a",
+            "origine": "Bucuresti",
+            "destinatie": "Istanbul",
+            "dataPlecare": "24/6/2025",
+            "oraPlecare": "16:30",
+            "dataSosire": "24/6/2025",
+            "oraSosire": "19:45",
+            "modelAvion": "Airbus A321",
+            "locuriLibere": 184,
+            "pret": 139.99
+        },
+        {
+            "id": "k1b02a3b-4a06-4b7a-8a3a-9a67b4a21a5a",
+            "origine": "Bucuresti",
+            "destinatie": "Praga",
+            "dataPlecare": "25/6/2025",
+            "oraPlecare": "08:15",
+            "dataSosire": "25/6/2025",
+            "oraSosire": "11:00",
+            "modelAvion": "Airbus A319",
+            "locuriLibere": 132,
+            "pret": 159.99
+        },
+        {
+            "id": "l2a01b2a-3b05-4a6a-7b2a-8b56a3b10b4b",
+            "origine": "Bucuresti",
+            "destinatie": "Londra",
+            "dataPlecare": "26/6/2025",
+            "oraPlecare": "17:30",
+            "dataSosire": "26/6/2025",
+            "oraSosire": "21:40",
+            "modelAvion": "Boeing 737-800",
+            "locuriLibere": 188,
+            "pret": 209.99
+        },
+        {
+            "id": "m3b00a1b-2a04-4b5a-6a1a-7a45b2a09a3a",
+            "origine": "Bucuresti",
+            "destinatie": "Paris",
+            "dataPlecare": "27/6/2025",
+            "oraPlecare": "13:45",
+            "dataSosire": "27/6/2025",
+            "oraSosire": "17:15",
+            "modelAvion": "Airbus A320",
+            "locuriLibere": 152,
+            "pret": 229.99
+        },
+        {
+            "id": "n4c09b0a-1b03-4a4a-5b0a-6b34a1b98b2b",
+            "origine": "Bucuresti",
+            "destinatie": "Roma",
+            "dataPlecare": "28/6/2025",
+            "oraPlecare": "11:15",
+            "dataSosire": "28/6/2025",
+            "oraSosire": "14:00",
+            "modelAvion": "Airbus A321",
+            "locuriLibere": 168,
+            "pret": 169.99
+        },
+        {
+            "id": "o5d08a9b-0a02-4b3a-4a9a-5a23a0b87a1a",
+            "origine": "Bucuresti",
+            "destinatie": "Barcelona",
+            "dataPlecare": "29/6/2025",
+            "oraPlecare": "15:30",
+            "dataSosire": "29/6/2025",
+            "oraSosire": "18:55",
+            "modelAvion": "Boeing 737-800",
+            "locuriLibere": 174,
+            "pret": 199.99
         }
     ],
     "bilete": [
@@ -127,7 +483,7 @@
             "userId": "b22c383c-acdd-4fb5-8642-78c6ae90c763",
             "zborId": "e367b6a7-92e0-4bc2-8baa-fb3e3aeead4a",
             "detaliiZbor": "Bucuresti -> Londra",
-            "dataZbor": "2025-06-03T10:30:00",
+            "dataZbor": "2025-06-03T07:30:00.000Z",
             "stare": "ANULAT",
             "pret": 100
         },
@@ -136,9 +492,36 @@
             "userId": "b22c383c-acdd-4fb5-8642-78c6ae90c763",
             "zborId": "e367b6a7-92e0-4bc2-8baa-fb3e3aeead4a",
             "detaliiZbor": "Bucuresti -> Londra",
-            "dataZbor": "2025-06-03T10:30:00",
+            "dataZbor": "2025-06-03T07:30:00.000Z",
             "stare": "ACTIV",
             "pret": 100
+        },
+        {
+            "id": "cd13b634-b28f-4362-8272-1b7298e3c8d0",
+            "userId": "client",
+            "zborId": "e367b6a7-92e0-4bc2-8baa-fb3e3aeead4a",
+            "detaliiZbor": "Bucuresti -> Londra",
+            "dataZbor": "2025-06-03T07:30:00.000Z",
+            "stare": "ACTIV",
+            "pret": 100
+        },
+        {
+            "id": "f753fef1-71a9-413a-b298-a329c4835487",
+            "userId": "client",
+            "zborId": "e367b6a7-92e0-4bc2-8baa-fb3e3aeead4a",
+            "detaliiZbor": "Bucuresti -> Londra",
+            "dataZbor": "2025-06-03T07:30:00.000Z",
+            "stare": "ACTIV",
+            "pret": 100
+        },
+        {
+            "id": "b7e0be41-ba0c-4e33-b229-010ed138fd5e",
+            "userId": "client",
+            "zborId": "e367b6a7-92e0-4bc2-8baa-fb3e3aeead4a",
+            "detaliiZbor": "Bucuresti -> Londra",
+            "dataZbor": "2025-06-03T10:30:00",
+            "stare": "MODIFICAT",
+            "pret": 229.99
         }
     ]
 }

@@ -1,12 +1,14 @@
 com/proiect/User.class
 com/proiect/PaginaContClientController.class
 com/proiect/SchimbaParolaController.class
+com/proiect/ControllerAutentificare.class
 com/proiect/LogInController.class
 com/proiect/EditareUtilizatorController.class
 com/proiect/Zbor.class
 com/proiect/CreareContControllerAdmin.class
 module-info.class
 com/proiect/PaginaPrincipalaUserController.class
+com/proiect/Zbor$Constructor.class
 com/proiect/CreareContController.class
 com/proiect/PaginaZboruriAdminController.class
 com/proiect/App.class
@@ -14,7 +16,6 @@ com/proiect/EroareConexiuneController.class
 com/proiect/PaginaCreareZborController.class
 com/proiect/Bilet.class
 com/proiect/PaginaPrincipalaAdminController.class
-com/proiect/Zbor$Builder.class
 com/proiect/EditareZborController.class
 com/proiect/EditareContClientController.class
 com/proiect/SetariNotificariController.class

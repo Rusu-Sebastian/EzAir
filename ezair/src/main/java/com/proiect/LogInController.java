@@ -27,14 +27,14 @@ public class LogInController {
     private static final int TIMP_EXPIRARE_CONEXIUNE = 5000; // 5 secunde
     
     // Constants for user data keys
-    private static final String CHEIE_NUME_UTILIZATOR = "username";
+    private static final String CHEIE_NUME_UTILIZATOR = "numeUtilizator";
     private static final String CHEIE_NUME = "nume";
     private static final String CHEIE_PRENUME = "prenume";
     private static final String CHEIE_ID_UTILIZATOR = "userId";
-    private static final String CHEIE_ADMIN = "admin";
+    private static final String CHEIE_ADMIN = "esteAdmin";
     
     // Constants for JSON fields
-    private static final String CAMP_USERNAME = "username";
+    private static final String CAMP_NUME_UTILIZATOR = "numeUtilizator";
     private static final String CAMP_PAROLA = "parola";
     private static final String CAMP_ID = "id";
 
@@ -49,7 +49,7 @@ public class LogInController {
 
         try {
             JSONObject dateAutentificare = new JSONObject();
-            dateAutentificare.put(CAMP_USERNAME, numeUtilizator.getText().trim());
+            dateAutentificare.put(CAMP_NUME_UTILIZATOR, numeUtilizator.getText().trim());
             dateAutentificare.put(CAMP_PAROLA, parola.getText());
 
             autentificaUtilizator(dateAutentificare);
@@ -83,20 +83,24 @@ public class LogInController {
             }
 
             int codRaspuns = conexiune.getResponseCode();
-            if (codRaspuns == HttpURLConnection.HTTP_OK) {
-                proceseazaRaspunsAutentificare(conexiune);
-            } else if (codRaspuns == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                afiseazaAlerta(Alert.AlertType.ERROR,
-                              TITLU_EROARE,
-                              "Autentificare eșuată",
-                              "Numele de utilizator sau parola sunt incorecte.");
-                parola.clear();
-            } else {
-                jurnal.warning(() -> String.format("Server a returnat codul: %d", codRaspuns));
-                afiseazaAlerta(Alert.AlertType.ERROR,
-                              TITLU_EROARE,
-                              "Eroare server",
-                              "A apărut o eroare la procesarea cererii. Te rugăm să încerci din nou.");
+            switch (codRaspuns) {
+                case HttpURLConnection.HTTP_OK:
+                    proceseazaRaspunsAutentificare(conexiune);
+                    break;
+                case HttpURLConnection.HTTP_UNAUTHORIZED:
+                    afiseazaAlerta(Alert.AlertType.ERROR,
+                                  TITLU_EROARE,
+                                  "Autentificare eșuată",
+                                  "Numele de utilizator sau parola sunt incorecte.");
+                    parola.clear();
+                    break;
+                default:
+                    jurnal.warning(() -> String.format("Server a returnat codul: %d", codRaspuns));
+                    afiseazaAlerta(Alert.AlertType.ERROR,
+                                  TITLU_EROARE,
+                                  "Eroare server",
+                                  "A apărut o eroare la procesarea cererii. Te rugăm să încerci din nou.");
+                    break;
             }
         } finally {
             if (conexiune != null) {
@@ -117,7 +121,7 @@ public class LogInController {
     }
 
     private void salveazaDateUtilizator(JSONObject dateUtilizator) {
-        App.getDateUtilizator().put(CHEIE_NUME_UTILIZATOR, dateUtilizator.getString(CAMP_USERNAME));
+        App.getDateUtilizator().put(CHEIE_NUME_UTILIZATOR, dateUtilizator.getString(CAMP_NUME_UTILIZATOR));
         App.getDateUtilizator().put(CHEIE_NUME, dateUtilizator.getString(CHEIE_NUME));
         App.getDateUtilizator().put(CHEIE_PRENUME, dateUtilizator.getString(CHEIE_PRENUME));
         App.getDateUtilizator().put(CHEIE_ID_UTILIZATOR, dateUtilizator.getString(CAMP_ID));
