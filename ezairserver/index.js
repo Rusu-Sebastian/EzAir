@@ -147,10 +147,8 @@ app.post('/zboruri/adaugareZbor', async (req, res) => {
 //metoda pentru logare
 app.post('/users/login', async (req, res) => {
     try {
-        console.log("Cerere de autentificare:", req.body);
         const { numeUtilizator, parola } = req.body;
         const user = await verificareDateLogin(numeUtilizator, parola);
-        console.log("Utilizator autentificat:", user.id, user.username, user.admin);
         res.status(200).json(user);
     } catch (error) {
         console.error("Eroare la verificarea datelor de login:", error);
@@ -208,7 +206,6 @@ app.put('/users/:id', async (req, res) => {
     try {
         const id = req.params.id;
         const dateUpdatate = req.body;
-        console.log("Editare utilizator:", id, dateUpdatate);
         await editareUser(id, dateUpdatate);
         res.status(200).send('User updated successfully');
     } catch (error) {
@@ -322,10 +319,8 @@ app.get('/users/:id', async (req, res) => {
 app.get('/users/:id/bilete', async (req, res) => {
     try {
         const userId = req.params.id;
-        console.log("Cerere pentru biletele utilizatorului:", userId);
         let bilete = await db.getData("/bilete") || [];
         const bileteleUtilizatorului = bilete.filter(bilet => bilet.userId === userId);
-        console.log("Bilete găsite:", bileteleUtilizatorului.length);
         res.status(200).json(bileteleUtilizatorului);
     } catch (error) {
         console.error("Eroare la obținerea biletelor:", error);
@@ -525,9 +520,7 @@ async function editareUser(id, dateUpdatate) {
     try {
         let users = await db.getData("/users");
         const index = users.findIndex(user => user.id === id);
-        console.log("Căutare utilizator cu ID:", id);
-        console.log("Index găsit:", index);
-        
+
         if (index !== -1) {
             // Păstrează ID-ul original
             const idOriginal = users[index].id;
@@ -538,9 +531,7 @@ async function editareUser(id, dateUpdatate) {
                 id: idOriginal // Asigură că ID-ul rămâne neschimbat
             };
             await db.push("/users", users, true);
-            console.log("Utilizator actualizat:", users[index]);
         } else {
-            console.log("Nu s-a găsit utilizatorul cu ID:", id);
             throw new Error("Userul nu a fost găsit");
         }
     } catch (error) {
