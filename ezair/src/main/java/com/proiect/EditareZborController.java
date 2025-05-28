@@ -23,6 +23,8 @@ public class EditareZborController {
     private static final String SEPARATOR_ORA = ":";
     private static final String TITLU_EROARE = "Eroare";
     private static final String TITLU_SUCCES = "Succes";
+    private static final String CHEIE_ID_UTILIZATOR = "userId";
+    private static final String CHEIE_ADMIN = "esteAdmin";
     
     @FXML private TextField origine;
     @FXML private TextField destinatie;
@@ -41,9 +43,12 @@ public class EditareZborController {
     @FXML private TextField locuriLibere;
     @FXML private TextField idZbor;
 
+    private App app;
+
     @FXML
     public void initialize() {
-        Map<String, String> dateUtilizator = App.getDateUtilizator();
+        app = App.getInstance();
+        Map<String, Object> dateUtilizator = App.getDateUtilizator();
         
         if (!dateUtilizator.containsKey("id")) {
             afiseazaEroare("Eroare la încărcarea zborului", "Nu s-au găsit datele zborului pentru editare.");
@@ -53,19 +58,19 @@ public class EditareZborController {
         incarcaCampuri(dateUtilizator);
     }
 
-    private void incarcaCampuri(Map<String, String> dateUtilizator) {
-        idZbor.setText(dateUtilizator.get("id"));
-        origine.setText(dateUtilizator.get("origine"));
-        destinatie.setText(dateUtilizator.get("destinatie"));
+    private void incarcaCampuri(Map<String, Object> dateUtilizator) {
+        idZbor.setText((String) dateUtilizator.get("id"));
+        origine.setText((String) dateUtilizator.get("origine"));
+        destinatie.setText((String) dateUtilizator.get("destinatie"));
         
-        incarcaDataPlecarii(dateUtilizator.get("dataPlecare"));
-        incarcaOraPlecarii(dateUtilizator.get("oraPlecare"));
-        incarcaDataSosirii(dateUtilizator.get("dataSosire"));
-        incarcaOraSosirii(dateUtilizator.get("oraSosire"));
+        incarcaDataPlecarii((String) dateUtilizator.get("dataPlecare"));
+        incarcaOraPlecarii((String) dateUtilizator.get("oraPlecare"));
+        incarcaDataSosirii((String) dateUtilizator.get("dataSosire"));
+        incarcaOraSosirii((String) dateUtilizator.get("oraSosire"));
         
-        modelAvion.setText(dateUtilizator.get("modelAvion"));
-        locuriLibere.setText(dateUtilizator.get("locuriLibere"));
-        pret.setText(dateUtilizator.get("pret"));
+        modelAvion.setText((String) dateUtilizator.get("modelAvion"));
+        locuriLibere.setText((String) dateUtilizator.get("locuriLibere"));
+        pret.setText((String) dateUtilizator.get("pret"));
     }
 
     private void incarcaDataPlecarii(String dataPlecare) {
@@ -135,6 +140,7 @@ public class EditareZborController {
         return new String[0];
     }
 
+    @SuppressWarnings("unused")
     @FXML
     private void finalizareEditareZbor() {
         if (!valideazaDate()) {
@@ -226,9 +232,9 @@ public class EditareZborController {
     }
 
     private String determinaSeparatorData() {
-        Map<String, String> dateUtilizator = App.getDateUtilizator();
+        Map<String, Object> dateUtilizator = App.getDateUtilizator();
         if (dateUtilizator.containsKey("dataPlecare") && 
-            dateUtilizator.get("dataPlecare").contains(SEPARATOR_DATA_SLASH)) {
+            ((String) dateUtilizator.get("dataPlecare")).contains(SEPARATOR_DATA_SLASH)) {
             return SEPARATOR_DATA_SLASH;
         }
         return SEPARATOR_DATA_PUNCT;
@@ -263,6 +269,23 @@ public class EditareZborController {
         
         if (codRaspuns == HttpURLConnection.HTTP_OK) {
             afiseazaSucces("Zbor actualizat", "Zborul a fost actualizat cu succes în sistem.");
+            
+            // Păstrăm credențialele de admin înainte de a naviga înapoi
+            Map<String, Object> dateUtilizator = App.getDateUtilizator();
+            String idUtilizator = (String) dateUtilizator.get(CHEIE_ID_UTILIZATOR);
+            String esteAdmin = (String) dateUtilizator.get(CHEIE_ADMIN);
+            
+            // Curățăm datele vechi dar păstrăm datele de autentificare
+            dateUtilizator.clear();
+            
+            // Restaurăm credențialele
+            if (idUtilizator != null) {
+                dateUtilizator.put(CHEIE_ID_UTILIZATOR, idUtilizator);
+            }
+            if (esteAdmin != null) {
+                dateUtilizator.put(CHEIE_ADMIN, esteAdmin);
+            }
+            
             App.setRoot("paginaZboruriAdmin");
         } else {
             afiseazaEroare("Eroare la actualizarea zborului", 
@@ -270,9 +293,26 @@ public class EditareZborController {
         }
     }
 
+    @SuppressWarnings("unused")
     @FXML
     private void revino() throws IOException {
-        App.setRoot("paginaZboruriAdmin");
+        // Păstrăm credențialele de admin înainte de a naviga înapoi
+        Map<String, Object> dateUtilizator = App.getDateUtilizator();
+        String idUtilizator = (String) dateUtilizator.get(CHEIE_ID_UTILIZATOR);
+        String esteAdmin = (String) dateUtilizator.get(CHEIE_ADMIN);
+        
+        // Curățăm datele vechi dar păstrăm datele de autentificare
+        dateUtilizator.clear();
+        
+        // Restaurăm credențialele
+        if (idUtilizator != null) {
+            dateUtilizator.put(CHEIE_ID_UTILIZATOR, idUtilizator);
+        }
+        if (esteAdmin != null) {
+            dateUtilizator.put(CHEIE_ADMIN, esteAdmin);
+        }
+        
+        app.setRoot("paginaZboruriAdmin");
     }
 
     private void afiseazaEroare(String antet, String continut) {

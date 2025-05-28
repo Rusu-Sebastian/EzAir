@@ -17,20 +17,24 @@ public class PaginaPrincipalaAdminController {
     private static final String CHEIE_ADMIN = "esteAdmin";
     private static final String PAGINA_LOGIN = "login";
     private static final String PAGINA_ZBORURI_ADMIN = "paginaZboruriAdmin";
+    private App app;
     
     @FXML
+    @SuppressWarnings("unused") // Used by FXML
     public void initialize() {
+        app = App.getInstance();
         verificaPermisiuniAdmin();
     }
     
     @FXML
+    @SuppressWarnings("unused") // Used by FXML
     public void gestioneazaZboruri() {
         if (!esteUtilizatorAdmin()) {
             jurnal.severe("Încercare de acces neautorizat la panoul de administrare zboruri");
             Platform.runLater(() -> {
                 afiseazaEroare("Nu aveți permisiunile necesare pentru accesarea acestei pagini");
                 try {
-                    App.setRoot(PAGINA_LOGIN);
+                    app.setRoot(PAGINA_LOGIN);
                 } catch (IOException e) {
                     jurnal.log(Level.SEVERE, "Eroare la redirecționare către login", e);
                 }
@@ -39,7 +43,7 @@ public class PaginaPrincipalaAdminController {
         }
 
         try {
-            App.setRoot(PAGINA_ZBORURI_ADMIN);
+            app.setRoot(PAGINA_ZBORURI_ADMIN);
         } catch (IOException e) {
             jurnal.log(Level.SEVERE, "Eroare la navigare către panoul de zboruri", e);
             afiseazaEroare("Nu s-a putut deschide panoul de zboruri");
@@ -47,9 +51,10 @@ public class PaginaPrincipalaAdminController {
     }
 
     @FXML
+    @SuppressWarnings("unused") // Used by FXML
     public void gestioneazaUtilizatori() {
         try {
-            App.setRoot("paginaUseriAdmin");
+            app.setRoot("paginaUseriAdmin");
         } catch (IOException e) {
             jurnal.log(Level.SEVERE, "Eroare la navigarea către pagina de gestionare utilizatori", e);
             afiseazaEroare("Nu s-a putut deschide pagina de gestionare a utilizatorilor");
@@ -57,6 +62,7 @@ public class PaginaPrincipalaAdminController {
     }
     
     @FXML
+    @SuppressWarnings("unused") // Used by FXML
     public void deconectare() {
         Alert confirmare = new Alert(Alert.AlertType.CONFIRMATION);
         confirmare.setTitle(TITLU_CONFIRMARE);
@@ -67,7 +73,7 @@ public class PaginaPrincipalaAdminController {
             if (raspuns == ButtonType.OK) {
                 App.getDateUtilizator().clear();
                 try {
-                    App.setRoot("login");
+                    app.setRoot(PAGINA_LOGIN);
                 } catch (IOException e) {
                     jurnal.log(Level.SEVERE, "Eroare la deconectare", e);
                     afiseazaEroare("Nu s-a putut realiza deconectarea");
@@ -82,7 +88,7 @@ public class PaginaPrincipalaAdminController {
             Platform.runLater(() -> {
                 afiseazaEroare("Nu aveți permisiunile necesare pentru accesarea acestei pagini");
                 try {
-                    App.setRoot("login");
+                    app.setRoot(PAGINA_LOGIN);
                 } catch (IOException e) {
                     jurnal.log(Level.SEVERE, "Eroare la redirecționare către login", e);
                 }
@@ -91,8 +97,8 @@ public class PaginaPrincipalaAdminController {
     }
     
     private boolean esteUtilizatorAdmin() {
-        String idUtilizator = App.getDateUtilizator().get(CHEIE_ID_UTILIZATOR);
-        String esteAdmin = App.getDateUtilizator().get(CHEIE_ADMIN);
+        String idUtilizator = (String) App.getDateUtilizator().get(CHEIE_ID_UTILIZATOR);
+        String esteAdmin = (String) App.getDateUtilizator().get(CHEIE_ADMIN);
         return idUtilizator != null && "true".equals(esteAdmin);
     }
     

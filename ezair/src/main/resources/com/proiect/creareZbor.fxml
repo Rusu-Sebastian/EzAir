@@ -10,15 +10,50 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" prefHeight="508.0" prefWidth="959.0" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.PaginaCreareZborController" styleClass="root" stylesheets="@styles.css">
+<VBox alignment="CENTER" spacing="20.0" styleClass="root" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.PaginaCreareZborController">
    <children>
-      <VBox alignment="CENTER" prefHeight="720.0" prefWidth="839.0" spacing="10">
+      <Pane prefHeight="450.0" prefWidth="937.0">
          <children>
-            <TextField fx:id="origine" layoutX="425.0" layoutY="37.0" prefHeight="26.0" prefWidth="485.0" />
-            <TextField fx:id="destinatie" layoutX="425.0" layoutY="77.0" prefHeight="26.0" prefWidth="485.0" />
-            <Text layoutX="252.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Destinație" />
-            <Text layoutX="252.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data Plecării" />
-            <Text layoutX="252.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Origine" />
+            <TextField fx:id="origine" layoutX="625.0" layoutY="80.0" prefHeight="26.0" prefWidth="173.0" promptText="Orașul de plecare" />
+            <TextField fx:id="destinatie" layoutX="625.0" layoutY="120.0" prefHeight="26.0" prefWidth="173.0" promptText="Orașul de destinație" />
+            
+            <TextField fx:id="dataPlecarii1" layoutX="625.0" layoutY="160.0" prefHeight="26.0" prefWidth="37.0" promptText="ZZ" />
+            <Text layoutX="670.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="." />
+            <TextField fx:id="dataPlecarii2" layoutX="680.0" layoutY="160.0" prefHeight="26.0" prefWidth="37.0" promptText="LL" />
+            <Text layoutX="725.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="." />
+            <TextField fx:id="dataPlecarii3" layoutX="735.0" layoutY="160.0" prefHeight="26.0" prefWidth="58.0" promptText="AAAA" />
+            
+            <TextField fx:id="oraPlecarii1" layoutX="625.0" layoutY="200.0" prefHeight="26.0" prefWidth="37.0" promptText="HH" />
+            <Text layoutX="670.0" layoutY="218.0" strokeType="OUTSIDE" strokeWidth="0.0" text=":" />
+            <TextField fx:id="oraPlecarii2" layoutX="680.0" layoutY="200.0" prefHeight="26.0" prefWidth="37.0" promptText="MM" />
+            
+            <TextField fx:id="dataSosirii1" layoutX="625.0" layoutY="240.0" prefHeight="26.0" prefWidth="37.0" promptText="ZZ" />
+            <Text layoutX="670.0" layoutY="258.0" strokeType="OUTSIDE" strokeWidth="0.0" text="." />
+            <TextField fx:id="dataSosirii2" layoutX="680.0" layoutY="240.0" prefHeight="26.0" prefWidth="37.0" promptText="LL" />
+            <Text layoutX="725.0" layoutY="258.0" strokeType="OUTSIDE" strokeWidth="0.0" text="." />
+            <TextField fx:id="dataSosirii3" layoutX="735.0" layoutY="240.0" prefHeight="26.0" prefWidth="58.0" promptText="AAAA" />
+            
+            <TextField fx:id="oraSosirii1" layoutX="625.0" layoutY="280.0" prefHeight="26.0" prefWidth="37.0" promptText="HH" />
+            <Text layoutX="670.0" layoutY="298.0" strokeType="OUTSIDE" strokeWidth="0.0" text=":" />
+            <TextField fx:id="oraSosirii2" layoutX="680.0" layoutY="280.0" prefHeight="26.0" prefWidth="37.0" promptText="MM" />
+            
+            <TextField fx:id="modelAvion" layoutX="625.0" layoutY="320.0" prefHeight="26.0" prefWidth="173.0" promptText="Model avion" />
+            <TextField fx:id="pret" layoutX="625.0" layoutY="360.0" prefHeight="26.0" prefWidth="173.0" promptText="Preț bilet" />
+            <TextField fx:id="locuriLibere" layoutX="625.0" layoutY="400.0" prefHeight="26.0" prefWidth="173.0" promptText="Număr locuri" />
+            
+            <Text layoutX="425.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Origine" />
+            <Text layoutX="425.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Destinație" />
+            <Text layoutX="425.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data Plecării" />
+            <Text layoutX="425.0" layoutY="218.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ora Plecării" />
+            <Text layoutX="425.0" layoutY="258.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data Sosirii" />
+            <Text layoutX="425.0" layoutY="298.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ora Sosirii" />
+            <Text layoutX="425.0" layoutY="338.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Model Avion" />
+            <Text layoutX="425.0" layoutY="378.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Preț" />
+            <Text layoutX="425.0" layoutY="418.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Locuri Disponibile" />
+            
+            <Button fx:id="butonback" layoutX="425.0" layoutY="440.0" mnemonicParsing="false" onAction="#backZbor" text="Înapoi" />
+            <Button fx:id="butonFinalizare" defaultButton="true" layoutX="751.0" layoutY="440.0" mnemonicParsing="false" onAction="#finalizareAdaugareZbor" text="Finalizare" />
+            
             <ImageView fitHeight="180.0" fitWidth="180.0" layoutX="6.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@logo.png" />
@@ -29,38 +64,6 @@
                   <Font name="Noto Sans Math Regular" size="25.0" />
                </font>
             </Text>
-            <Text layoutX="19.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0">
-               <font>
-                  <Font name="Noto Sans Math Regular" size="15.0" />
-               </font>
-            </Text>
-            <Text layoutX="252.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ora Plecării" />
-            <TextField fx:id="dataPlecarii1" layoutX="428.0" layoutY="116.0" prefHeight="26.0" prefWidth="129.0" />
-            <TextField fx:id="dataPlecarii2" layoutX="582.0" layoutY="116.0" prefHeight="26.0" prefWidth="129.0" />
-            <TextField fx:id="dataPlecarii3" layoutX="741.0" layoutY="116.0" prefHeight="26.0" prefWidth="172.0" />
-            <TextField fx:id="oraPlecarii1" layoutX="428.0" layoutY="154.0" prefHeight="26.0" prefWidth="201.0" />
-            <Text layoutX="565.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="0.0" text="." />
-            <Text layoutX="720.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="0.0" text="." />
-            <TextField fx:id="oraPlecarii2" layoutX="711.0" layoutY="154.0" prefHeight="26.0" prefWidth="201.0" />
-            <Text layoutX="657.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text=":" />
-            <Text layoutX="252.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data Sosirii" />
-            <Text layoutX="252.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ora Sosirii" />
-            <TextField fx:id="dataSosirii1" layoutX="428.0" layoutY="199.0" prefHeight="26.0" prefWidth="129.0" />
-            <TextField fx:id="dataSosirii2" layoutX="582.0" layoutY="199.0" prefHeight="26.0" prefWidth="129.0" />
-            <TextField fx:id="dataSosirii3" layoutX="741.0" layoutY="199.0" prefHeight="26.0" prefWidth="172.0" />
-            <TextField fx:id="oraSosirii1" layoutX="428.0" layoutY="237.0" prefHeight="26.0" prefWidth="201.0" />
-            <Text layoutX="565.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="." />
-            <Text layoutX="720.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="." />
-            <TextField fx:id="oraSosirii2" layoutX="711.0" layoutY="237.0" prefHeight="26.0" prefWidth="201.0" />
-            <Text layoutX="657.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text=":" />
-            <Text layoutX="249.0" layoutY="300.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Model Avion" />
-            <TextField fx:id="modelAvion" layoutX="425.0" layoutY="282.0" prefHeight="26.0" prefWidth="485.0" />
-            <Text layoutX="249.0" layoutY="340.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Preț" />
-            <TextField fx:id="pret" layoutX="425.0" layoutY="322.0" prefHeight="26.0" prefWidth="485.0" />
-            <TextField fx:id="locuriLibere" layoutX="425.0" layoutY="357.0" prefHeight="26.0" prefWidth="485.0" />
-            <Button fx:id="butonFinalizare" defaultButton="true" layoutX="675.0" layoutY="411.0" mnemonicParsing="false" onAction="#finalizareAdaugareZbor" text="Finalizare" />
-            <Button fx:id="butonback" mnemonicParsing="false" onAction="#backZbor" text="Înapoi" textAlignment="JUSTIFY" />
-            <Text layoutX="249.0" layoutY="375.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Locuri " />
          </children>
       </Pane>
    </children>

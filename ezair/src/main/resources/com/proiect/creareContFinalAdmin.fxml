@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.CreareContControllerAdmin" styleClass="root" stylesheets="@styles.css">
+<VBox alignment="CENTER" spacing="20.0" styleClass="root" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.CreareContControllerAdmin">
    <children>
       <Pane prefHeight="358.0" prefWidth="937.0">
          <children>
@@ -30,19 +30,16 @@
                   <Image url="@logo.png" />
                </image>
             </ImageView>
-            <Text layoutX="19.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create an EzAir account">
+            <Text layoutX="19.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Creaza un cont la EzAir">
                <font>
                   <Font name="Noto Sans Math Regular" size="25.0" />
                </font>
             </Text>
-            <Text layoutX="19.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create an EzAir account">
-               <font>
-                  <Font name="Noto Sans Math Regular" size="15.0" />
-               </font>
-            </Text>
             <Text fx:id="ButonText" layoutX="545.0" layoutY="340.0" onMouseClicked="#cancelCreareCont" strokeType="OUTSIDE" strokeWidth="0.0" text="Am deja cont!" underline="true" />
             <Text layoutX="422.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Confirmare Parola" />
-            <CheckBox fx:id="checkAdmin" layoutX="625.0" layoutY="242.0" mnemonicParsing="false" text="Admin" />
+            <Text layoutX="422.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nivel acces" />
+            <CheckBox fx:id="checkAdmin" layoutX="625.0" layoutY="242.0" mnemonicParsing="false" text="Este cont de administrator" />
+            <Text layoutX="19.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="In calitate de admin" />
          </children>
       </Pane>
    </children>

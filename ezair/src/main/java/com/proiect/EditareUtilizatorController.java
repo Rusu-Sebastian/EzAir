@@ -37,6 +37,8 @@ public class EditareUtilizatorController {
     private static final String CAMP_PRENUME = "prenume";
     private static final String CAMP_DATA_NASTERII = "dataNasterii";
     private static final String CAMP_ESTE_ADMIN = "esteAdmin";
+    private static final String CHEIE_ID_UTILIZATOR = "userId";
+    private static final String CHEIE_ADMIN = "esteAdmin";
     
     private static final DateTimeFormatter[] FORMATE_DATA = {
         DateTimeFormatter.ISO_DATE,             // yyyy-MM-dd
@@ -54,10 +56,12 @@ public class EditareUtilizatorController {
     @FXML private CheckBox campAdmin;
     
     private String idUtilizator;
+    private App app;
     
     @FXML
     public void initialize() {
-        idUtilizator = (String) App.getDateUtilizator().get("userId");
+        app = App.getInstance();
+        idUtilizator = (String) App.getDateUtilizator().get(CHEIE_ID_UTILIZATOR);
         jurnal.log(Level.INFO, "ID Utilizator pentru editare: {0}", idUtilizator);
         
         if (idUtilizator == null || idUtilizator.isEmpty()) {
@@ -197,6 +201,7 @@ public class EditareUtilizatorController {
         return null;
     }
 
+    @SuppressWarnings("unused")
     @FXML
     private void salveazaUtilizator() {
         if (!valideazaDate()) {
@@ -258,7 +263,23 @@ public class EditareUtilizatorController {
 
         if (codRaspuns == HttpURLConnection.HTTP_OK) {
             afiseazaSucces("Datele utilizatorului au fost actualizate cu succes!");
-            App.setRoot("paginaUseriAdmin");
+            
+            // Păstrăm credențialele de admin înainte de a naviga înapoi
+            String userId = (String) App.getDateUtilizator().get(CHEIE_ID_UTILIZATOR);
+            String esteAdmin = (String) App.getDateUtilizator().get(CHEIE_ADMIN);
+            
+            // Curățăm datele vechi dar păstrăm datele de autentificare
+            App.getDateUtilizator().clear();
+            
+            // Restaurăm credențialele
+            if (userId != null) {
+                App.getDateUtilizator().put(CHEIE_ID_UTILIZATOR, userId);
+            }
+            if (esteAdmin != null) {
+                App.getDateUtilizator().put(CHEIE_ADMIN, esteAdmin);
+            }
+            
+            app.setRoot("paginaUseriAdmin");
         } else {
             jurnal.log(Level.WARNING, "Eroare la actualizare: {0}", codRaspuns);
             afiseazaEroare("Nu s-au putut actualiza datele. Cod răspuns: " + codRaspuns);
@@ -295,10 +316,26 @@ public class EditareUtilizatorController {
         alerta.showAndWait();
     }
 
+    @SuppressWarnings("unused")
     @FXML
     private void revino() {
         try {
-            App.setRoot("paginaUseriAdmin");
+            // Păstrăm credențialele de admin înainte de a naviga înapoi
+            String userId = (String) App.getDateUtilizator().get(CHEIE_ID_UTILIZATOR);
+            String esteAdmin = (String) App.getDateUtilizator().get(CHEIE_ADMIN);
+            
+            // Curățăm datele vechi dar păstrăm datele de autentificare
+            App.getDateUtilizator().clear();
+            
+            // Restaurăm credențialele
+            if (userId != null) {
+                App.getDateUtilizator().put(CHEIE_ID_UTILIZATOR, userId);
+            }
+            if (esteAdmin != null) {
+                App.getDateUtilizator().put(CHEIE_ADMIN, esteAdmin);
+            }
+            
+            app.setRoot("paginaUseriAdmin");
         } catch (IOException e) {
             jurnal.log(Level.SEVERE, "Eroare la revenirea la pagina anterioară", e);
             afiseazaEroare("Nu s-a putut reveni la pagina anterioară");

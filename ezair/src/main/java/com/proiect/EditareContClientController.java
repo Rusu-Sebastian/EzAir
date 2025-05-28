@@ -18,9 +18,12 @@ public class EditareContClientController {
     @FXML private TextField fieldPrenume;
     @FXML private TextField fieldEmail;
     @FXML private TextField fieldTelefon;
+    private App app;
     
     @FXML
+    @SuppressWarnings("unused") // Used by FXML
     private void initialize() {
+        app = App.getInstance();
         // Populează câmpurile cu datele utilizatorului curent
         fieldNume.setText((String) App.getDateUtilizator().get("nume"));
         fieldPrenume.setText((String) App.getDateUtilizator().get("prenume"));

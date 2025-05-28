@@ -25,6 +25,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 public class PaginaZboruriAdminController {
     private static final Logger jurnal = Logger.getLogger(PaginaZboruriAdminController.class.getName());
+    static {
+        // Set default logging level to reduce verbosity
+        jurnal.setLevel(Level.INFO);
+    }
+    
     private static final String URL_SERVER = "http://localhost:3000";
     private static final String TITLU_EROARE = "Eroare";
     private static final String TITLU_ATENTIONARE = "Atenție";
@@ -82,16 +87,13 @@ public class PaginaZboruriAdminController {
         jurnal.warning(MessageFormat.format(LOG_FORMAT_ZBOR_INVALID, index, obiectZbor));
     }
     
-    private void logProcesareZbor(int index, JSONObject obiectZbor) {
-        jurnal.info(MessageFormat.format(LOG_FORMAT_PROCES_ZBOR, index, obiectZbor.toString(2)));
-    }
-    
+    // Reduced from INFO to FINE to minimize console output
     private void logZborProcesat(String idZbor) {
-        jurnal.info(MessageFormat.format(LOG_FORMAT_ZBOR_SUCCES, idZbor));
+        jurnal.fine(MessageFormat.format(LOG_FORMAT_ZBOR_SUCCES, idZbor));
     }
     
     private void logTotalZboruriIncarcate(int numarZboruri) {
-        jurnal.info(MessageFormat.format(LOG_FORMAT_ZBORURI_INCARCATE, numarZboruri));
+        jurnal.fine(MessageFormat.format(LOG_FORMAT_ZBORURI_INCARCATE, numarZboruri));
     }
     
     private void logEroareJSON(String mesaj) {
@@ -143,9 +145,25 @@ public class PaginaZboruriAdminController {
         coloanaDataSosire.setCellValueFactory(new PropertyValueFactory<>(PROP_DATA_SOSIRE));
         coloanaOraSosire.setCellValueFactory(new PropertyValueFactory<>(PROP_ORA_SOSIRE));
     }
-
+    
     @FXML
     public void adaugaZbor() throws Exception {
+        // Păstrăm credențialele de admin înainte de a naviga
+        Map<String, String> dateUtilizator = App.getDateUtilizator();
+        String idUtilizator = dateUtilizator.get(CHEIE_ID_UTILIZATOR);
+        String esteAdmin = dateUtilizator.get(CHEIE_ADMIN);
+        
+        // Curățăm datele vechi dar păstrăm datele de autentificare
+        dateUtilizator.clear();
+        
+        // Restaurăm credențialele
+        if (idUtilizator != null) {
+            dateUtilizator.put(CHEIE_ID_UTILIZATOR, idUtilizator);
+        }
+        if (esteAdmin != null) {
+            dateUtilizator.put(CHEIE_ADMIN, esteAdmin);
+        }
+        
         App.setRoot("creareZbor");
     }
 
@@ -164,7 +182,22 @@ public class PaginaZboruriAdminController {
 
     private void salveazaDateZborPentruEditare(Zbor zbor) {
         Map<String, String> dateUtilizator = App.getDateUtilizator();
+        // Păstrăm credențialele de admin și ID-ul utilizatorului
+        String idUtilizator = dateUtilizator.get(CHEIE_ID_UTILIZATOR);
+        String esteAdmin = dateUtilizator.get(CHEIE_ADMIN);
+        
+        // Salvăm datele zborului
         dateUtilizator.clear();
+        
+        // Restaurăm credențialele de admin
+        if (idUtilizator != null) {
+            dateUtilizator.put(CHEIE_ID_UTILIZATOR, idUtilizator);
+        }
+        if (esteAdmin != null) {
+            dateUtilizator.put(CHEIE_ADMIN, esteAdmin);
+        }
+        
+        // Adăugăm datele zborului pentru editare
         dateUtilizator.put(PROP_ID, zbor.getId());
         dateUtilizator.put(PROP_ORIGINE, zbor.getOrigine());
         dateUtilizator.put(PROP_DESTINATIE, zbor.getDestinatie());
@@ -220,7 +253,7 @@ public class PaginaZboruriAdminController {
     private void incarcaZboruri() {
         HttpURLConnection conexiune = null;
         try {
-            jurnal.info("Se încearcă încărcarea zborurilor de la server...");
+            jurnal.fine("Se încearcă încărcarea zborurilor de la server...");
             URI uri = new URI(URL_SERVER + "/zboruri/populareLista");
             conexiune = (HttpURLConnection) uri.toURL().openConnection();
             configureazaConexiuneGET(conexiune);
@@ -233,7 +266,7 @@ public class PaginaZboruriAdminController {
 
             String raspunsJSON = citesteDateRaspuns(conexiune);
             if (raspunsJSON.trim().equals("[]")) {
-                jurnal.info("Serverul a returnat o listă goală de zboruri");
+                jurnal.fine("Serverul a returnat o listă goală de zboruri");
                 tabelZboruri.setItems(FXCollections.observableArrayList());
                 return;
             }
@@ -301,7 +334,6 @@ public class PaginaZboruriAdminController {
             for (int i = 0; i < arrayZboruri.length(); i++) {
                 try {
                     JSONObject obiectZbor = arrayZboruri.getJSONObject(i);
-                    logProcesareZbor(i, obiectZbor);
                     
                     Zbor zbor = construiesteZborDinJSON(obiectZbor, i);
                     if (zbor != null) {

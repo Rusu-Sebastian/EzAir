@@ -1,37 +1,51 @@
 package com.proiect;
 
-import java.time.LocalDateTime;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public class Bilet {
+    // Properties
+    private final StringProperty zbor;
+    private final StringProperty data;
+    private final StringProperty stare;
     private String id;
-    private String idUtilizator;
-    private String idZbor;
-    private String detaliiZbor;
-    private LocalDateTime dataZbor;
-    private String stare; // "ACTIV", "ANULAT", "MODIFICAT"
-    private double pret;
 
-    public Bilet(String id, String idUtilizator, String idZbor, String detaliiZbor, 
-                 LocalDateTime dataZbor, String stare, double pret) {
+    public Bilet(String zbor, String data, String stare, String id) {
+        this.zbor = new SimpleStringProperty(zbor);
+        this.data = new SimpleStringProperty(data);
+        this.stare = new SimpleStringProperty(stare);
         this.id = id;
-        this.idUtilizator = idUtilizator;
-        this.idZbor = idZbor;
-        this.detaliiZbor = detaliiZbor;
-        this.dataZbor = dataZbor;
-        this.stare = stare;
-        this.pret = pret;
     }
 
-    // Getteri
-    public String getId() { return id; }
-    public String getIdUtilizator() { return idUtilizator; }
-    public String getIdZbor() { return idZbor; }
-    public String getDetaliiZbor() { return detaliiZbor; }
-    public LocalDateTime getDataZbor() { return dataZbor; }
-    public String getStare() { return stare; }
-    public double getPret() { return pret; }
+    public String getZbor() {
+        return zbor.get();
+    }
 
-    // Setteri
-    public void setStare(String stare) { this.stare = stare; }
-    public void setDataZbor(LocalDateTime dataZbor) { this.dataZbor = dataZbor; }
+    public StringProperty zborProperty() {
+        return zbor;
+    }
+
+    public String getData() {
+        return data.get();
+    }
+
+    public StringProperty dataProperty() {
+        return data;
+    }
+
+    public String getStare() {
+        return stare.get();
+    }
+
+    public StringProperty stareProperty() {
+        return stare;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }

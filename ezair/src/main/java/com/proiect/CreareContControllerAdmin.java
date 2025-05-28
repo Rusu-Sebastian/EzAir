@@ -23,10 +23,36 @@ public class CreareContControllerAdmin {
     private static final String CAMP_LUNA_NASTERE = "#lunaNasterii";
     private static final String CAMP_AN_NASTERE = "#anNasterii";
     private static final String CAMP_NUME_UTILIZATOR = "#numeUtilizator";
+    private static final String CHEIE_ID_UTILIZATOR = "userId";
+    private static final String CHEIE_ADMIN = "esteAdmin";
+    private App app;
 
     @FXML
+    @SuppressWarnings("unused") // Used by FXML
+    public void initialize() {
+        app = App.getInstance();
+    }
+
+    @FXML
+    @SuppressWarnings("unused") // Used by FXML
     private void backCreareContInceput() throws IOException {
         jurnal.info("Navigare înapoi la pagina de utilizatori.");
+        
+        // Păstrăm credențialele de admin înainte de a naviga înapoi
+        String userId = App.getDateUtilizator().get(CHEIE_ID_UTILIZATOR);
+        String esteAdmin = App.getDateUtilizator().get(CHEIE_ADMIN);
+        
+        // Curățăm datele vechi dar păstrăm datele de autentificare
+        App.getDateUtilizator().clear();
+        
+        // Restaurăm credențialele
+        if (userId != null) {
+            App.getDateUtilizator().put(CHEIE_ID_UTILIZATOR, userId);
+        }
+        if (esteAdmin != null) {
+            App.getDateUtilizator().put(CHEIE_ADMIN, esteAdmin);
+        }
+        
         App.setRoot(PAGINA_USERI_ADMIN);
     }
 
@@ -39,6 +65,22 @@ public class CreareContControllerAdmin {
     @FXML
     private void cancelCreareCont() throws IOException {
         jurnal.info("Anulare creare cont și navigare înapoi la pagina de utilizatori.");
+        
+        // Păstrăm credențialele de admin înainte de a naviga înapoi
+        String userId = App.getDateUtilizator().get(CHEIE_ID_UTILIZATOR);
+        String esteAdmin = App.getDateUtilizator().get(CHEIE_ADMIN);
+        
+        // Curățăm datele vechi dar păstrăm datele de autentificare
+        App.getDateUtilizator().clear();
+        
+        // Restaurăm credențialele
+        if (userId != null) {
+            App.getDateUtilizator().put(CHEIE_ID_UTILIZATOR, userId);
+        }
+        if (esteAdmin != null) {
+            App.getDateUtilizator().put(CHEIE_ADMIN, esteAdmin);
+        }
+        
         App.setRoot(PAGINA_USERI_ADMIN);
     }
 
@@ -124,8 +166,8 @@ public class CreareContControllerAdmin {
     private void creareContFinal() throws IOException {
         try {
             TextField campNumeUtilizator = (TextField) App.scena.lookup(CAMP_NUME_UTILIZATOR);
-            TextField campParola = (TextField) App.scena.lookup("#parola");
-            TextField campConfirmareParola = (TextField) App.scena.lookup("#confirmareParola");
+            javafx.scene.control.PasswordField campParola = (javafx.scene.control.PasswordField) App.scena.lookup("#parola");
+            javafx.scene.control.PasswordField campConfirmareParola = (javafx.scene.control.PasswordField) App.scena.lookup("#confirmareParola");
             TextField campEmail = (TextField) App.scena.lookup("#email");
             CheckBox campAdmin = (CheckBox) App.scena.lookup("#checkAdmin");
 
@@ -147,8 +189,8 @@ public class CreareContControllerAdmin {
         }
     }
 
-    private boolean valideazaCampuriFinale(TextField campNumeUtilizator, TextField campParola, 
-                                         TextField campConfirmareParola, TextField campEmail) {
+    private boolean valideazaCampuriFinale(TextField campNumeUtilizator, javafx.scene.control.PasswordField campParola, 
+                                         javafx.scene.control.PasswordField campConfirmareParola, TextField campEmail) {
         String numeUtilizator = campNumeUtilizator.getText();
         String parola = campParola.getText();
         String confirmareParola = campConfirmareParola.getText();
@@ -220,9 +262,31 @@ public class CreareContControllerAdmin {
         int codRaspuns = conexiuneHttp.getResponseCode();
         if (codRaspuns == HttpURLConnection.HTTP_OK) {
             jurnal.info("Cont nou creat și adăugat cu succes.");
+            Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+            alerta.setTitle("Succes");
+            alerta.setHeaderText("Cont creat cu succes");
+            alerta.setContentText("Contul a fost creat cu succes și a fost adăugat la baza de date.");
+            alerta.showAndWait();
+            
+            // Păstrăm credențialele de admin înainte de a naviga înapoi
+            String userId = App.getDateUtilizator().get(CHEIE_ID_UTILIZATOR);
+            String esteAdmin = App.getDateUtilizator().get(CHEIE_ADMIN);
+            
+            // Curățăm datele vechi dar păstrăm datele de autentificare
+            App.getDateUtilizator().clear();
+            
+            // Restaurăm credențialele
+            if (userId != null) {
+                App.getDateUtilizator().put(CHEIE_ID_UTILIZATOR, userId);
+            }
+            if (esteAdmin != null) {
+                App.getDateUtilizator().put(CHEIE_ADMIN, esteAdmin);
+            }
+            
             App.setRoot(PAGINA_USERI_ADMIN);
         } else if (jurnal.isLoggable(Level.WARNING)) {
             jurnal.warning(String.format("Nu s-a putut crea contul. Cod răspuns server: %d", codRaspuns));
+            afiseazaAlerta("Eroare de server", "Nu s-a putut crea contul. Te rugăm să încerci din nou mai târziu.");
         }
     }
 }

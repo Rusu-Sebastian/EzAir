@@ -3,173 +3,127 @@ package com.proiect;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.json.JSONObject;
+
+import com.proiect.config.ApiEndpoints;
+import com.proiect.util.HttpUtil;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TextField;
 
 public class CreareContController {
-
     private static final Logger jurnal = Logger.getLogger(CreareContController.class.getName());
-    private static final String TITLU_ALERTA = "Atenție";
     private static final String PAGINA_LOGIN = "login";
-    private static final String CAMP_ZI_NASTERE = "#ziuaNasterii";
-    private static final String CAMP_LUNA_NASTERE = "#lunaNasterii";
-    private static final String CAMP_AN_NASTERE = "#anNasterii";
-    private static final String CAMP_NUME_UTILIZATOR = "#numeUtilizator";
+    private static final String TITLU_ALERTA = "Atenție";
+    private static final String EMAIL_PATTERN = "^[A-Za-z0-9+_.-]+@(.+)$";
 
-    @FXML
-    private void inapoiLaCreareContInceput() throws IOException {
-        jurnal.info("Navigare înapoi la pagina de conectare.");
-        App.setRoot(PAGINA_LOGIN);
+    private App app;
+
+    @FXML private TextField campEmail;
+    @FXML private TextField campNumeUtilizator;
+    @FXML private TextField campParola;
+    @FXML private TextField campConfirmareParola;
+
+    public void initialize() {
+        app = App.getInstance();
     }
 
+    @SuppressWarnings("unused")
     @FXML
-    private void inapoiLaCreareContFinal() throws IOException {
-        jurnal.info("Navigare înapoi la pagina de creare cont început.");
-        App.setRoot("creareContInceput");
-    }
+    private void finalizeazaCreareCont() {
+        String email = campEmail.getText();
+        String numeUtilizator = campNumeUtilizator.getText();
+        String parola = campParola.getText();
+        String confirmareParola = campConfirmareParola.getText();
 
-    @FXML
-    private void anuleazaCreareCont() throws IOException {
-        jurnal.info("Anulare creare cont și navigare înapoi la pagina de conectare.");
-        App.setRoot(PAGINA_LOGIN);
-    }
+        if (email.isEmpty() || numeUtilizator.isEmpty() || parola.isEmpty() || confirmareParola.isEmpty()) {
+            afiseazaAlerta(Alert.AlertType.WARNING,
+                          TITLU_ALERTA,
+                          "Câmpuri incomplete",
+                          "Te rog să completezi toate câmpurile.");
+            return;
+        }
 
-    @FXML
-    private void proceseazaDatePersonale() throws IOException {
+        if (!parola.equals(confirmareParola)) {
+            afiseazaAlerta(Alert.AlertType.WARNING,
+                          TITLU_ALERTA,
+                          "Parole diferite",
+                          "Parolele introduse nu coincid.");
+            return;
+        }
+
+        if (!email.matches(EMAIL_PATTERN)) {
+            afiseazaAlerta(Alert.AlertType.WARNING,
+                          TITLU_ALERTA,
+                          "Email invalid",
+                          "Te rog să introduci un email valid.");
+            return;
+        }
+
         try {
-            String nume = ((javafx.scene.control.TextField) App.scena.lookup("#nume")).getText();
-            String prenume = ((javafx.scene.control.TextField) App.scena.lookup("#prenume")).getText();
-
-            if (nume.isEmpty() || prenume.isEmpty() ||
-                ((javafx.scene.control.TextField) App.scena.lookup(CAMP_ZI_NASTERE)).getText().isEmpty() ||
-                ((javafx.scene.control.TextField) App.scena.lookup(CAMP_LUNA_NASTERE)).getText().isEmpty() ||
-                ((javafx.scene.control.TextField) App.scena.lookup(CAMP_AN_NASTERE)).getText().isEmpty()) {
-                jurnal.warning("Toate câmpurile sunt obligatorii.");
-                return;
-            }
-
-            if (((javafx.scene.control.TextField) App.scena.lookup(CAMP_ZI_NASTERE)).getText().length() > 2 ||
-                ((javafx.scene.control.TextField) App.scena.lookup(CAMP_LUNA_NASTERE)).getText().length() > 2 ||
-                ((javafx.scene.control.TextField) App.scena.lookup(CAMP_AN_NASTERE)).getText().length() > 4) {
-                jurnal.warning("Format dată naștere invalid.");
-                return;
-            }
-
-            int ziNastere = Integer.parseInt(((javafx.scene.control.TextField) App.scena.lookup(CAMP_ZI_NASTERE)).getText());
-            int lunaNastere = Integer.parseInt(((javafx.scene.control.TextField) App.scena.lookup(CAMP_LUNA_NASTERE)).getText());
-            int anNastere = Integer.parseInt(((javafx.scene.control.TextField) App.scena.lookup(CAMP_AN_NASTERE)).getText());
-            int anCurent = java.time.Year.now().getValue();
-
-            if (ziNastere > 31 || lunaNastere > 12 || anNastere < 1900 || anNastere > anCurent) {
-                jurnal.warning("Dată naștere invalidă.");
-                return;
-            }
-
-            String dataNasterii = ziNastere + "/" + lunaNastere + "/" + anNastere;
-            creeazaUtilizatorPartial(nume, prenume, dataNasterii);
-            App.setRoot("creareContFinal");
-            App.getDateUtilizator().put("nume", nume);
-            App.getDateUtilizator().put("prenume", prenume);
-            App.getDateUtilizator().put("dataNasterii", dataNasterii);
-            jurnal.info("Date parțiale utilizator salvate cu succes.");
-        } catch (Exception e) {
-            jurnal.log(Level.SEVERE, "Eroare în timpul creării contului - pasul 1.", e);
+            trimiteDateCreareCont(email, numeUtilizator, parola);
+        } catch (IOException | URISyntaxException e) {
+            jurnal.log(Level.SEVERE, "Eroare la crearea contului", e);
+            afiseazaAlerta(Alert.AlertType.ERROR,
+                          "Eroare",
+                          "Nu s-a putut crea contul",
+                          "A apărut o eroare la comunicarea cu serverul. Te rog să încerci din nou.");
         }
     }
 
-    private User creeazaUtilizatorPartial(String nume, String prenume, String dataNasterii) {
-        return new User(nume, prenume, dataNasterii, null, null, null, null, null);
-    }
+    private void trimiteDateCreareCont(String email, String numeUtilizator, String parola) 
+            throws IOException, URISyntaxException {
+        JSONObject dateUtilizator = new JSONObject();
+        dateUtilizator.put("nume", App.getDateUtilizator().get("nume"));
+        dateUtilizator.put("prenume", App.getDateUtilizator().get("prenume"));
+        dateUtilizator.put("dataNasterii", App.getDateUtilizator().get("dataNasterii"));
+        dateUtilizator.put("email", email);
+        dateUtilizator.put("numeUtilizator", numeUtilizator);
+        dateUtilizator.put("parola", parola);
+        dateUtilizator.put("esteAdmin", false);
 
-    @FXML
-    private void finalizeazaCreareCont() throws IOException {
+        HttpURLConnection conexiune = HttpUtil.createJsonConnection(ApiEndpoints.CREATE_ACCOUNT, "POST");
+        conexiune.setDoOutput(true);
+
         try {
-            String numeUtilizator = ((javafx.scene.control.TextField) App.scena.lookup(CAMP_NUME_UTILIZATOR)).getText();
-            String parola = ((javafx.scene.control.TextField) App.scena.lookup("#parola")).getText();
-            String confirmareParola = ((javafx.scene.control.TextField) App.scena.lookup("#confirmareParola")).getText();
-            String email = ((javafx.scene.control.TextField) App.scena.lookup("#email")).getText();
-
-            if (numeUtilizator.isEmpty() || parola.isEmpty() || confirmareParola.isEmpty() || email.isEmpty()) {
-                Alert alerta = new Alert(Alert.AlertType.WARNING);
-                alerta.setTitle(TITLU_ALERTA);
-                alerta.setHeaderText("Câmpuri incomplete");
-                alerta.setContentText("Toate câmpurile sunt obligatorii.");
-                alerta.showAndWait();
-                return;
+            byte[] date = dateUtilizator.toString().getBytes(StandardCharsets.UTF_8);
+            try (OutputStream os = conexiune.getOutputStream()) {
+                os.write(date);
             }
 
-            if (parola.length() < 8) {
-                Alert alerta = new Alert(Alert.AlertType.WARNING);
-                alerta.setTitle(TITLU_ALERTA);
-                alerta.setHeaderText("Parolă prea scurtă");
-                alerta.setContentText("Parola trebuie să aibă cel puțin 8 caractere.");
-                alerta.showAndWait();
-                return;
-            }
-
-            if (!parola.equals(confirmareParola)) {
-                Alert alerta = new Alert(Alert.AlertType.WARNING);
-                alerta.setTitle(TITLU_ALERTA);
-                alerta.setHeaderText("Parolele nu coincid");
-                alerta.setContentText("Te rog să introduci aceeași parolă în ambele câmpuri.");
-                alerta.showAndWait();
-                return;
-            }
-
-            if (!email.contains("@")) {
-                Alert alerta = new Alert(Alert.AlertType.WARNING);
-                alerta.setTitle(TITLU_ALERTA);
-                alerta.setHeaderText("Email invalid");
-                alerta.setContentText("Te rog să introduci un email valid.");
-                alerta.showAndWait();
-                return;
-            }
-
-            User utilizatorNou = new User(
-                (String) App.getDateUtilizator().get("nume"),
-                (String) App.getDateUtilizator().get("prenume"),
-                (String) App.getDateUtilizator().get("dataNasterii"),
-                email,
-                numeUtilizator,
-                parola,
-                false, // Implicit, utilizatorul nu este admin
-                null, // ID-ul va fi generat de server
-                null
-            );
-
-            String url = "http://localhost:3000/users/creareCont";
-            HttpURLConnection conexiuneHttp = (HttpURLConnection) new URI(url).toURL().openConnection();
-            conexiuneHttp.setRequestMethod("POST");
-            conexiuneHttp.setRequestProperty("Content-Type", "application/json");
-            conexiuneHttp.setDoOutput(true);
-
-            String jsonCerere = String.format(
-                "{\"nume\": \"%s\", \"prenume\": \"%s\", \"dataNasterii\": \"%s\", \"email\": \"%s\", \"numeUtilizator\": \"%s\", \"parola\": \"%s\", \"esteAdmin\": %b}",
-                utilizatorNou.getNume(), utilizatorNou.getPrenume(), utilizatorNou.getDataNasterii(),
-                utilizatorNou.getEmail(), utilizatorNou.getNumeUtilizator(), utilizatorNou.getParola(), utilizatorNou.esteAdmin()
-            );
-
-            try (OutputStream os = conexiuneHttp.getOutputStream()) {
-                byte[] date = jsonCerere.getBytes(StandardCharsets.UTF_8);
-                os.write(date, 0, date.length);
-            }
-
-            int codRaspuns = conexiuneHttp.getResponseCode();
+            int codRaspuns = conexiune.getResponseCode();
             if (codRaspuns == HttpURLConnection.HTTP_OK) {
                 jurnal.info("Cont creat cu succes.");
-                App.setRoot(PAGINA_LOGIN);
-            } else if (jurnal.isLoggable(Level.WARNING)) {
-                jurnal.warning(String.format("Eroare la crearea contului. Cod răspuns: %d", codRaspuns));
+                afiseazaAlerta(Alert.AlertType.INFORMATION,
+                             "Succes",
+                             "Cont creat cu succes",
+                             "Contul tău a fost creat cu succes. Te poți conecta acum.");
+                app.setRoot(PAGINA_LOGIN);
+            } else {
+                if (jurnal.isLoggable(Level.WARNING)) {
+                    jurnal.warning(String.format("Eroare la crearea contului. Cod răspuns: %d", codRaspuns));
+                }
+                afiseazaAlerta(Alert.AlertType.ERROR,
+                             "Eroare",
+                             "Eroare la crearea contului",
+                             "Te rog să încerci din nou mai târziu.");
             }
-        } catch (IOException | URISyntaxException e) {
-            jurnal.log(Level.SEVERE, "Eroare de conexiune la server.", e);
-            App.setRoot("eroareConexiune");
+        } finally {
+            conexiune.disconnect();
         }
+    }
+
+    private void afiseazaAlerta(Alert.AlertType tip, String titlu, String antet, String continut) {
+        Alert alerta = new Alert(tip);
+        alerta.setTitle(titlu);
+        alerta.setHeaderText(antet);
+        alerta.setContentText(continut);
+        alerta.showAndWait();
     }
 }

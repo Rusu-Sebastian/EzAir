@@ -3,6 +3,7 @@ package com.proiect;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -13,6 +14,8 @@ public class PaginaCreareZborController {
     private static final String TITLU_EROARE = "Eroare";
     private static final String TITLU_SUCCES = "Succes";
     private static final String MESAJ_EROARE_ADAUGARE = "A apărut o eroare la adăugarea zborului. Te rog să încerci din nou.";
+    private static final String CHEIE_ID_UTILIZATOR = "userId";
+    private static final String CHEIE_ADMIN = "esteAdmin";
 
     @FXML private TextField origine;
     @FXML private TextField destinatie;
@@ -30,11 +33,35 @@ public class PaginaCreareZborController {
     @FXML private TextField oraSosirii1;
     @FXML private TextField oraSosirii2;
     
+    private App app;
+    
+    public void initialize() {
+        app = App.getInstance();
+    }
+    
+    @SuppressWarnings("unused")
     @FXML
     private void backZbor() throws Exception {
-        App.setRoot("paginaZboruriAdmin");
+        // Păstrăm credențialele de admin înainte de a naviga înapoi
+        Map<String, Object> dateUtilizator = App.getDateUtilizator();
+        String idUtilizator = (String) dateUtilizator.get(CHEIE_ID_UTILIZATOR);
+        String esteAdmin = (String) dateUtilizator.get(CHEIE_ADMIN);
+        
+        // Curățăm datele vechi dar păstrăm datele de autentificare
+        dateUtilizator.clear();
+        
+        // Restaurăm credențialele
+        if (idUtilizator != null) {
+            dateUtilizator.put(CHEIE_ID_UTILIZATOR, idUtilizator);
+        }
+        if (esteAdmin != null) {
+            dateUtilizator.put(CHEIE_ADMIN, esteAdmin);
+        }
+        
+        app.setRoot("paginaZboruriAdmin");
     }
 
+    @SuppressWarnings("unused")
     @FXML
     private void finalizareAdaugareZbor() throws Exception {
         // Obține valorile din câmpurile de text
@@ -158,6 +185,6 @@ public class PaginaCreareZborController {
             e.printStackTrace();
         }
 
-        App.setRoot("paginaZboruriAdmin");
+        app.setRoot("paginaZboruriAdmin");
     }
 }

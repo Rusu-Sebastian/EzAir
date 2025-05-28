@@ -29,7 +29,7 @@
             "esteAdmin": false,
             "setari": {
                 "notificariEmail": true,
-                "notificariSMS": true,
+                "notificariSMS": false,
                 "notificariPushWeb": true
             }
         },
@@ -139,6 +139,42 @@
                 "notificariAnulari": true,
                 "notificariModificari": true
             }
+        },
+        {
+            "id": "fdd70d55-89ab-48ba-817c-24d3106d5988",
+            "numeUtilizator": "salatea",
+            "parola": "II. Obiectivele cercetăriiObiectiv general:    Analiza modului în care utilizarea rețelelor sociale afectează sănătatea mintală a adolescenților din medii vulnerabile.Obiective specifice:    Identificarea platformelor digitale preferate și a modului de utilizare de către adolescenți vulnerabili.    Evaluarea legăturii dintre frecvența utilizării social media și apariția simptomelor de anxietate, depresie, izolare socială sau stimă de sine scăzută.    Explorarea percepțiilor adolescenților asupra conținutului dăunător și a strategiilor de coping.    Investigarea accesului la resurse de sprijin online și a eficienței acestora.",
+            "email": "sala@saltea.com",
+            "nume": "aoleiiuy",
+            "prenume": "maam",
+            "dataNasterii": "2/1/2000",
+            "esteAdmin": false,
+            "setari": {
+                "notificariEmail": true,
+                "notificariSMS": false,
+                "notificariPushWeb": true,
+                "notificariPromotii": true,
+                "notificariAnulari": true,
+                "notificariModificari": true
+            }
+        },
+        {
+            "id": "8e025dd2-0a6e-4061-9f20-10fc0573c411",
+            "numeUtilizator": "anulare",
+            "parola": "cont12345",
+            "email": "anulare@cont.com",
+            "nume": "anulare",
+            "prenume": "cont",
+            "dataNasterii": "1/1/2000",
+            "esteAdmin": false,
+            "setari": {
+                "notificariEmail": true,
+                "notificariSMS": false,
+                "notificariPushWeb": true,
+                "notificariPromotii": true,
+                "notificariAnulari": true,
+                "notificariModificari": true
+            }
         }
     ],
     "zboruri": [
@@ -175,7 +211,7 @@
             "dataSosire": "4/6/2025",
             "oraSosire": "10:45",
             "modelAvion": "Airbus A321",
-            "locuriLibere": 180,
+            "locuriLibere": 179,
             "pret": 249.99
         },
         {
@@ -183,7 +219,7 @@
             "origine": "Bucuresti",
             "destinatie": "Roma",
             "dataPlecare": "5/6/2025",
-            "oraPlecare": "11:30",
+            "oraPlecare": "11:32",
             "dataSosire": "5/6/2025",
             "oraSosire": "14:15",
             "modelAvion": "Boeing 737-800",
@@ -285,8 +321,7 @@
             "modelAvion": "Airbus A319",
             "locuriLibere": 128,
             "pret": 169.99
-        }
-,
+        },
         {
             "id": "d1e52c3f-4b16-4c7a-8d3b-9e67f4a21b5d",
             "origine": "Bucuresti",
@@ -428,7 +463,7 @@
             "dataSosire": "26/6/2025",
             "oraSosire": "21:40",
             "modelAvion": "Boeing 737-800",
-            "locuriLibere": 188,
+            "locuriLibere": 187,
             "pret": 209.99
         },
         {
@@ -519,9 +554,27 @@
             "userId": "client",
             "zborId": "e367b6a7-92e0-4bc2-8baa-fb3e3aeead4a",
             "detaliiZbor": "Bucuresti -> Londra",
-            "dataZbor": "2025-06-03T10:30:00",
+            "dataZbor": "2025-06-03T07:30:00.000Z",
             "stare": "MODIFICAT",
             "pret": 229.99
+        },
+        {
+            "id": "7ab4140c-f6a1-45a4-8c01-401b53a22547",
+            "userId": "client",
+            "zborId": "l2a01b2a-3b05-4a6a-7b2a-8b56a3b10b4b",
+            "detaliiZbor": "Bucuresti -> Londra",
+            "dataZbor": "2025-06-26T14:30:00.000Z",
+            "stare": "MODIFICAT",
+            "pret": 209.99
+        },
+        {
+            "id": "6e88b25e-13ef-4936-a395-97fb144d5617",
+            "userId": "8e025dd2-0a6e-4061-9f20-10fc0573c411",
+            "zborId": "c9e83a5d-7b24-4f8a-b12c-1d89c2e34d6f",
+            "detaliiZbor": "Bucuresti -> Paris",
+            "dataZbor": "2025-06-04T04:15:00.000Z",
+            "stare": "ACTIV",
+            "pret": 249.99
         }
     ]
 }

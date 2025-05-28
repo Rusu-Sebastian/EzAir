@@ -2,13 +2,60 @@ import express from 'express'; //pentru REST API
 import { JsonDB, Config } from "node-json-db";//baza de date json TEMP
 import { v4 as uuidv4 } from "uuid"; //generare id unic
 
-const app = express();
-const port = 3000;
+// Server Configuration
+const config = {
+    port: process.env.PORT || 3000,
+    database: {
+        name: "baza",
+        saveOnPush: true,
+        humanReadable: true,
+        separator: "/"
+    },
+    cors: {
+        enabled: true,
+        origin: "*"
+    },
+    security: {
+        sessionTimeout: 3600 // 1 hour
+    }
+};
 
-const db = new JsonDB(new Config("baza", true, true, "/"));
+const app = express();
+const db = new JsonDB(new Config(config.database.name, 
+                                config.database.saveOnPush, 
+                                config.database.humanReadable, 
+                                config.database.separator));
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
+
+// CORS middleware if enabled
+if (config.cors.enabled) {
+    app.use((req, res, next) => {
+        res.header("Access-Control-Allow-Origin", config.cors.origin);
+        res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        if (req.method === "OPTIONS") {
+            return res.sendStatus(200);
+        }
+        next();
+    });
+}
+
+// Request logging middleware
+app.use((req, res, next) => {
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+    next();
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error("Error:", err);
+    res.status(500).json({ 
+        error: "Eroare internă server",
+        message: err.message 
+    });
+});
 
 // Constante pentru chei și mesaje
 const CHEI = {
@@ -490,9 +537,39 @@ app.put('/users/:id/setari', async (req, res) => {
     }
 });
 
+// Endpoint pentru schimbarea parolei
+app.put('/users/:id/schimbaParola', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const { parolaActuala, parolaNoua } = req.body;
+        
+        // Găsim utilizatorul în baza de date
+        let users = await db.getData("/users");
+        const userIndex = users.findIndex(user => user.id === id);
+        
+        if (userIndex === -1) {
+            return res.status(404).json({ error: "Utilizatorul nu a fost găsit" });
+        }
+        
+        // Verificăm parola actuală
+        if (users[userIndex].parola !== parolaActuala) {
+            return res.status(401).json({ error: "Parola actuală este incorectă" });
+        }
+        
+        // Actualizăm parola
+        users[userIndex].parola = parolaNoua;
+        await db.push("/users", users, true);
+        
+        res.status(200).json({ mesaj: "Parola a fost schimbată cu succes" });
+    } catch (error) {
+        console.error("Eroare la schimbarea parolei:", error);
+        res.status(500).json({ error: "Eroare internă la schimbarea parolei" });
+    }
+});
+
 //pornirea serverului
-app.listen(port, async () => {
-    console.log(`Server is running on http://localhost:${port}`);
+app.listen(config.port, async () => {
+    console.log(`Server is running on http://localhost:${config.port}`);
     await initializareBaza();
 });
 

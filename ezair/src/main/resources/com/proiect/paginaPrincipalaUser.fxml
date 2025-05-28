@@ -54,12 +54,12 @@
                <columns>
                   <TableColumn fx:id="coloanaOrigine" prefWidth="100.0" text="Origine" />
                   <TableColumn fx:id="coloanaDestinatie" prefWidth="100.0" text="Destinație" />
-                  <TableColumn fx:id="coloanaDataPlecare" prefWidth="100.0" text="Data plecare" />
-                  <TableColumn fx:id="coloanaOraPlecare" prefWidth="80.0" text="Ora plecare" />
-                  <TableColumn fx:id="coloanaDataSosire" prefWidth="100.0" text="Data sosire" />
-                  <TableColumn fx:id="coloanaOraSosire" prefWidth="80.0" text="Ora sosire" />
-                  <TableColumn fx:id="coloanaPret" prefWidth="80.0" text="Preț" />
-                  <TableColumn fx:id="coloanaLocuriLibere" prefWidth="80.0" text="Locuri libere" />
+                  <TableColumn fx:id="coloanaDataPlecare" prefWidth="243.0" text="Data plecare" />
+                  <TableColumn fx:id="coloanaOraPlecare" prefWidth="201.0" text="Ora plecare" />
+                  <TableColumn fx:id="coloanaDataSosire" prefWidth="185.0" text="Data sosire" />
+                  <TableColumn fx:id="coloanaOraSosire" prefWidth="138.0" text="Ora sosire" />
+                  <TableColumn fx:id="coloanaPret" prefWidth="75.0" text="Preț" />
+                  <TableColumn fx:id="coloanaLocuriLibere" prefWidth="157.0" text="Locuri libere" />
                </columns>
             </TableView>
             

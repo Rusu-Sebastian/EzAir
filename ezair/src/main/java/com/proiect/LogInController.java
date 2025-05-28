@@ -2,9 +2,7 @@ package com.proiect;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
@@ -12,6 +10,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.json.JSONObject;
+
+import com.proiect.config.ApiEndpoints;
+import com.proiect.util.HttpUtil;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -21,91 +22,78 @@ import javafx.scene.control.TextField;
 
 public class LogInController {
     private static final Logger jurnal = Logger.getLogger(LogInController.class.getName());
-    private static final String URL_SERVER = "http://localhost:3000";
+    private static final String PAGINA_ADMIN = "paginaPrincipalaAdmin";
+    private static final String PAGINA_USER = "paginaPrincipalaUser";
+    private static final String PAGINA_EROARE = "eroareConexiune";
+    private static final String PAGINA_CREARE_CONT = "creareContInceput";
     private static final String TITLU_EROARE = "Eroare";
-    private static final String TITLU_ATENTIONARE = "Atenționare";
-    private static final int TIMP_EXPIRARE_CONEXIUNE = 5000; // 5 secunde
-    
-    // Constants for user data keys
-    private static final String CHEIE_NUME_UTILIZATOR = "numeUtilizator";
-    private static final String CHEIE_NUME = "nume";
-    private static final String CHEIE_PRENUME = "prenume";
-    private static final String CHEIE_ID_UTILIZATOR = "userId";
-    private static final String CHEIE_ADMIN = "esteAdmin";
-    
-    // Constants for JSON fields
-    private static final String CAMP_NUME_UTILIZATOR = "numeUtilizator";
-    private static final String CAMP_PAROLA = "parola";
-    private static final String CAMP_ID = "id";
+    private static final String TITLU_ATENTIONARE = "Atenție";
 
-    @FXML private TextField numeUtilizator;
-    @FXML private PasswordField parola;
+    @FXML private TextField campNumeUtilizator;
+    @FXML private PasswordField campParola;
+    private App app;
 
     @FXML
-    public void autentificare() {
-        if (!valideazaIntrari()) {
+    public void initialize() {
+        app = App.getInstance();
+        if (app == null) {
+            jurnal.severe("Nu s-a putut obține instanța aplicației");
+        }
+    }
+
+    @FXML
+    @SuppressWarnings("unused") // Used by FXML
+    private void login() {
+        if (app == null) {
+            afiseazaAlerta(Alert.AlertType.ERROR,
+                          TITLU_EROARE,
+                          "Eroare internă",
+                          "Te rog să repornești aplicația.");
+            return;
+        }
+
+        String numeUtilizator = campNumeUtilizator.getText();
+        String parola = campParola.getText();
+
+        if (numeUtilizator.isEmpty() || parola.isEmpty()) {
+            afiseazaAlerta(Alert.AlertType.WARNING,
+                          TITLU_ATENTIONARE,
+                          "Te rog să completezi toate câmpurile",
+                          "Numele de utilizator și parola sunt obligatorii.");
             return;
         }
 
         try {
-            JSONObject dateAutentificare = new JSONObject();
-            dateAutentificare.put(CAMP_NUME_UTILIZATOR, numeUtilizator.getText().trim());
-            dateAutentificare.put(CAMP_PAROLA, parola.getText());
-
-            autentificaUtilizator(dateAutentificare);
+            autentificare(numeUtilizator, parola);
         } catch (IOException | URISyntaxException e) {
-            jurnal.log(Level.SEVERE, "Eroare la conectarea la server", e);
-            redirectioneazaLaEroareConexiune();
-        }
-    }
-
-    private boolean valideazaIntrari() {
-        if (numeUtilizator.getText().trim().isEmpty() || parola.getText().isEmpty()) {
-            afiseazaAlerta(Alert.AlertType.WARNING,
-                          TITLU_ATENTIONARE,
-                          "Câmpuri incomplete",
-                          "Te rugăm să completezi toate câmpurile.");
-            return false;
-        }
-        return true;
-    }
-
-    private void autentificaUtilizator(JSONObject dateAutentificare) throws IOException, URISyntaxException {
-        HttpURLConnection conexiune = null;
-        try {
-            conexiune = configureazaConexiune("/users/login", "POST");
-            conexiune.setRequestProperty("Content-Type", "application/json");
-            conexiune.setDoOutput(true);
-
-            try (OutputStream os = conexiune.getOutputStream()) {
-                os.write(dateAutentificare.toString().getBytes(StandardCharsets.UTF_8));
-                os.flush();
+            jurnal.log(Level.SEVERE, "Eroare la autentificare: {0}", e.getMessage());
+            try {
+                app.setRoot(PAGINA_EROARE);
+            } catch (IOException ex) {
+                jurnal.log(Level.SEVERE, "Nu s-a putut naviga la pagina de eroare: {0}", ex.getMessage());
             }
+        }
+    }
+
+    private void autentificare(String numeUtilizator, String parola) throws IOException, URISyntaxException {
+        HttpURLConnection conexiune = HttpUtil.createConnection(ApiEndpoints.LOGIN_URL, "POST");
+        try {
+            String dateAutentificare = String.format("{\"username\":\"%s\",\"password\":\"%s\"}", 
+                                                   numeUtilizator, parola);
+            byte[] date = dateAutentificare.getBytes(StandardCharsets.UTF_8);
+            conexiune.setRequestProperty("Content-Type", "application/json");
+            conexiune.setRequestProperty("Content-Length", String.valueOf(date.length));
+            conexiune.setDoOutput(true);
+            conexiune.getOutputStream().write(date);
 
             int codRaspuns = conexiune.getResponseCode();
-            switch (codRaspuns) {
-                case HttpURLConnection.HTTP_OK:
-                    proceseazaRaspunsAutentificare(conexiune);
-                    break;
-                case HttpURLConnection.HTTP_UNAUTHORIZED:
-                    afiseazaAlerta(Alert.AlertType.ERROR,
-                                  TITLU_EROARE,
-                                  "Autentificare eșuată",
-                                  "Numele de utilizator sau parola sunt incorecte.");
-                    parola.clear();
-                    break;
-                default:
-                    jurnal.warning(() -> String.format("Server a returnat codul: %d", codRaspuns));
-                    afiseazaAlerta(Alert.AlertType.ERROR,
-                                  TITLU_EROARE,
-                                  "Eroare server",
-                                  "A apărut o eroare la procesarea cererii. Te rugăm să încerci din nou.");
-                    break;
+            if (codRaspuns == HttpURLConnection.HTTP_OK) {
+                proceseazaRaspunsAutentificare(conexiune);
+            } else {
+                gestioneazaEroareAutentificare(conexiune);
             }
         } finally {
-            if (conexiune != null) {
-                conexiune.disconnect();
-            }
+            conexiune.disconnect();
         }
     }
 
@@ -114,80 +102,66 @@ public class LogInController {
              Scanner scanner = new Scanner(is, StandardCharsets.UTF_8.name())) {
             String raspuns = scanner.useDelimiter("\\A").next();
             JSONObject dateUtilizator = new JSONObject(raspuns);
-
-            salveazaDateUtilizator(dateUtilizator);
-            redirectioneazaUtilizator(dateUtilizator.getBoolean(CHEIE_ADMIN));
+            
+            Platform.runLater(() -> {
+                try {
+                    App.getDateUtilizator().put(ApiEndpoints.USER_ID_KEY, dateUtilizator.getString("id"));
+                    boolean esteAdmin = dateUtilizator.getBoolean(ApiEndpoints.IS_ADMIN_KEY);
+                    App.getDateUtilizator().put(ApiEndpoints.IS_ADMIN_KEY, Boolean.toString(esteAdmin));
+                    
+                    app.setRoot(esteAdmin ? PAGINA_ADMIN : PAGINA_USER);
+                } catch (IOException e) {
+                    jurnal.log(Level.SEVERE, "Eroare la navigare post-autentificare: {0}", e.getMessage());
+                    afiseazaAlerta(Alert.AlertType.ERROR,
+                                 TITLU_EROARE,
+                                 "Nu s-a putut deschide pagina principală",
+                                 "Te rog să încerci din nou.");
+                }
+            });
         }
     }
 
-    private void salveazaDateUtilizator(JSONObject dateUtilizator) {
-        App.getDateUtilizator().put(CHEIE_NUME_UTILIZATOR, dateUtilizator.getString(CAMP_NUME_UTILIZATOR));
-        App.getDateUtilizator().put(CHEIE_NUME, dateUtilizator.getString(CHEIE_NUME));
-        App.getDateUtilizator().put(CHEIE_PRENUME, dateUtilizator.getString(CHEIE_PRENUME));
-        App.getDateUtilizator().put(CHEIE_ID_UTILIZATOR, dateUtilizator.getString(CAMP_ID));
-        App.getDateUtilizator().put(CHEIE_ADMIN, String.valueOf(dateUtilizator.getBoolean(CHEIE_ADMIN)));
-    }
-
-    private void redirectioneazaUtilizator(boolean esteAdmin) {
-        try {
-            if (esteAdmin) {
-                jurnal.info("Autentificare reușită ca administrator");
-                App.setRoot("paginaPrincipalaAdmin");
-            } else {
-                jurnal.info("Autentificare reușită ca utilizator normal");
-                App.setRoot("paginaPrincipalaUser");
+    private void gestioneazaEroareAutentificare(HttpURLConnection conexiune) {
+        try (InputStream is = conexiune.getErrorStream()) {
+            if (is != null) {
+                String raspunsEroare = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+                jurnal.log(Level.WARNING, "Eroare autentificare: {0}", raspunsEroare);
+                Platform.runLater(() -> 
+                    afiseazaAlerta(Alert.AlertType.ERROR,
+                                 TITLU_EROARE,
+                                 "Nu te-ai putut conecta",
+                                 "Numele de utilizator sau parola sunt incorecte.")
+                );
             }
         } catch (IOException e) {
-            jurnal.log(Level.SEVERE, "Eroare la redirecționare după autentificare", e);
-            afiseazaAlerta(Alert.AlertType.ERROR,
-                          TITLU_EROARE,
-                          "Eroare de navigare",
-                          "Nu s-a putut încărca pagina principală. Te rugăm să încerci din nou.");
+            jurnal.log(Level.WARNING, "Nu s-a putut citi răspunsul de eroare: {0}", e.getMessage());
         }
     }
 
-    @FXML
-    public void navigheazaLaCreareCont() {
-        try {
-            App.setRoot("creareContInceput");
-        } catch (IOException e) {
-            jurnal.log(Level.SEVERE, "Eroare la navigarea către pagina de creare cont", e);
-            afiseazaAlerta(Alert.AlertType.ERROR,
-                          TITLU_EROARE,
-                          "Eroare de navigare",
-                          "Nu s-a putut deschide pagina de creare cont. Te rugăm să încerci din nou.");
+        @FXML
+    @SuppressWarnings("unused") // Used by FXML
+    private void navigarePaginaCreareCont() {
+        if (app == null) {
+            jurnal.severe("Nu s-a putut naviga - instanța aplicației lipsește");
+            return;
         }
-    }
 
-    private HttpURLConnection configureazaConexiune(String caleApi, String metodaHttp) 
-            throws IOException, URISyntaxException {
-        URI uri = new URI(URL_SERVER + caleApi);
-        HttpURLConnection conexiune = (HttpURLConnection) uri.toURL().openConnection();
-        conexiune.setRequestMethod(metodaHttp);
-        conexiune.setConnectTimeout(TIMP_EXPIRARE_CONEXIUNE);
-        conexiune.setReadTimeout(TIMP_EXPIRARE_CONEXIUNE);
-        return conexiune;
-    }
-
-    private void redirectioneazaLaEroareConexiune() {
         try {
-            App.setRoot("eroareConexiune");
+            app.setRoot(PAGINA_CREARE_CONT);
         } catch (IOException e) {
-            jurnal.log(Level.SEVERE, "Eroare la redirecționarea către pagina de eroare", e);
+            jurnal.log(Level.SEVERE, "Eroare la navigare: {0}", e.getMessage());
             afiseazaAlerta(Alert.AlertType.ERROR,
                           TITLU_EROARE,
-                          "Eroare critică",
-                          "Nu s-a putut afișa pagina de eroare. Vă rugăm să reporniți aplicația.");
+                          "Nu s-a putut deschide pagina de creare cont",
+                          "Te rog să încerci din nou.");
         }
     }
 
     private void afiseazaAlerta(Alert.AlertType tip, String titlu, String antet, String continut) {
-        Platform.runLater(() -> {
-            Alert alerta = new Alert(tip);
-            alerta.setTitle(titlu);
-            alerta.setHeaderText(antet);
-            alerta.setContentText(continut);
-            alerta.showAndWait();
-        });
+        Alert alerta = new Alert(tip);
+        alerta.setTitle(titlu);
+        alerta.setHeaderText(antet);
+        alerta.setContentText(continut);
+        alerta.showAndWait();
     }
 }

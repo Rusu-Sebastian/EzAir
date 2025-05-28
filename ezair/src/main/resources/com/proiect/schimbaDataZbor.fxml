@@ -2,29 +2,25 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.SchimbaDataZborController" styleClass="root" stylesheets="@styles.css">
+<VBox alignment="CENTER" spacing="20.0" styleClass="root" stylesheets="@styles.css, @styles-fix.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.SchimbaDataZborController">
    <children>
-      <Label text="Schimbă data zborului">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
-      
-      <VBox alignment="CENTER" spacing="10" styleClass="card">
+      <Pane prefHeight="400.0" prefWidth="937.0">
          <children>
-            <Label fx:id="labelDetaliiZbor" text="Zbor: București → Londra (27/05/2025, 10:30)" />
+            <Label fx:id="labelDetaliiZbor" layoutX="425.0" layoutY="80.0" text="Zbor: București → Londra (27/05/2025, 10:30)" />
             
-            <Label text="Selectează un alt zbor disponibil:" />
-            <TableView fx:id="tabelZboruri">
+            <Text layoutX="425.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Selectează un alt zbor disponibil:" />
+            
+            <TableView fx:id="tabelZboruri" layoutX="425.0" layoutY="150.0" prefHeight="180.0" prefWidth="400.0">
                <columns>
                   <TableColumn fx:id="coloanaData" text="Data" />
                   <TableColumn fx:id="coloanaOra" text="Ora" />
@@ -32,15 +28,22 @@
                   <TableColumn fx:id="coloanaPret" text="Preț" />
                </columns>
             </TableView>
+            
+            <Button fx:id="butonAnuleaza" layoutX="425.0" layoutY="350.0" mnemonicParsing="false" onAction="#anuleaza" text="Anulează" textAlignment="JUSTIFY" />
+            <Button fx:id="butonConfirma" defaultButton="true" layoutX="725.0" layoutY="350.0" mnemonicParsing="false" onAction="#schimbaData" text="Confirmă" />
+            
+            <ImageView fitHeight="180.0" fitWidth="180.0" layoutX="6.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@logo.png" />
+               </image>
+            </ImageView>
+            <Text layoutX="19.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Schimbă data zborului">
+               <font>
+                  <Font name="Noto Sans Math Regular" size="25.0" />
+               </font>
+            </Text>
          </children>
-      </VBox>
-      
-      <HBox spacing="20" alignment="CENTER">
-         <children>
-            <Button fx:id="butonConfirma" onAction="#schimbaData" text="Confirmă" />
-            <Button fx:id="butonAnuleaza" onAction="#anuleaza" text="Anulează" />
-         </children>
-      </HBox>
+      </Pane>
    </children>
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

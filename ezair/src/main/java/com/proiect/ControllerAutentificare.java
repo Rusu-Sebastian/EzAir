@@ -6,20 +6,33 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 
 public class ControllerAutentificare {
 
-    private static final Logger jurnal = Logger.getLogger(App.class.getName());
+    private static final Logger jurnal = Logger.getLogger(ControllerAutentificare.class.getName());
+    
+    @FXML private TextField numeUtilizator;
+    @FXML private PasswordField parola;
+    
+    private App app;
+    
+    @FXML
+    public void initialize() {
+        app = App.getInstance();
+    }
 
     // Functia de autentificare
+    @SuppressWarnings("unused")
     @FXML
     private void autentificare() throws IOException, java.net.URISyntaxException {
         // Preluarea datelor introduse de utilizator
-        String numeUtilizator = ((javafx.scene.control.TextField) App.scena.lookup("#numeUtilizator")).getText();
-        String parola = ((javafx.scene.control.PasswordField) App.scena.lookup("#parola")).getText();
+        String numeUtilizatorText = numeUtilizator.getText();
+        String parolaText = parola.getText();
 
         // Verificarea daca toate campurile sunt completate
-        if (numeUtilizator.isEmpty() || parola.isEmpty()) {
+        if (numeUtilizatorText.isEmpty() || parolaText.isEmpty()) {
             jurnal.log(Level.WARNING, "Completati toate campurile!");
             return;
         }
@@ -36,7 +49,7 @@ public class ControllerAutentificare {
             conexiuneHttp.setDoOutput(true);
 
             // Crearea corpului cererii JSON
-            String jsonCerere = String.format("{\"numeUtilizator\": \"%s\", \"parola\": \"%s\"}", numeUtilizator, parola);
+            String jsonCerere = String.format("{\"numeUtilizator\": \"%s\", \"parola\": \"%s\"}", numeUtilizatorText, parolaText);
 
             // Trimiterea cererii
             try (java.io.OutputStream os = conexiuneHttp.getOutputStream()) {
@@ -61,7 +74,7 @@ public class ControllerAutentificare {
                     String prenume = raspunsJson.getString("prenume");
 
                     // Salvarea datelor utilizatorului
-                    App.getDateUtilizator().put("numeUtilizator", numeUtilizator);
+                    App.getDateUtilizator().put("numeUtilizator", numeUtilizatorText);
                     App.getDateUtilizator().put("nume", nume);
                     App.getDateUtilizator().put("prenume", prenume);
                     App.getDateUtilizator().put("userId", raspunsJson.getString("id"));
@@ -71,9 +84,9 @@ public class ControllerAutentificare {
                     // Redirecționarea utilizatorului
                     if (esteAdmin) {
                         jurnal.log(Level.INFO, "Utilizatorul este administrator.");
-                        App.setRoot("paginaPrincipalaAdmin");
+                        app.setRoot("paginaPrincipalaAdmin");
                     } else {
-                        App.setRoot("paginaPrincipalaUser");
+                        app.setRoot("paginaPrincipalaUser");
                     }
                 }
             } else {
@@ -81,7 +94,7 @@ public class ControllerAutentificare {
             }
         }        catch (IOException | java.net.URISyntaxException e) {
             jurnal.log(Level.SEVERE, "Eroare la conectarea la server: {0}", e.getMessage());
-            App.setRoot("eroareConexiune");
+            app.setRoot("eroareConexiune");
         } finally {
             if (conexiuneHttp != null) {
                 conexiuneHttp.disconnect();
@@ -89,11 +102,12 @@ public class ControllerAutentificare {
         }
 
         // Jurnalizarea utilizatorului (fara parola)
-        jurnal.log(Level.INFO, "Nume utilizator: {0}", numeUtilizator);
+        jurnal.log(Level.INFO, "Nume utilizator: {0}", numeUtilizatorText);
     }
 
+    @SuppressWarnings("unused")
     @FXML
     private void navigarePaginaCreareCont() throws IOException {
-        App.setRoot("creareContInceput");
+        app.setRoot("creareContInceput");
     }
 }
