@@ -120,7 +120,6 @@ class zbor {
     }
 }
 
-// Clasa pentru bilete
 class bilet {
     constructor(userId, zborId, detaliiZbor, dataZbor, pret) {
         this[CHEI.ID] = uuidv4();

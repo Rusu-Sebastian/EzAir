@@ -12,10 +12,8 @@ public class Zbor {
     private double pret;
     private String id;
 
-    // Helper method to normalize date formats - handles both DD/MM/YYYY and DD.MM.YYYY
     public static String normalizeazaFormatData(String data) {
         if (data == null) return null;
-        // Replace dots with slashes for consistent format
         return data.replace(".", "/");
     }
 

@@ -11,6 +11,8 @@ import java.util.logging.Logger;
 
 import org.json.JSONObject;
 
+import com.proiect.config.ApiEndpoints;
+
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -21,7 +23,6 @@ public class SchimbaParolaController {
     private static final String TITLU_EROARE = "Eroare";
     private static final String TITLU_SUCCES = "Succes";
     private static final String URL_SERVER = "http://localhost:3000";
-    private static final String ID_UTILIZATOR = "userId";
     private static final int TIMP_EXPIRARE_CONEXIUNE = 5000; // 5 secunde
     
     private static final String EROARE_CAMPURI_OBLIGATORII = "Toate câmpurile sunt obligatorii.";
@@ -42,7 +43,7 @@ public class SchimbaParolaController {
             return;
         }
         
-        String idUtilizator = (String) App.getDateUtilizator().get(ID_UTILIZATOR);
+        String idUtilizator = (String) App.getDateUtilizator().get(ApiEndpoints.USER_ID_KEY);
         if (idUtilizator == null) {
             afiseazaAlerta(Alert.AlertType.ERROR, TITLU_EROARE, "Eroare sesiune", "Sesiunea dumneavoastră a expirat.");
             navigheazaLaLogin();

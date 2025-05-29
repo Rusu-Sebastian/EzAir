@@ -4,11 +4,11 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Bilet {
-    // Properties
     private final StringProperty zbor;
     private final StringProperty data;
     private final StringProperty stare;
     private String id;
+    private String zborId;
 
     public Bilet(String zbor, String data, String stare, String id) {
         this.zbor = new SimpleStringProperty(zbor);
@@ -47,5 +47,13 @@ public class Bilet {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getZborId() {
+        return zborId;
+    }
+
+    public void setZborId(String zborId) {
+        this.zborId = zborId;
     }
 }

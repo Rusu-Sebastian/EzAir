@@ -34,96 +34,6 @@
             }
         },
         {
-            "id": "76479d48-b35e-4653-b430-b9d1ea66e84e",
-            "numeUtilizator": "rusu.admin",
-            "parola": "134679852",
-            "email": "sebastianrusu01@gmail.com",
-            "nume": "Rusu",
-            "prenume": "Sebastian",
-            "dataNasterii": "09/05/2004",
-            "esteAdmin": true,
-            "setari": {
-                "notificariEmail": true,
-                "notificariSMS": false,
-                "notificariPushWeb": true,
-                "notificariPromotii": true,
-                "notificariAnulari": true,
-                "notificariModificari": true
-            }
-        },
-        {
-            "id": "d9c617a2-e3e5-4798-9487-6c235025d670",
-            "numeUtilizator": "admin",
-            "parola": "adminadmin",
-            "email": "admin@admin.com",
-            "nume": "admin",
-            "prenume": "admin",
-            "dataNasterii": "01/01/2001",
-            "esteAdmin": false,
-            "setari": {
-                "notificariEmail": true,
-                "notificariSMS": false,
-                "notificariPushWeb": true,
-                "notificariPromotii": true,
-                "notificariAnulari": true,
-                "notificariModificari": true
-            }
-        },
-        {
-            "id": "b22c383c-acdd-4fb5-8642-78c6ae90c763",
-            "numeUtilizator": "Test",
-            "parola": "TestTest",
-            "email": "test@test.com",
-            "nume": "Testare",
-            "prenume": "Testare",
-            "dataNasterii": "11/09/2021",
-            "esteAdmin": false,
-            "setari": {
-                "notificariEmail": true,
-                "notificariSMS": false,
-                "notificariPushWeb": true,
-                "notificariPromotii": true,
-                "notificariAnulari": true,
-                "notificariModificari": true
-            }
-        },
-        {
-            "id": "18ed8d9e-fd71-4dc2-89a0-cbe6e1e803b0",
-            "numeUtilizator": "BalerinaCapucina69",
-            "parola": "BalerinaSmecherina12",
-            "email": "Balerina.Capucina69@gmail.com",
-            "nume": "Balerina",
-            "prenume": "Capucina",
-            "dataNasterii": "2/3/2005",
-            "esteAdmin": false,
-            "setari": {
-                "notificariEmail": true,
-                "notificariSMS": false,
-                "notificariPushWeb": true,
-                "notificariPromotii": true,
-                "notificariAnulari": true,
-                "notificariModificari": true
-            }
-        },
-        {
-            "id": "62ca3d26-aaab-4a29-970e-31faae8f54ab",
-            "numeUtilizator": "sebastianrusu01",
-            "parola": "134679852",
-            "email": "sebastianrusu01@gmail.com",
-            "nume": "Rusu",
-            "prenume": "Sebastian",
-            "dataNasterii": "09/05/2004",
-            "esteAdmin": false,
-            "setari": {
-                "notificariEmail": true,
-                "notificariSMS": false,
-                "notificariPushWeb": true,
-                "notificariPromotii": true,
-                "notificariAnulari": true,
-                "notificariModificari": true
-            }
-        },
-        {
             "id": "d39b2590-43eb-45f6-a382-ce358cd129c8",
             "parola": "tanasa123",
             "email": "tanasatesodora@gmail.com",
@@ -141,13 +51,13 @@
             }
         },
         {
-            "id": "fdd70d55-89ab-48ba-817c-24d3106d5988",
-            "numeUtilizator": "salatea",
-            "parola": "II. Obiectivele cercetăriiObiectiv general:    Analiza modului în care utilizarea rețelelor sociale afectează sănătatea mintală a adolescenților din medii vulnerabile.Obiective specifice:    Identificarea platformelor digitale preferate și a modului de utilizare de către adolescenți vulnerabili.    Evaluarea legăturii dintre frecvența utilizării social media și apariția simptomelor de anxietate, depresie, izolare socială sau stimă de sine scăzută.    Explorarea percepțiilor adolescenților asupra conținutului dăunător și a strategiilor de coping.    Investigarea accesului la resurse de sprijin online și a eficienței acestora.",
-            "email": "sala@saltea.com",
-            "nume": "aoleiiuy",
-            "prenume": "maam",
-            "dataNasterii": "2/1/2000",
+            "id": "27bd9401-40eb-4d82-a4db-ec4e6ad241f6",
+            "numeUtilizator": "sebastian-constantin.rusu",
+            "parola": "134679852",
+            "email": "sebastianrusu01@gmail.com",
+            "nume": "Rusu",
+            "prenume": "Sebastian",
+            "dataNasterii": "09/05/2004",
             "esteAdmin": false,
             "setari": {
                 "notificariEmail": true,
@@ -159,67 +69,13 @@
             }
         },
         {
-            "id": "8e025dd2-0a6e-4061-9f20-10fc0573c411",
-            "numeUtilizator": "anulare",
-            "parola": "cont12345",
-            "email": "anulare@cont.com",
-            "nume": "anulare",
-            "prenume": "cont",
-            "dataNasterii": "01/01/2000",
-            "esteAdmin": false,
-            "setari": {
-                "notificariEmail": true,
-                "notificariSMS": false,
-                "notificariPushWeb": true,
-                "notificariPromotii": true,
-                "notificariAnulari": true,
-                "notificariModificari": true
-            }
-        },
-        {
-            "id": "a61c6027-de27-4975-aa5d-46b97ffc88a8",
-            "numeUtilizator": "test",
-            "parola": "test123456",
-            "email": "test@testt.com",
-            "nume": "test",
-            "prenume": "test",
-            "dataNasterii": "1/1/2004",
-            "esteAdmin": false,
-            "setari": {
-                "notificariEmail": true,
-                "notificariSMS": false,
-                "notificariPushWeb": true,
-                "notificariPromotii": true,
-                "notificariAnulari": true,
-                "notificariModificari": true
-            }
-        },
-        {
-            "id": "6db210d6-3a7e-49c9-b323-b9a401a28fe8",
-            "numeUtilizator": "testuser123",
-            "parola": "testpassword",
-            "email": "test@example.com",
-            "nume": "Test",
-            "prenume": "User",
-            "dataNasterii": "15/05/1990",
-            "esteAdmin": false,
-            "setari": {
-                "notificariEmail": true,
-                "notificariSMS": false,
-                "notificariPushWeb": true,
-                "notificariPromotii": true,
-                "notificariAnulari": true,
-                "notificariModificari": true
-            }
-        },
-        {
-            "id": "9a0ed61d-3063-420a-aba1-b43dca9063bf",
-            "numeUtilizator": "testtest",
-            "parola": "testtest",
-            "email": "test@test.com",
-            "nume": "test",
-            "prenume": "test",
-            "dataNasterii": "01/02/2002",
+            "id": "be0bc8d5-5caa-4575-8712-c0125a14d696",
+            "numeUtilizator": "mihai.alexandru",
+            "parola": "123456789",
+            "email": "mihai.alexandru@gmail.com",
+            "nume": "mihai",
+            "prenume": "alexandru",
+            "dataNasterii": "02/04/2000",
             "esteAdmin": false,
             "setari": {
                 "notificariEmail": true,
@@ -241,7 +97,7 @@
             "dataSosire": "3/6/2025",
             "oraSosire": "14:40",
             "modelAvion": "Boeing 737-800",
-            "locuriLibere": 195,
+            "locuriLibere": 194,
             "pret": 229.99
         },
         {
@@ -385,7 +241,7 @@
             "dataSosire": "15/6/2025",
             "oraSosire": "12:40",
             "modelAvion": "Boeing 737-800",
-            "locuriLibere": 185,
+            "locuriLibere": 184,
             "pret": 219.99
         },
         {
@@ -588,11 +444,11 @@
         {
             "id": "cd13b634-b28f-4362-8272-1b7298e3c8d0",
             "userId": "client",
-            "zborId": "e367b6a7-92e0-4bc2-8baa-fb3e3aeead4a",
+            "zborId": "d1e52c3f-4b16-4c7a-8d3b-9e67f4a21b5d",
             "detaliiZbor": "Bucuresti -> Londra",
-            "dataZbor": "2025-06-03T07:30:00.000Z",
-            "stare": "ACTIV",
-            "pret": 100
+            "dataZbor": "2025-06-15T08:30:00",
+            "stare": "MODIFICAT",
+            "pret": 219.99
         },
         {
             "id": "f753fef1-71a9-413a-b298-a329c4835487",
@@ -638,6 +494,24 @@
             "dataZbor": "2025-06-05T08:32:00.000Z",
             "stare": "ACTIV",
             "pret": 189.99
+        },
+        {
+            "id": "ba0b1c83-2397-41f7-9518-aba2dcfb2d35",
+            "userId": "27bd9401-40eb-4d82-a4db-ec4e6ad241f6",
+            "zborId": "e367b6a7-92e0-4bc2-8baa-fb3e3aeead4a",
+            "detaliiZbor": "Bucuresti -> Londra",
+            "dataZbor": "2025-06-03T07:30:00.000Z",
+            "stare": "ACTIV",
+            "pret": 229.99
+        },
+        {
+            "id": "bf733240-86d9-4716-a4af-573dd4dff3f7",
+            "userId": "be0bc8d5-5caa-4575-8712-c0125a14d696",
+            "zborId": "e367b6a7-92e0-4bc2-8baa-fb3e3aeead4a",
+            "detaliiZbor": "Bucuresti -> Londra",
+            "dataZbor": "2025-06-03T10:30:00",
+            "stare": "ACTIV",
+            "pret": 229.99
         }
     ]
 }

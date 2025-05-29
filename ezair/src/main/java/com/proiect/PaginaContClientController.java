@@ -33,7 +33,7 @@ public class PaginaContClientController {
     private static final String TITLU_SUCCES = "Succes";
     private static final String PAGINA_EDITARE = "editareContClient";
     private static final String PAGINA_NOTIFICARI = "setariNotificari";
-    private static final String PAGINA_PAROLA = "schimbareParola";
+    private static final String PAGINA_PAROLA = "schimbaParola";
 
     @FXML private Label labelNume;
     @FXML private Label labelEmail;
@@ -113,12 +113,16 @@ public class PaginaContClientController {
                     LocalDateTime dataZbor = parseazaDataTimp(bilet.getString("dataZbor"));
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
                     
-                    listaBilete.add(new Bilet(
+                    Bilet biletObj = new Bilet(
                         bilet.getString("detaliiZbor"),
                         dataZbor.format(formatter),
                         bilet.getString("stare"),
                         bilet.getString("id")
-                    ));
+                    );
+                    
+                    // Salvează zborId pentru bilet pentru a fi folosit ulterior
+                    biletObj.setZborId(bilet.getString("zborId"));
+                    listaBilete.add(biletObj);
                 }
                 
                 tabelBilete.setItems(listaBilete);
@@ -256,13 +260,45 @@ public class PaginaContClientController {
         }
         
         try {
-            // Stochează ID-ul biletului pentru pagina următoare
-            App.getDateUtilizator().put("biletId", biletSelectat.getId());
+            // Obține informațiile despre biletul selectat de pe server
+            String biletId = biletSelectat.getId();
+            String zborId = obtineInformatiiCompleteBilet(biletId);
+            
+            // Stochează informațiile necesare pentru pagina următoare
+            App.getDateUtilizator().put("biletSelectatId", biletId);
+            App.getDateUtilizator().put("zborSelectatId", zborId);
+            App.getDateUtilizator().put("detaliiZbor", biletSelectat.getZbor());
             App.setRoot("schimbaDataZbor");
         } catch (IOException e) {
             jurnal.log(Level.SEVERE, "Eroare la navigarea către schimbare data", e);
             afiseazaEroare("Nu s-a putut deschide pagina de schimbare data");
         }
+    }
+
+    private String obtineInformatiiCompleteBilet(String biletId) {
+        try {
+            String idUtilizator = (String) App.getDateUtilizator().get(ApiEndpoints.USER_ID_KEY);
+            HttpURLConnection conexiune = HttpUtil.createConnection(
+                String.format(ApiEndpoints.USER_TICKETS, idUtilizator),
+                "GET"
+            );
+
+            int codRaspuns = conexiune.getResponseCode();
+            if (codRaspuns == HttpURLConnection.HTTP_OK) {
+                String raspuns = new String(conexiune.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+                JSONArray bilete = new JSONArray(raspuns);
+                
+                for (int i = 0; i < bilete.length(); i++) {
+                    JSONObject bilet = bilete.getJSONObject(i);
+                    if (bilet.getString("id").equals(biletId)) {
+                        return bilet.getString("zborId");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            jurnal.log(Level.SEVERE, "Eroare la obținerea informațiilor complete despre bilet", e);
+        }
+        return null;
     }
 
     private void afiseazaEroare(String mesaj) {
