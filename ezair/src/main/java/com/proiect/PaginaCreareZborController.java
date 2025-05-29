@@ -33,10 +33,8 @@ public class PaginaCreareZborController {
     @FXML private TextField oraSosirii1;
     @FXML private TextField oraSosirii2;
     
-    private App app;
-    
     public void initialize() {
-        app = App.getInstance();
+        // Initialization complete
     }
     
     @SuppressWarnings("unused")
@@ -58,7 +56,7 @@ public class PaginaCreareZborController {
             dateUtilizator.put(CHEIE_ADMIN, esteAdmin);
         }
         
-        app.setRoot("paginaZboruriAdmin");
+        App.setRoot("paginaZboruriAdmin");
     }
 
     @SuppressWarnings("unused")
@@ -185,6 +183,6 @@ public class PaginaCreareZborController {
             e.printStackTrace();
         }
 
-        app.setRoot("paginaZboruriAdmin");
+        App.setRoot("paginaZboruriAdmin");
     }
 }

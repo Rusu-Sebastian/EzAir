@@ -56,11 +56,9 @@ public class EditareUtilizatorController {
     @FXML private CheckBox campAdmin;
     
     private String idUtilizator;
-    private App app;
     
     @FXML
     public void initialize() {
-        app = App.getInstance();
         idUtilizator = (String) App.getDateUtilizator().get(CHEIE_ID_UTILIZATOR);
         jurnal.log(Level.INFO, "ID Utilizator pentru editare: {0}", idUtilizator);
         
@@ -279,7 +277,7 @@ public class EditareUtilizatorController {
                 App.getDateUtilizator().put(CHEIE_ADMIN, esteAdmin);
             }
             
-            app.setRoot("paginaUseriAdmin");
+            App.setRoot("paginaUseriAdmin");
         } else {
             jurnal.log(Level.WARNING, "Eroare la actualizare: {0}", codRaspuns);
             afiseazaEroare("Nu s-au putut actualiza datele. Cod răspuns: " + codRaspuns);
@@ -335,7 +333,7 @@ public class EditareUtilizatorController {
                 App.getDateUtilizator().put(CHEIE_ADMIN, esteAdmin);
             }
             
-            app.setRoot("paginaUseriAdmin");
+            App.setRoot("paginaUseriAdmin");
         } catch (IOException e) {
             jurnal.log(Level.SEVERE, "Eroare la revenirea la pagina anterioară", e);
             afiseazaEroare("Nu s-a putut reveni la pagina anterioară");

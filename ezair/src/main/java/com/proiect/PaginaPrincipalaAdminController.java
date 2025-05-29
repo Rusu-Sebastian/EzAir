@@ -17,12 +17,10 @@ public class PaginaPrincipalaAdminController {
     private static final String CHEIE_ADMIN = "esteAdmin";
     private static final String PAGINA_LOGIN = "login";
     private static final String PAGINA_ZBORURI_ADMIN = "paginaZboruriAdmin";
-    private App app;
     
     @FXML
     @SuppressWarnings("unused") // Used by FXML
     public void initialize() {
-        app = App.getInstance();
         verificaPermisiuniAdmin();
     }
     
@@ -34,7 +32,7 @@ public class PaginaPrincipalaAdminController {
             Platform.runLater(() -> {
                 afiseazaEroare("Nu aveți permisiunile necesare pentru accesarea acestei pagini");
                 try {
-                    app.setRoot(PAGINA_LOGIN);
+                    App.setRoot(PAGINA_LOGIN);
                 } catch (IOException e) {
                     jurnal.log(Level.SEVERE, "Eroare la redirecționare către login", e);
                 }
@@ -43,7 +41,7 @@ public class PaginaPrincipalaAdminController {
         }
 
         try {
-            app.setRoot(PAGINA_ZBORURI_ADMIN);
+            App.setRoot(PAGINA_ZBORURI_ADMIN);
         } catch (IOException e) {
             jurnal.log(Level.SEVERE, "Eroare la navigare către panoul de zboruri", e);
             afiseazaEroare("Nu s-a putut deschide panoul de zboruri");
@@ -54,7 +52,7 @@ public class PaginaPrincipalaAdminController {
     @SuppressWarnings("unused") // Used by FXML
     public void gestioneazaUtilizatori() {
         try {
-            app.setRoot("paginaUseriAdmin");
+            App.setRoot("paginaUseriAdmin");
         } catch (IOException e) {
             jurnal.log(Level.SEVERE, "Eroare la navigarea către pagina de gestionare utilizatori", e);
             afiseazaEroare("Nu s-a putut deschide pagina de gestionare a utilizatorilor");
@@ -73,7 +71,7 @@ public class PaginaPrincipalaAdminController {
             if (raspuns == ButtonType.OK) {
                 App.getDateUtilizator().clear();
                 try {
-                    app.setRoot(PAGINA_LOGIN);
+                    App.setRoot(PAGINA_LOGIN);
                 } catch (IOException e) {
                     jurnal.log(Level.SEVERE, "Eroare la deconectare", e);
                     afiseazaEroare("Nu s-a putut realiza deconectarea");
@@ -88,7 +86,7 @@ public class PaginaPrincipalaAdminController {
             Platform.runLater(() -> {
                 afiseazaEroare("Nu aveți permisiunile necesare pentru accesarea acestei pagini");
                 try {
-                    app.setRoot(PAGINA_LOGIN);
+                    App.setRoot(PAGINA_LOGIN);
                 } catch (IOException e) {
                     jurnal.log(Level.SEVERE, "Eroare la redirecționare către login", e);
                 }

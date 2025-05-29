@@ -16,11 +16,9 @@ public class ControllerAutentificare {
     @FXML private TextField numeUtilizator;
     @FXML private PasswordField parola;
     
-    private App app;
-    
     @FXML
     public void initialize() {
-        app = App.getInstance();
+        // Initialization complete
     }
 
     // Functia de autentificare
@@ -84,9 +82,9 @@ public class ControllerAutentificare {
                     // Redirecționarea utilizatorului
                     if (esteAdmin) {
                         jurnal.log(Level.INFO, "Utilizatorul este administrator.");
-                        app.setRoot("paginaPrincipalaAdmin");
+                        App.setRoot("paginaPrincipalaAdmin");
                     } else {
-                        app.setRoot("paginaPrincipalaUser");
+                        App.setRoot("paginaPrincipalaUser");
                     }
                 }
             } else {
@@ -94,7 +92,7 @@ public class ControllerAutentificare {
             }
         }        catch (IOException | java.net.URISyntaxException e) {
             jurnal.log(Level.SEVERE, "Eroare la conectarea la server: {0}", e.getMessage());
-            app.setRoot("eroareConexiune");
+            App.setRoot("eroareConexiune");
         } finally {
             if (conexiuneHttp != null) {
                 conexiuneHttp.disconnect();
@@ -108,6 +106,6 @@ public class ControllerAutentificare {
     @SuppressWarnings("unused")
     @FXML
     private void navigarePaginaCreareCont() throws IOException {
-        app.setRoot("creareContInceput");
+        App.setRoot("creareContInceput");
     }
 }

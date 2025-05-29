@@ -52,15 +52,12 @@ public class PaginaZboruriAdminController {
 
     private static final String PAGINA_LOGIN = "login";
 
-    private static final String LOG_FORMAT_PROCES_ZBOR = "Se procesează zborul {0}: {1}";
     private static final String LOG_FORMAT_EROARE_ZBOR = "Eroare la construirea zborului {0}: {1}";
     private static final String LOG_FORMAT_ZBOR_ID_MISSING = "Se omite zborul cu ID lipsă la indexul {0}";
     private static final String LOG_FORMAT_ZBOR_INVALID = "Zborul de la indexul {0} are origine sau destinație invalidă: {1}";
     private static final String LOG_FORMAT_ZBOR_SUCCES = "Zbor procesat cu succes, ID: {0}";
     private static final String LOG_FORMAT_ZBORURI_INCARCATE = "S-au încărcat cu succes {0} zboruri";
     private static final String LOG_FORMAT_EROARE_JSON = "Eroare la parsarea JSON: {0}";
-    private static final String LOG_FORMAT_EROARE_SERVER = "Eroare server: {0}, Răspuns: {1}";
-    private static final String LOG_FORMAT_EROARE_FLUX = "Nu s-a putut citi fluxul de eroare: {0}";
     
     // Property names used in JSON and TableView
     private static final String PROP_ORIGINE = "origine";
@@ -128,8 +125,8 @@ public class PaginaZboruriAdminController {
     }
 
     private boolean esteUtilizatorAdmin() {
-        String idUtilizator = App.getDateUtilizator().get(CHEIE_ID_UTILIZATOR);
-        String esteAdmin = App.getDateUtilizator().get(CHEIE_ADMIN);
+        String idUtilizator = (String) App.getDateUtilizator().get(CHEIE_ID_UTILIZATOR);
+        String esteAdmin = (String) App.getDateUtilizator().get(CHEIE_ADMIN);
         return idUtilizator != null && "true".equals(esteAdmin);
     }
 
@@ -149,9 +146,9 @@ public class PaginaZboruriAdminController {
     @FXML
     public void adaugaZbor() throws Exception {
         // Păstrăm credențialele de admin înainte de a naviga
-        Map<String, String> dateUtilizator = App.getDateUtilizator();
-        String idUtilizator = dateUtilizator.get(CHEIE_ID_UTILIZATOR);
-        String esteAdmin = dateUtilizator.get(CHEIE_ADMIN);
+        Map<String, Object> dateUtilizator = App.getDateUtilizator();
+        String idUtilizator = (String) dateUtilizator.get(CHEIE_ID_UTILIZATOR);
+        String esteAdmin = (String) dateUtilizator.get(CHEIE_ADMIN);
         
         // Curățăm datele vechi dar păstrăm datele de autentificare
         dateUtilizator.clear();
@@ -181,10 +178,10 @@ public class PaginaZboruriAdminController {
     }
 
     private void salveazaDateZborPentruEditare(Zbor zbor) {
-        Map<String, String> dateUtilizator = App.getDateUtilizator();
+        Map<String, Object> dateUtilizator = App.getDateUtilizator();
         // Păstrăm credențialele de admin și ID-ul utilizatorului
-        String idUtilizator = dateUtilizator.get(CHEIE_ID_UTILIZATOR);
-        String esteAdmin = dateUtilizator.get(CHEIE_ADMIN);
+        String idUtilizator = (String) dateUtilizator.get(CHEIE_ID_UTILIZATOR);
+        String esteAdmin = (String) dateUtilizator.get(CHEIE_ADMIN);
         
         // Salvăm datele zborului
         dateUtilizator.clear();

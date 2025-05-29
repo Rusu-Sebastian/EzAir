@@ -21,28 +21,34 @@ public class CreareContController {
     private static final Logger jurnal = Logger.getLogger(CreareContController.class.getName());
     private static final String PAGINA_LOGIN = "login";
     private static final String TITLU_ALERTA = "Atenție";
+    private static final String TITLU_EROARE = "Eroare";
     private static final String EMAIL_PATTERN = "^[A-Za-z0-9+_.-]+@(.+)$";
+    private static final String CHEIE_NUME = "nume";
+    private static final String CHEIE_PRENUME = "prenume";
+    private static final String CHEIE_DATA_NASTERII = "dataNasterii";
+    private static final String MESAJ_EROARE_NAVIGARE = "Eroare de navigare";
 
-    private App app;
-
-    @FXML private TextField campEmail;
-    @FXML private TextField campNumeUtilizator;
-    @FXML private TextField campParola;
-    @FXML private TextField campConfirmareParola;
-
-    public void initialize() {
-        app = App.getInstance();
-    }
+    @FXML private TextField email;
+    @FXML private TextField numeUtilizator;
+    @FXML private TextField parola;
+    @FXML private TextField confirmareParola;
+    
+    // Câmpuri pentru prima etapă (creareContInceput.fxml) - match FXML fx:id names
+    @FXML private TextField nume;
+    @FXML private TextField prenume;
+    @FXML private TextField ziuaNasterii;
+    @FXML private TextField lunaNasterii;
+    @FXML private TextField anNasterii;
 
     @SuppressWarnings("unused")
     @FXML
     private void finalizeazaCreareCont() {
-        String email = campEmail.getText();
-        String numeUtilizator = campNumeUtilizator.getText();
-        String parola = campParola.getText();
-        String confirmareParola = campConfirmareParola.getText();
+        String emailText = email.getText();
+        String numeUtilizatorText = numeUtilizator.getText();
+        String parolaText = parola.getText();
+        String confirmareParolaText = confirmareParola.getText();
 
-        if (email.isEmpty() || numeUtilizator.isEmpty() || parola.isEmpty() || confirmareParola.isEmpty()) {
+        if (emailText.isEmpty() || numeUtilizatorText.isEmpty() || parolaText.isEmpty() || confirmareParolaText.isEmpty()) {
             afiseazaAlerta(Alert.AlertType.WARNING,
                           TITLU_ALERTA,
                           "Câmpuri incomplete",
@@ -50,7 +56,7 @@ public class CreareContController {
             return;
         }
 
-        if (!parola.equals(confirmareParola)) {
+        if (!parolaText.equals(confirmareParolaText)) {
             afiseazaAlerta(Alert.AlertType.WARNING,
                           TITLU_ALERTA,
                           "Parole diferite",
@@ -58,7 +64,7 @@ public class CreareContController {
             return;
         }
 
-        if (!email.matches(EMAIL_PATTERN)) {
+        if (!emailText.matches(EMAIL_PATTERN)) {
             afiseazaAlerta(Alert.AlertType.WARNING,
                           TITLU_ALERTA,
                           "Email invalid",
@@ -67,11 +73,11 @@ public class CreareContController {
         }
 
         try {
-            trimiteDateCreareCont(email, numeUtilizator, parola);
+            trimiteDateCreareCont(emailText, numeUtilizatorText, parolaText);
         } catch (IOException | URISyntaxException e) {
             jurnal.log(Level.SEVERE, "Eroare la crearea contului", e);
             afiseazaAlerta(Alert.AlertType.ERROR,
-                          "Eroare",
+                          TITLU_EROARE,
                           "Nu s-a putut crea contul",
                           "A apărut o eroare la comunicarea cu serverul. Te rog să încerci din nou.");
         }
@@ -80,9 +86,9 @@ public class CreareContController {
     private void trimiteDateCreareCont(String email, String numeUtilizator, String parola) 
             throws IOException, URISyntaxException {
         JSONObject dateUtilizator = new JSONObject();
-        dateUtilizator.put("nume", App.getDateUtilizator().get("nume"));
-        dateUtilizator.put("prenume", App.getDateUtilizator().get("prenume"));
-        dateUtilizator.put("dataNasterii", App.getDateUtilizator().get("dataNasterii"));
+        dateUtilizator.put(CHEIE_NUME, App.getDateUtilizator().get(CHEIE_NUME));
+        dateUtilizator.put(CHEIE_PRENUME, App.getDateUtilizator().get(CHEIE_PRENUME));
+        dateUtilizator.put(CHEIE_DATA_NASTERII, App.getDateUtilizator().get(CHEIE_DATA_NASTERII));
         dateUtilizator.put("email", email);
         dateUtilizator.put("numeUtilizator", numeUtilizator);
         dateUtilizator.put("parola", parola);
@@ -104,13 +110,13 @@ public class CreareContController {
                              "Succes",
                              "Cont creat cu succes",
                              "Contul tău a fost creat cu succes. Te poți conecta acum.");
-                app.setRoot(PAGINA_LOGIN);
+                App.setRoot(PAGINA_LOGIN);
             } else {
                 if (jurnal.isLoggable(Level.WARNING)) {
                     jurnal.warning(String.format("Eroare la crearea contului. Cod răspuns: %d", codRaspuns));
                 }
                 afiseazaAlerta(Alert.AlertType.ERROR,
-                             "Eroare",
+                             TITLU_EROARE,
                              "Eroare la crearea contului",
                              "Te rog să încerci din nou mai târziu.");
             }
@@ -125,5 +131,108 @@ public class CreareContController {
         alerta.setHeaderText(antet);
         alerta.setContentText(continut);
         alerta.showAndWait();
+    }
+
+    @SuppressWarnings("unused")
+    @FXML
+    private void backCreareContInceput() {
+        try {
+            App.setRoot(PAGINA_LOGIN);
+        } catch (IOException e) {
+            jurnal.log(Level.SEVERE, "Eroare la navigarea înapoi la login", e);
+            afiseazaAlerta(Alert.AlertType.ERROR,
+                          TITLU_EROARE,
+                          MESAJ_EROARE_NAVIGARE,
+                          "Nu s-a putut naviga înapoi la pagina de login.");
+        }
+    }
+
+    @SuppressWarnings("unused")
+    @FXML
+    private void creareContInceput() {
+        String numeText = nume.getText();
+        String prenumeText = prenume.getText();
+        String ziua = ziuaNasterii.getText();
+        String luna = lunaNasterii.getText();
+        String anul = anNasterii.getText();
+
+        if (numeText.isEmpty() || prenumeText.isEmpty() || ziua.isEmpty() || luna.isEmpty() || anul.isEmpty()) {
+            afiseazaAlerta(Alert.AlertType.WARNING,
+                          TITLU_ALERTA,
+                          "Câmpuri incomplete",
+                          "Te rog să completezi toate câmpurile.");
+            return;
+        }
+
+        // Validare dată nașterii
+        try {
+            int zi = Integer.parseInt(ziua);
+            int lunaInt = Integer.parseInt(luna);
+            int an = Integer.parseInt(anul);
+            
+            if (zi < 1 || zi > 31 || lunaInt < 1 || lunaInt > 12 || an < 1900 || an > 2010) {
+                afiseazaAlerta(Alert.AlertType.WARNING,
+                              TITLU_ALERTA,
+                              "Dată invalidă",
+                              "Te rog să introduci o dată de naștere validă.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            afiseazaAlerta(Alert.AlertType.WARNING,
+                          TITLU_ALERTA,
+                          "Format invalid",
+                          "Te rog să introduci numere valide pentru dată.");
+            return;
+        }
+
+        // Stochează datele pentru următoarea etapă
+        App.getDateUtilizator().put(CHEIE_NUME, numeText);
+        App.getDateUtilizator().put(CHEIE_PRENUME, prenumeText);
+        App.getDateUtilizator().put(CHEIE_DATA_NASTERII, ziua + "/" + luna + "/" + anul);
+
+        try {
+            App.setRoot("creareContFinal");
+        } catch (IOException e) {
+            jurnal.log(Level.SEVERE, "Eroare la navigarea către următoarea etapă", e);
+            afiseazaAlerta(Alert.AlertType.ERROR,
+                          TITLU_EROARE,
+                          MESAJ_EROARE_NAVIGARE,
+                          "Nu s-a putut naviga către următoarea etapă.");
+        }
+    }
+
+    @SuppressWarnings("unused")
+    @FXML
+    private void cancelCreareCont() {
+        try {
+            App.setRoot(PAGINA_LOGIN);
+        } catch (IOException e) {
+            jurnal.log(Level.SEVERE, "Eroare la navigarea înapoi la login", e);
+            afiseazaAlerta(Alert.AlertType.ERROR,
+                          TITLU_EROARE,
+                          MESAJ_EROARE_NAVIGARE,
+                          "Nu s-a putut naviga înapoi la pagina de login.");
+        }
+    }
+
+    @SuppressWarnings("unused")
+    @FXML
+    private void backCreareContFinal() {
+        try {
+            App.setRoot("creareContInceput");
+        } catch (IOException e) {
+            jurnal.log(Level.SEVERE, "Eroare la navigarea înapoi la prima etapă", e);
+            afiseazaAlerta(Alert.AlertType.ERROR,
+                          TITLU_EROARE,
+                          MESAJ_EROARE_NAVIGARE,
+                          "Nu s-a putut naviga înapoi la prima etapă.");
+        }
+    }
+
+    @SuppressWarnings("unused")
+    @FXML
+    private void creareContFinal() {
+        // Delegate to the existing method
+        finalizeazaCreareCont();
     }
 }

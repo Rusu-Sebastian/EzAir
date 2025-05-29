@@ -36,19 +36,19 @@
                         <HBox alignment="CENTER" spacing="20">
                            <children>
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Utilizator" />
-                              <TextField fx:id="numeUtilizator" prefWidth="200" />
+                              <TextField fx:id="campNumeUtilizator" prefWidth="200" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" spacing="20">
                            <children>
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Parolă" />
-                              <PasswordField fx:id="parola" prefWidth="200" />
+                              <PasswordField fx:id="campParola" prefWidth="200" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" spacing="50">
                            <children>
-                              <Button fx:id="butonCreatCont" mnemonicParsing="false" onAction="#navigheazaLaCreareCont" text="Creare cont" />
-                              <Button fx:id="butonLogIn" defaultButton="true" mnemonicParsing="false" onAction="#autentificare" text="Conectare" />
+                              <Button fx:id="butonCreatCont" mnemonicParsing="false" onAction="#navigarePaginaCreareCont" text="Creare cont" />
+                              <Button fx:id="butonLogIn" defaultButton="true" mnemonicParsing="false" onAction="#login" text="Conectare" />
                            </children>
                         </HBox>
                      </children>

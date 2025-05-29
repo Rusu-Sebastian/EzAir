@@ -42,7 +42,7 @@ public class SchimbaParolaController {
             return;
         }
         
-        String idUtilizator = App.getDateUtilizator().get(ID_UTILIZATOR);
+        String idUtilizator = (String) App.getDateUtilizator().get(ID_UTILIZATOR);
         if (idUtilizator == null) {
             afiseazaAlerta(Alert.AlertType.ERROR, TITLU_EROARE, "Eroare sesiune", "Sesiunea dumneavoastră a expirat.");
             navigheazaLaLogin();

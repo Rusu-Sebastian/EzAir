@@ -31,27 +31,15 @@ public class LogInController {
 
     @FXML private TextField campNumeUtilizator;
     @FXML private PasswordField campParola;
-    private App app;
 
     @FXML
     public void initialize() {
-        app = App.getInstance();
-        if (app == null) {
-            jurnal.severe("Nu s-a putut obține instanța aplicației");
-        }
+        // Initialization complete
     }
 
     @FXML
     @SuppressWarnings("unused") // Used by FXML
     private void login() {
-        if (app == null) {
-            afiseazaAlerta(Alert.AlertType.ERROR,
-                          TITLU_EROARE,
-                          "Eroare internă",
-                          "Te rog să repornești aplicația.");
-            return;
-        }
-
         String numeUtilizator = campNumeUtilizator.getText();
         String parola = campParola.getText();
 
@@ -68,7 +56,7 @@ public class LogInController {
         } catch (IOException | URISyntaxException e) {
             jurnal.log(Level.SEVERE, "Eroare la autentificare: {0}", e.getMessage());
             try {
-                app.setRoot(PAGINA_EROARE);
+                App.setRoot(PAGINA_EROARE);
             } catch (IOException ex) {
                 jurnal.log(Level.SEVERE, "Nu s-a putut naviga la pagina de eroare: {0}", ex.getMessage());
             }
@@ -78,7 +66,7 @@ public class LogInController {
     private void autentificare(String numeUtilizator, String parola) throws IOException, URISyntaxException {
         HttpURLConnection conexiune = HttpUtil.createConnection(ApiEndpoints.LOGIN_URL, "POST");
         try {
-            String dateAutentificare = String.format("{\"username\":\"%s\",\"password\":\"%s\"}", 
+            String dateAutentificare = String.format("{\"numeUtilizator\":\"%s\",\"parola\":\"%s\"}", 
                                                    numeUtilizator, parola);
             byte[] date = dateAutentificare.getBytes(StandardCharsets.UTF_8);
             conexiune.setRequestProperty("Content-Type", "application/json");
@@ -105,11 +93,18 @@ public class LogInController {
             
             Platform.runLater(() -> {
                 try {
+                    // Salvăm toate datele importante ale utilizatorului
                     App.getDateUtilizator().put(ApiEndpoints.USER_ID_KEY, dateUtilizator.getString("id"));
                     boolean esteAdmin = dateUtilizator.getBoolean(ApiEndpoints.IS_ADMIN_KEY);
                     App.getDateUtilizator().put(ApiEndpoints.IS_ADMIN_KEY, Boolean.toString(esteAdmin));
                     
-                    app.setRoot(esteAdmin ? PAGINA_ADMIN : PAGINA_USER);
+                    // Salvăm numele și prenumele pentru afișare în interfață
+                    App.getDateUtilizator().put("nume", dateUtilizator.getString("nume"));
+                    App.getDateUtilizator().put("prenume", dateUtilizator.getString("prenume"));
+                    App.getDateUtilizator().put("email", dateUtilizator.getString("email"));
+                    App.getDateUtilizator().put("numeUtilizator", dateUtilizator.getString("numeUtilizator"));
+                    
+                    App.setRoot(esteAdmin ? PAGINA_ADMIN : PAGINA_USER);
                 } catch (IOException e) {
                     jurnal.log(Level.SEVERE, "Eroare la navigare post-autentificare: {0}", e.getMessage());
                     afiseazaAlerta(Alert.AlertType.ERROR,
@@ -141,13 +136,8 @@ public class LogInController {
         @FXML
     @SuppressWarnings("unused") // Used by FXML
     private void navigarePaginaCreareCont() {
-        if (app == null) {
-            jurnal.severe("Nu s-a putut naviga - instanța aplicației lipsește");
-            return;
-        }
-
         try {
-            app.setRoot(PAGINA_CREARE_CONT);
+            App.setRoot(PAGINA_CREARE_CONT);
         } catch (IOException e) {
             jurnal.log(Level.SEVERE, "Eroare la navigare: {0}", e.getMessage());
             afiseazaAlerta(Alert.AlertType.ERROR,

@@ -43,11 +43,8 @@ public class EditareZborController {
     @FXML private TextField locuriLibere;
     @FXML private TextField idZbor;
 
-    private App app;
-
     @FXML
     public void initialize() {
-        app = App.getInstance();
         Map<String, Object> dateUtilizator = App.getDateUtilizator();
         
         if (!dateUtilizator.containsKey("id")) {
@@ -312,7 +309,7 @@ public class EditareZborController {
             dateUtilizator.put(CHEIE_ADMIN, esteAdmin);
         }
         
-        app.setRoot("paginaZboruriAdmin");
+        App.setRoot("paginaZboruriAdmin");
     }
 
     private void afiseazaEroare(String antet, String continut) {

@@ -42,7 +42,7 @@ public class SetariNotificariController {
     }
     
     private void incarcaSetari() {
-        String idUtilizator = App.getDateUtilizator().get(ID_UTILIZATOR);
+        String idUtilizator = (String) App.getDateUtilizator().get(ID_UTILIZATOR);
         if (idUtilizator == null) {
             afiseazaAlerta(Alert.AlertType.ERROR, TITLU_EROARE, "ID utilizator lipsă", MESAJ_ID_LIPSA);
             return;
@@ -70,7 +70,7 @@ public class SetariNotificariController {
     
     @FXML
     public void salveazaSetari() {
-        String idUtilizator = App.getDateUtilizator().get(ID_UTILIZATOR);
+        String idUtilizator = (String) App.getDateUtilizator().get(ID_UTILIZATOR);
         if (idUtilizator == null) {
             afiseazaAlerta(Alert.AlertType.ERROR, TITLU_EROARE, "ID utilizator lipsă", MESAJ_ID_LIPSA);
             return;

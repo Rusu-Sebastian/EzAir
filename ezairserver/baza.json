@@ -165,7 +165,61 @@
             "email": "anulare@cont.com",
             "nume": "anulare",
             "prenume": "cont",
-            "dataNasterii": "1/1/2000",
+            "dataNasterii": "01/01/2000",
+            "esteAdmin": false,
+            "setari": {
+                "notificariEmail": true,
+                "notificariSMS": false,
+                "notificariPushWeb": true,
+                "notificariPromotii": true,
+                "notificariAnulari": true,
+                "notificariModificari": true
+            }
+        },
+        {
+            "id": "a61c6027-de27-4975-aa5d-46b97ffc88a8",
+            "numeUtilizator": "test",
+            "parola": "test123456",
+            "email": "test@testt.com",
+            "nume": "test",
+            "prenume": "test",
+            "dataNasterii": "1/1/2004",
+            "esteAdmin": false,
+            "setari": {
+                "notificariEmail": true,
+                "notificariSMS": false,
+                "notificariPushWeb": true,
+                "notificariPromotii": true,
+                "notificariAnulari": true,
+                "notificariModificari": true
+            }
+        },
+        {
+            "id": "6db210d6-3a7e-49c9-b323-b9a401a28fe8",
+            "numeUtilizator": "testuser123",
+            "parola": "testpassword",
+            "email": "test@example.com",
+            "nume": "Test",
+            "prenume": "User",
+            "dataNasterii": "15/05/1990",
+            "esteAdmin": false,
+            "setari": {
+                "notificariEmail": true,
+                "notificariSMS": false,
+                "notificariPushWeb": true,
+                "notificariPromotii": true,
+                "notificariAnulari": true,
+                "notificariModificari": true
+            }
+        },
+        {
+            "id": "9a0ed61d-3063-420a-aba1-b43dca9063bf",
+            "numeUtilizator": "testtest",
+            "parola": "testtest",
+            "email": "test@test.com",
+            "nume": "test",
+            "prenume": "test",
+            "dataNasterii": "01/02/2002",
             "esteAdmin": false,
             "setari": {
                 "notificariEmail": true,
@@ -223,7 +277,7 @@
             "dataSosire": "5/6/2025",
             "oraSosire": "14:15",
             "modelAvion": "Boeing 737-800",
-            "locuriLibere": 165,
+            "locuriLibere": 164,
             "pret": 189.99
         },
         {
@@ -575,6 +629,15 @@
             "dataZbor": "2025-06-04T04:15:00.000Z",
             "stare": "ACTIV",
             "pret": 249.99
+        },
+        {
+            "id": "6b624e40-aea8-48b8-bdd0-eb304021fa26",
+            "userId": "client",
+            "zborId": "a7b92c4e-5f16-4d3a-9e8b-2c45d6f87a1d",
+            "detaliiZbor": "Bucuresti -> Roma",
+            "dataZbor": "2025-06-05T08:32:00.000Z",
+            "stare": "ACTIV",
+            "pret": 189.99
         }
     ]
 }

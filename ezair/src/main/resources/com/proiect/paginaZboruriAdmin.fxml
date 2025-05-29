@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" prefHeight="850.0" prefWidth="1541.0" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.PaginaZboruriAdminController" styleClass="root" stylesheets="@styles.css">
+<VBox alignment="CENTER" prefHeight="850.0" prefWidth="1541.0" spacing="20.0" styleClass="root" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.proiect.PaginaZboruriAdminController">
    <children>
       <AnchorPane prefHeight="46.0" prefWidth="937.0">
          <children>
@@ -33,9 +33,9 @@
             </Text>
             <Button fx:id="butonAdaugareZbor" layoutX="584.0" layoutY="24.0" mnemonicParsing="false" onAction="#adaugaZbor" text="ADAUGĂ" />
             <Button fx:id="butonEditareZbor" layoutX="669.0" layoutY="24.0" mnemonicParsing="false" onAction="#editeazaZbor" text="EDITEAZĂ" />
-            <Button fx:id="butonStergereZbor" layoutX="749.0" layoutY="24.0" mnemonicParsing="false" onAction="#stergeZbor" text="ȘTERGE" />
+            <Button fx:id="butonStergereZbor" layoutX="762.0" layoutY="24.0" mnemonicParsing="false" onAction="#stergeZbor" text="ȘTERGE" />
             <Button fx:id="butonReincarcaZboruri" layoutX="846.0" layoutY="24.0" mnemonicParsing="false" onAction="#reincarcaZboruri" text="REÎNCARCĂ" />
-            <Button fx:id="butonRevinoPaginaPrincipala" layoutX="932.0" layoutY="24.0" mnemonicParsing="false" onAction="#revinoPaginaPrincipala" text="TABLOU DE BORD" />
+            <Button fx:id="butonRevinoPaginaPrincipala" layoutX="951.0" layoutY="24.0" mnemonicParsing="false" onAction="#revinoPaginaPrincipala" text="TABLOU DE BORD" />
          </children>
       </AnchorPane>
       <Pane prefHeight="690.0" prefWidth="1269.0">

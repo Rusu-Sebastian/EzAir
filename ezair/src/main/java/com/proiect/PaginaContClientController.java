@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.logging.Level;
@@ -40,12 +42,10 @@ public class PaginaContClientController {
     @FXML private TableColumn<Bilet, String> coloanaZbor;
     @FXML private TableColumn<Bilet, String> coloanaData;
     @FXML private TableColumn<Bilet, String> coloanaStare;
-    private App app;
 
     @FXML
     @SuppressWarnings("unused") // Used by FXML
     private void initialize() {
-        app = App.getInstance();
         configureazaTabele();
         incarcaInformatiiUtilizator();
         incarcaBilete();
@@ -59,19 +59,32 @@ public class PaginaContClientController {
 
     private void incarcaInformatiiUtilizator() {
         String idUtilizator = (String) App.getDateUtilizator().get(ApiEndpoints.USER_ID_KEY);
+        jurnal.info("Încărcare informații pentru utilizatorul cu ID: " + idUtilizator);
+        
         try {
-            HttpURLConnection conexiune = HttpUtil.createConnection(
-                String.format(ApiEndpoints.GET_USER, idUtilizator), 
-                "GET"
-            );
+            String endpoint = String.format(ApiEndpoints.GET_USER, idUtilizator);
+            jurnal.info("Apelând endpoint: " + endpoint);
+            
+            HttpURLConnection conexiune = HttpUtil.createConnection(endpoint, "GET");
 
             int codRaspuns = conexiune.getResponseCode();
+            jurnal.info("Cod răspuns: " + codRaspuns);
+            
             if (codRaspuns == HttpURLConnection.HTTP_OK) {
                 String raspuns = new String(conexiune.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+                jurnal.info("Răspuns server: " + raspuns);
+                
                 JSONObject utilizator = new JSONObject(raspuns);
-                labelNume.setText(utilizator.getString("nume") + " " + utilizator.getString("prenume"));
-                labelEmail.setText(utilizator.getString("email"));
-                labelNumeUtilizator.setText(utilizator.getString("numeUtilizator"));
+                String nume = utilizator.getString("nume");
+                String prenume = utilizator.getString("prenume");
+                String email = utilizator.getString("email");
+                String numeUtilizator = utilizator.getString("numeUtilizator");
+                
+                jurnal.info("Date extrase - nume: " + nume + ", prenume: " + prenume);
+                
+                labelNume.setText(nume + " " + prenume);
+                labelEmail.setText(email);
+                labelNumeUtilizator.setText(numeUtilizator);
             } else {
                 afiseazaEroare("Nu s-au putut încărca informațiile contului.");
             }
@@ -101,7 +114,7 @@ public class PaginaContClientController {
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
                     
                     listaBilete.add(new Bilet(
-                        bilet.getString("ruta"),
+                        bilet.getString("detaliiZbor"),
                         dataZbor.format(formatter),
                         bilet.getString("stare"),
                         bilet.getString("id")
@@ -120,6 +133,12 @@ public class PaginaContClientController {
 
     private LocalDateTime parseazaDataTimp(String sirDataTimp) {
         try {
+            // Încercăm mai întâi parsarea în format ISO cu Z (UTC)
+            if (sirDataTimp.endsWith("Z")) {
+                Instant instant = Instant.parse(sirDataTimp);
+                return LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+            }
+            // Încercăm parsarea normală ISO
             return LocalDateTime.parse(sirDataTimp);
         } catch (DateTimeParseException e) {
             jurnal.warning("Format dată invalid, încercând format personalizat");
@@ -128,25 +147,43 @@ public class PaginaContClientController {
     }
 
     private LocalDateTime parseazaDataTimpPersonalizat(String sirDataTimp) {
-        // Format: dd/MM/yyyy HH:mm
-        String[] parteDateTimp = sirDataTimp.split(" ");
-        String[] parteData = parteDateTimp[0].split("/");
-        String[] parteTimp = parteDateTimp[1].split(":");
-        
-        int zi = Integer.parseInt(parteData[0]);
-        int luna = Integer.parseInt(parteData[1]);
-        int an = Integer.parseInt(parteData[2]);
-        int ora = Integer.parseInt(parteTimp[0]);
-        int minut = Integer.parseInt(parteTimp[1]);
-        
-        return LocalDateTime.of(an, luna, zi, ora, minut, 0);
+        try {
+            // Format: dd/MM/yyyy HH:mm
+            String[] parteDateTimp = sirDataTimp.split(" ");
+            if (parteDateTimp.length < 2) {
+                // Dacă nu avem și ora, folosim doar data cu ora 00:00
+                String[] parteData = parteDateTimp[0].split("/");
+                if (parteData.length < 3) {
+                    jurnal.warning("Format dată invalid: " + sirDataTimp);
+                    return LocalDateTime.now(); // Fallback la data curentă
+                }
+                int zi = Integer.parseInt(parteData[0]);
+                int luna = Integer.parseInt(parteData[1]);
+                int an = Integer.parseInt(parteData[2]);
+                return LocalDateTime.of(an, luna, zi, 0, 0, 0);
+            }
+            
+            String[] parteData = parteDateTimp[0].split("/");
+            String[] parteTimp = parteDateTimp[1].split(":");
+            
+            int zi = Integer.parseInt(parteData[0]);
+            int luna = Integer.parseInt(parteData[1]);
+            int an = Integer.parseInt(parteData[2]);
+            int ora = Integer.parseInt(parteTimp[0]);
+            int minut = Integer.parseInt(parteTimp[1]);
+            
+            return LocalDateTime.of(an, luna, zi, ora, minut, 0);
+        } catch (Exception e) {
+            jurnal.warning("Eroare la parsarea datei: " + sirDataTimp + " - " + e.getMessage());
+            return LocalDateTime.now(); // Fallback la data curentă
+        }
     }
 
     @FXML
     @SuppressWarnings("unused") // Used by FXML
     private void editareInformatii() {
         try {
-            app.setRoot(PAGINA_EDITARE);
+            App.setRoot(PAGINA_EDITARE);
         } catch (IOException e) {
             jurnal.log(Level.SEVERE, "Eroare la navigarea către editare cont", e);
             afiseazaEroare("Nu s-a putut deschide pagina de editare cont");
@@ -157,7 +194,7 @@ public class PaginaContClientController {
     @SuppressWarnings("unused") // Used by FXML
     private void notificari() {
         try {
-            app.setRoot(PAGINA_NOTIFICARI);
+            App.setRoot(PAGINA_NOTIFICARI);
         } catch (IOException e) {
             jurnal.log(Level.SEVERE, "Eroare la navigarea către setări notificări", e);
             afiseazaEroare("Nu s-a putut deschide pagina de setări notificări");
@@ -168,7 +205,7 @@ public class PaginaContClientController {
     @SuppressWarnings("unused") // Used by FXML
     private void schimbaParola() {
         try {
-            app.setRoot(PAGINA_PAROLA);
+            App.setRoot(PAGINA_PAROLA);
         } catch (IOException e) {
             jurnal.log(Level.SEVERE, "Eroare la navigarea către schimbare parolă", e);
             afiseazaEroare("Nu s-a putut deschide pagina de schimbare parolă");
@@ -179,7 +216,7 @@ public class PaginaContClientController {
     @SuppressWarnings("unused") // Used by FXML
     private void inapoi() {
         try {
-            app.setRoot("paginaPrincipalaUser");
+            App.setRoot("paginaPrincipalaUser");
         } catch (IOException e) {
             jurnal.log(Level.SEVERE, "Eroare la navigarea înapoi", e);
             afiseazaEroare("Nu s-a putut naviga înapoi la pagina principală");
@@ -221,7 +258,7 @@ public class PaginaContClientController {
         try {
             // Stochează ID-ul biletului pentru pagina următoare
             App.getDateUtilizator().put("biletId", biletSelectat.getId());
-            app.setRoot("schimbaDataZbor");
+            App.setRoot("schimbaDataZbor");
         } catch (IOException e) {
             jurnal.log(Level.SEVERE, "Eroare la navigarea către schimbare data", e);
             afiseazaEroare("Nu s-a putut deschide pagina de schimbare data");

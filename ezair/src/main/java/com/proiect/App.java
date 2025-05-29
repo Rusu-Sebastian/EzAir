@@ -35,12 +35,24 @@ public class App extends Application {
     public static App getInstance() {
         return instance;
     }
+    
+    public static Scene getScena() {
+        return getInstance().scene;
+    }
+    
+    public static Stage getStage() {
+        return getInstance().stage;
+    }
 
     @Override
     public void start(Stage primaryStage) {
-        instance = this;
+        setInstance(this);
         this.stage = primaryStage;
         verificaConexiuneServer();
+    }
+    
+    private static void setInstance(App app) {
+        instance = app;
     }
 
     private void verificaConexiuneServer() {
@@ -55,8 +67,11 @@ public class App extends Application {
                     HttpUtil.disconnect(conexiune);
                 }
             });
-        } catch (Exception e) {
+        } catch (IOException e) {
             jurnal.log(Level.SEVERE, "Nu s-a putut stabili conexiunea cu serverul: {0}", e.getMessage());
+            Platform.runLater(() -> initScene(SCENA_EROARE_CONEXIUNE));
+        } catch (Exception e) {
+            jurnal.log(Level.SEVERE, "Eroare neașteptată: {0}", e.getMessage());
             Platform.runLater(() -> initScene(SCENA_EROARE_CONEXIUNE));
         }
     }
@@ -73,7 +88,12 @@ public class App extends Application {
         }
     }
 
-    public void setRoot(String fxml) throws IOException {
+    public static void setRoot(String fxml) throws IOException {
+        getInstance().scene.setRoot(getInstance().loadFXML(fxml));
+        getInstance().stage.setTitle(config.getAppName());
+    }
+    
+    public void setRootInstance(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
         stage.setTitle(config.getAppName());
     }

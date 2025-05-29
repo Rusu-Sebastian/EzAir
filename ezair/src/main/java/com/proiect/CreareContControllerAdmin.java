@@ -25,12 +25,11 @@ public class CreareContControllerAdmin {
     private static final String CAMP_NUME_UTILIZATOR = "#numeUtilizator";
     private static final String CHEIE_ID_UTILIZATOR = "userId";
     private static final String CHEIE_ADMIN = "esteAdmin";
-    private App app;
 
     @FXML
     @SuppressWarnings("unused") // Used by FXML
     public void initialize() {
-        app = App.getInstance();
+        // Initialization code if needed
     }
 
     @FXML
@@ -39,8 +38,8 @@ public class CreareContControllerAdmin {
         jurnal.info("Navigare înapoi la pagina de utilizatori.");
         
         // Păstrăm credențialele de admin înainte de a naviga înapoi
-        String userId = App.getDateUtilizator().get(CHEIE_ID_UTILIZATOR);
-        String esteAdmin = App.getDateUtilizator().get(CHEIE_ADMIN);
+        String userId = String.valueOf(App.getDateUtilizator().get(CHEIE_ID_UTILIZATOR));
+        String esteAdmin = String.valueOf(App.getDateUtilizator().get(CHEIE_ADMIN));
         
         // Curățăm datele vechi dar păstrăm datele de autentificare
         App.getDateUtilizator().clear();
@@ -67,8 +66,8 @@ public class CreareContControllerAdmin {
         jurnal.info("Anulare creare cont și navigare înapoi la pagina de utilizatori.");
         
         // Păstrăm credențialele de admin înainte de a naviga înapoi
-        String userId = App.getDateUtilizator().get(CHEIE_ID_UTILIZATOR);
-        String esteAdmin = App.getDateUtilizator().get(CHEIE_ADMIN);
+        String userId = (String) App.getDateUtilizator().get(CHEIE_ID_UTILIZATOR);
+        String esteAdmin = (String) App.getDateUtilizator().get(CHEIE_ADMIN);
         
         // Curățăm datele vechi dar păstrăm datele de autentificare
         App.getDateUtilizator().clear();
@@ -87,8 +86,8 @@ public class CreareContControllerAdmin {
     @FXML
     private void creareContInceput() throws IOException {
         try {
-            String nume = ((TextField) App.scena.lookup("#nume")).getText();
-            String prenume = ((TextField) App.scena.lookup("#prenume")).getText();
+            String nume = ((TextField) App.getScena().lookup("#nume")).getText();
+            String prenume = ((TextField) App.getScena().lookup("#prenume")).getText();
 
             if (!valideazaCampuriObligatorii(nume, prenume)) {
                 return;
@@ -113,9 +112,9 @@ public class CreareContControllerAdmin {
 
     private boolean valideazaCampuriObligatorii(String nume, String prenume) {
         if (nume.isEmpty() || prenume.isEmpty() ||
-            ((TextField) App.scena.lookup(CAMP_ZI_NASTERE)).getText().isEmpty() ||
-            ((TextField) App.scena.lookup(CAMP_LUNA_NASTERE)).getText().isEmpty() ||
-            ((TextField) App.scena.lookup(CAMP_AN_NASTERE)).getText().isEmpty()) {
+            ((TextField) App.getScena().lookup(CAMP_ZI_NASTERE)).getText().isEmpty() ||
+            ((TextField) App.getScena().lookup(CAMP_LUNA_NASTERE)).getText().isEmpty() ||
+            ((TextField) App.getScena().lookup(CAMP_AN_NASTERE)).getText().isEmpty()) {
             jurnal.warning("Toate câmpurile sunt obligatorii.");
             return false;
         }
@@ -123,9 +122,9 @@ public class CreareContControllerAdmin {
     }
 
     private boolean valideazaFormatDataNastere() {
-        if (((TextField) App.scena.lookup(CAMP_ZI_NASTERE)).getText().length() > 2 ||
-            ((TextField) App.scena.lookup(CAMP_LUNA_NASTERE)).getText().length() > 2 ||
-            ((TextField) App.scena.lookup(CAMP_AN_NASTERE)).getText().length() > 4) {
+        if (((TextField) App.getScena().lookup(CAMP_ZI_NASTERE)).getText().length() > 2 ||
+            ((TextField) App.getScena().lookup(CAMP_LUNA_NASTERE)).getText().length() > 2 ||
+            ((TextField) App.getScena().lookup(CAMP_AN_NASTERE)).getText().length() > 4) {
             jurnal.warning("Format dată naștere invalid.");
             return false;
         }
@@ -134,9 +133,9 @@ public class CreareContControllerAdmin {
 
     private String creeazaDataNasterii() {
         try {
-            int ziNastere = Integer.parseInt(((TextField) App.scena.lookup(CAMP_ZI_NASTERE)).getText());
-            int lunaNastere = Integer.parseInt(((TextField) App.scena.lookup(CAMP_LUNA_NASTERE)).getText());
-            int anNastere = Integer.parseInt(((TextField) App.scena.lookup(CAMP_AN_NASTERE)).getText());
+            int ziNastere = Integer.parseInt(((TextField) App.getScena().lookup(CAMP_ZI_NASTERE)).getText());
+            int lunaNastere = Integer.parseInt(((TextField) App.getScena().lookup(CAMP_LUNA_NASTERE)).getText());
+            int anNastere = Integer.parseInt(((TextField) App.getScena().lookup(CAMP_AN_NASTERE)).getText());
             int anCurent = java.time.Year.now().getValue();
 
             if (ziNastere > 31 || lunaNastere > 12 || anNastere < 1900 || anNastere > anCurent) {
@@ -165,11 +164,11 @@ public class CreareContControllerAdmin {
     @FXML
     private void creareContFinal() throws IOException {
         try {
-            TextField campNumeUtilizator = (TextField) App.scena.lookup(CAMP_NUME_UTILIZATOR);
-            javafx.scene.control.PasswordField campParola = (javafx.scene.control.PasswordField) App.scena.lookup("#parola");
-            javafx.scene.control.PasswordField campConfirmareParola = (javafx.scene.control.PasswordField) App.scena.lookup("#confirmareParola");
-            TextField campEmail = (TextField) App.scena.lookup("#email");
-            CheckBox campAdmin = (CheckBox) App.scena.lookup("#checkAdmin");
+            TextField campNumeUtilizator = (TextField) App.getScena().lookup(CAMP_NUME_UTILIZATOR);
+            javafx.scene.control.PasswordField campParola = (javafx.scene.control.PasswordField) App.getScena().lookup("#parola");
+            javafx.scene.control.PasswordField campConfirmareParola = (javafx.scene.control.PasswordField) App.getScena().lookup("#confirmareParola");
+            TextField campEmail = (TextField) App.getScena().lookup("#email");
+            CheckBox campAdmin = (CheckBox) App.getScena().lookup("#checkAdmin");
 
             if (!valideazaCampuriFinale(campNumeUtilizator, campParola, campConfirmareParola, campEmail)) {
                 return;
@@ -269,8 +268,8 @@ public class CreareContControllerAdmin {
             alerta.showAndWait();
             
             // Păstrăm credențialele de admin înainte de a naviga înapoi
-            String userId = App.getDateUtilizator().get(CHEIE_ID_UTILIZATOR);
-            String esteAdmin = App.getDateUtilizator().get(CHEIE_ADMIN);
+            String userId = (String) App.getDateUtilizator().get(CHEIE_ID_UTILIZATOR);
+            String esteAdmin = (String) App.getDateUtilizator().get(CHEIE_ADMIN);
             
             // Curățăm datele vechi dar păstrăm datele de autentificare
             App.getDateUtilizator().clear();
